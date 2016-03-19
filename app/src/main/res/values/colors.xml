@@ -1,6 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="color_primary_dark">#C62828</color>
+    <color name="alpha_color_primary_dark">#22C62828</color>
+    <color name="color_primary">#E53935</color>
+    <color name="color_text_primary">#ffffff</color>
+    <color name="color_window_background">#fafafa</color>
+
+    <color name="red_color">#f44336</color>
+    <color name="white_color">#FFFFFF</color>
+    <color name="black_color">#000000</color>
+
+    <!--  google palette -->
+           <!--- white -> grey  -->
+    <color name="color_grey_50">#fafafa</color>
+    <color name="color_grey_100">#f5f5f5</color>
+    <color name="color_grey_200">#eeeeee</color>
+    <color name="color_grey_300">#e0e0e0</color>
+    <color name="color_grey_400">#bdbdbd</color>
+    <color name="color_grey_500">#9e9e9e</color>
+    <color name="color_grey_600">#757575</color>
+    <color name="color_grey_700">#616161</color>
+    <color name="color_grey_800">#424242</color>
+    <color name="color_grey_900">#212121</color>
+           <!--- white -> red  -->
+    <color name="color_red_50">#ffebee</color>
+    <color name="color_red_100">#ffcdd2</color>
+    <color name="color_red_200">#ef9a9a</color>
+    <color name="color_red_300">#e57373</color>
+    <color name="color_red_400">#ef5350</color>
+    <color name="color_red_500">#f44336</color>
+    <color name="color_red_600">#e53935</color>
+    <color name="color_red_700">#d32f2f</color>
+    <color name="color_red_800">#c62828</color>
+    <color name="color_red_900">#b71c1c</color>
+
+    <color name="color_red_accent_100">#ff8a80</color>
+    <color name="color_red_accent_200">#ff5252</color>
+    <color name="color_red_accent_400">#ff1744</color>
+    <color name="color_red_accent_700">#d50000</color>
+           <!--- white -> green  -->
+    <color name="color_green_50">#e8f5e9</color>
+    <color name="color_green_100">#c8e6c9</color>
+    <color name="color_green_200">#a5d6a7</color>
+    <color name="color_green_300">#81c784</color>
+    <color name="color_green_400">#66bb6a</color>
+    <color name="color_green_500">#4caf50</color>
+    <color name="color_green_600">#43a047</color>
+    <color name="color_green_700">#388e3c</color>
+    <color name="color_green_800">#2e7d32</color>
+    <color name="color_green_900">#1b5e20</color>
+
+    <color name="color_green_accent_100">#b9f6ca</color>
+    <color name="color_green_accent_200">#69f0ae</color>
+    <color name="color_green_accent_400">#00e676</color>
+    <color name="color_green_accent_700">#00c853</color>
+           <!--- white -> blue  -->
+    <color name="color_blue_50">#e3f2fd</color>
+    <color name="color_blue_100">#bbdefb</color>
+    <color name="color_blue_200">#90caf9</color>
+    <color name="color_blue_300">#64b5f6</color>
+    <color name="color_blue_400">#42a5f5</color>
+    <color name="color_blue_500">#2196f3</color>
+    <color name="color_blue_600">#1e88e5</color>
+    <color name="color_blue_700">#1976d2</color>
+    <color name="color_blue_800">#1565c0</color>
+    <color name="color_blue_900">#0d47a1</color>
+
+    <color name="color_blue_accent_100">#82b1ff</color>
+    <color name="color_blue_accent_200">#448aff</color>
+    <color name="color_blue_accent_400">#00e5ff</color>
+    <color name="color_blue_accent_700">#00b8d4</color>
+
+    <!--orange-->
+    <color name="color_orange_50">#FFF3E0</color>
+    <color name="color_orange_100">#FFE0B2</color>
+    <color name="color_orange_200">#FFCC80</color>
+    <color name="color_orange_300">#FFB74D</color>
+    <color name="color_orange_400">#FFA726</color>
+    <color name="color_orange_500">#FF9800</color>
+    <color name="color_orange_600">#FB8C00</color>
+    <color name="color_orange_700">#F57C00</color>
+    <color name="color_orange_800">#EF6C00</color>
+    <color name="color_orange_900">#E65100</color>
+    <color name="color_orange_A100">#FFD180</color>
+    <color name="color_orange_A200">#FFAB40</color>
+    <color name="color_orange_A400">#FF9100</color>
+    <color name="color_orange_A700">#FF6D00</color>
+
+    <!--Sliding menu-->
+    <color name="horizontal_divider">#30bdbdbd</color>
+    <color name="sliding_menu_scan_text">#a0a0a0</color>
+
+
+    <!--Common colors-->
+    <color name="fb_color">#3a5896</color>
+    <color name="fb_color_pressed">#1d2c4b</color>
+    <color name="gplus_color">#dd4b39</color>
+    <color name="gplus_color_pressed">#6e251c</color>
+    <color name="login_screen_link">#676767</color>
+    <color name="default_green">#06d293</color>
+    <color name="default_dark_green">#219f86</color>
+    <color name="default_dark_green_pressed">#104f43</color>
+    <color name="background">#f2f2f2</color>
+    <color name="drk_gray_text">#666666</color>
+    <color name="light_gray_text">#bdbdbd</color>
+    <color name="blue_text">#03A9F4</color>
+    <color name="blue_text_pressed">#01579B</color>
+
+    <color name="list_background">#303030</color>
+    <color name="list_background_pressed">#F0F014</color>
+    <color name="list_divider">#272727</color>
+    <color name="counter_text_bg">#626262</color>
+    <color name="counter_text_color">#c5c4c4</color>
+
+    <!--Scanner-->
+    <color name="grey">#ffcdcdcd</color>
+    <color name="white_opacity">#d5ffffff</color>
+    <color name="white">#ffffffff</color>
+    <color name="green_transparent">#6306d293</color>
+    <color name="grey_big_divider">#fff1f1f1</color>
+
 </resources>
