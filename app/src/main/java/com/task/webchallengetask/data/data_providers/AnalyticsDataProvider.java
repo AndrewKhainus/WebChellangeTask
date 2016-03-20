@@ -1,5 +1,7 @@
 package com.task.webchallengetask.data.data_providers;
 
+import com.task.webchallengetask.data.database.DatabaseController;
+import com.task.webchallengetask.data.rest.RestClient;
 import com.task.webchallengetask.global.utils.RxUtils;
 
 import java.util.List;
@@ -9,6 +11,8 @@ import rx.Observable;
 public class AnalyticsDataProvider extends BaseDataProvider {
 
     private static volatile AnalyticsDataProvider instance;
+    private RestClient restClient = RestClient.getInstance();
+    private DatabaseController databaseController = DatabaseController.getInstance();
 
     private AnalyticsDataProvider() {
     }
