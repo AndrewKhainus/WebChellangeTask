@@ -1,12 +1,12 @@
 package com.task.webchallengetask.ui.fragments.presenters;
 
-import com.task.webchallengetask.data.data_providers.AnalitycsDataProvider;
+import com.task.webchallengetask.data.data_providers.AnalyticsDataProvider;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseView;
 
 public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter.AnalyticsView> {
 
-    private AnalitycsDataProvider dataProvider = AnalitycsDataProvider.getInstance();
+    private AnalyticsDataProvider dataProvider = AnalyticsDataProvider.getInstance();
 
     @Override
     public void onViewCreated() {
