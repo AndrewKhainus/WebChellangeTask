@@ -1,4 +1,4 @@
-package com.task.webchallengetask.utils;
+package com.task.webchallengetask.global.utils;
 
 import android.util.Log;
 

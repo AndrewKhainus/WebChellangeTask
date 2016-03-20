@@ -70,7 +70,7 @@
     <dimen name="auth_base_corners_padding">48dp</dimen>
     <dimen name="auth_red_button_top_bottom_margin">24dp</dimen>
 
-    <!-- Circle Image view-->
+    <!-- Circle Image mView-->
     <dimen name="circle_diameter">48dp</dimen>
     <dimen name="circle_border_width_05">0.5dp</dimen>
 

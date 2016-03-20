@@ -1,8 +1,10 @@
-package com.task.webchallengetask.utils;
+package com.task.webchallengetask.global.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.task.webchallengetask.App;
 
 /**
  * Created by klim on 21.10.15.
@@ -51,22 +53,6 @@ public class SharedPrefManager {
 
     private int retrieveInt(String _s) {
         return sharedPreferences.getInt(_s, -1);
-    }
-
-    public boolean retrieveRememberMe() {
-        return retrieveBoolean(SharedPrefConst.REMEMBER_ME);
-    }
-
-    public void storeRememberMe(boolean _remember) {
-        saveBoolean(SharedPrefConst.REMEMBER_ME, _remember);
-    }
-
-    public void storeLanguage(String _localeLanguage) {
-        saveString(SharedPrefConst.APP_LANGUAGE, _localeLanguage);
-    }
-
-    public String retrieveLanguage() {
-        return retrieveString(SharedPrefConst.APP_LANGUAGE);
     }
 
 }

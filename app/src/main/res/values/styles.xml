@@ -23,8 +23,7 @@
     </style>
 
     <style name="BaseTextStyle" parent="android:Widget">
-        <item name="android:gravity">start|center_vertical</item>
-        <item name="android:textAlignment">viewStart</item>
+        <item name="android:gravity">left|start|center_vertical</item>
         <item name="android:textColorHint">@color/color_grey_400</item>
         <item name="android:ellipsize">end</item>
     </style>
@@ -63,7 +62,7 @@
     <!--titles-->
     <style name="MainTheme.Title" parent="MainTheme">
         <item name="android:maxLines">1</item>
-        <item name="android:textColor">@drawable/title_selector</item>
+        <item name="android:textColor">@color/title_selector</item>
     </style>
 
     <style name="MainTheme.Title.Big" parent="@style/MainTheme.Title">
@@ -101,7 +100,7 @@
     <!--subtitles-->
     <style name="MainTheme.SubTitle" parent="@style/MainTheme">
         <item name="android:maxLines">1</item>
-        <item name="android:textColor">@drawable/subtitle_selector</item>
+        <item name="android:textColor">@color/subtitle_selector</item>
     </style>
 
     <style name="MainTheme.SubTitle.Big" parent="@style/MainTheme.SubTitle">
@@ -130,7 +129,7 @@
 
     <!--description-->
     <style name="MainTheme.Description" parent="@style/MainTheme">
-        <item name="android:textColor">@drawable/description_selector</item>
+        <item name="android:textColor">@color/description_selector</item>
     </style>
 
     <style name="MainTheme.Description.Big" parent="@style/MainTheme.Description">
@@ -161,15 +160,14 @@
     <!-- Dialog style -->
     <style name="DialogButtonStyle" parent="@style/MainTheme.Title.UltraSmall.Bold">
         <item name="android:layout_height">36dp</item>
-        <item name="android:layout_marginStart">4dp</item>
-        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
         <item name="android:gravity">center_horizontal|center_vertical</item>
         <item name="android:minWidth">64dp</item>
-        <item name="android:paddingEnd">8dp</item>
-        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>
-        <item name="android:textColor">@drawable/button_blue_text_selector</item>
-        <item name="android:textAlignment">gravity</item>
+        <item name="android:textColor">@color/button_blue_text_selector</item>
     </style>
 
 </resources>

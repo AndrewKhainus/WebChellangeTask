@@ -1,20 +1,34 @@
 package com.task.webchallengetask.ui.base;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewTreeObserver;
 
-public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppCompatActivity {
+import com.task.webchallengetask.ui.dialogs.BaseDialog;
+import com.task.webchallengetask.ui.dialogs.ConfirmDialog;
+import com.task.webchallengetask.ui.dialogs.ErrorDialog;
+import com.task.webchallengetask.ui.dialogs.InfoDialog;
+import com.task.webchallengetask.ui.dialogs.LoadingDialog;
+
+public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppCompatActivity
+        implements BaseView {
 
     private P mPresenter;
-    protected abstract P initPresenter();
-    protected abstract void findUI();
+    private LoadingDialog progressDialog;
+    private BaseDialog mDialog;
+
     protected abstract int getLayoutResource();
+
+    protected abstract P initPresenter();
+
+    protected abstract void findUI();
+
     protected abstract void setupUI(Bundle savedInstanceState);
+
     protected int getFragmentContainer() {
         return 0;
     }
@@ -22,36 +36,25 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getLayoutResource() != 0)
-            setContentView(getLayoutResource());
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            postponeEnterTransition();
-            final View decor = getWindow().getDecorView();
-            decor.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-
-                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-                @Override
-                public boolean onPreDraw() {
-                    decor.getViewTreeObserver().removeOnPreDrawListener(this);
-                    startPostponedEnterTransition();
-                    return true;
-                }
-            });
-        }
+        mPresenter = initPresenter();
+        if (getLayoutResource() != 0) setContentView(getLayoutResource());
+        mPresenter.bindView(this);
 
         findUI();
         setupUI(savedInstanceState);
-        mPresenter = initPresenter();
-        mPresenter.onCreate(this);
-    }
 
-    @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            postponeEnterTransition();
-        }
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                BaseFragment fragment = (BaseFragment) getSupportFragmentManager()
+                        .findFragmentById(getFragmentContainer());
+                setToolBarTitle(fragment.setTitle());
+            }
+        });
+
+        mPresenter.onViewCreated();
     }
 
     @Override
@@ -62,13 +65,22 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
 
     @Override
     protected void onDestroy() {
-        mPresenter.onDestroy();
+        mPresenter.onDestroyView();
+        mPresenter.unbindView();
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
         mPresenter.onBackPressed();
+    }
+
+    public boolean isBackStackEmpty() {
+        return getSupportFragmentManager().getBackStackEntryCount() == 0;
+    }
+
+    public void popBackStack() {
+        getSupportFragmentManager().popBackStack();
     }
 
     @Override
@@ -80,8 +92,82 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     protected P getPresenter() {
         return mPresenter;
     }
-    public ActivityPresenter getActivityPresenter() {
-        return mPresenter;
+
+    @Override
+    public void showInfoDialog(String _title, String _message, View.OnClickListener _listener) {
+        showDialog(new InfoDialog(), _title, _message, _listener);
     }
+
+    @Override
+    public void showErrorDialog(String _title, String _message, View.OnClickListener _listener) {
+        showDialog(new ErrorDialog(), _title, _message, _listener);
+    }
+
+    @Override
+    public void showConfirmDialog(String _title, String _message, View.OnClickListener _listener) {
+        showDialog(new ConfirmDialog(), _title, _message, _listener);
+    }
+
+    private void showDialog(BaseDialog _dialog, String _title, String _message, View.OnClickListener _listener) {
+        if (mDialog != null && mDialog.isVisible()) mDialog.dismiss();
+        mDialog = _dialog;
+        mDialog.setTitle(_title);
+        mDialog.setMessage(_message);
+        mDialog.setOnClickListener(_listener);
+        mDialog.show(getSupportFragmentManager(), "");
+        if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
+    }
+
+    @Override
+    public void showLoadingDialog() {
+        if (progressDialog == null || !progressDialog.isShowing()) {
+            progressDialog = new LoadingDialog();
+            progressDialog.show(getSupportFragmentManager(), "");
+        }
+    }
+
+    @Override
+    public void hideLoadingDialog() {
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+    @Override
+    public void switchFragment(final BaseFragment _fragment, boolean _addToBackStack) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        Fragment fragment = getSupportFragmentManager()
+                .findFragmentById(getFragmentContainer());
+        if (fragment != null)
+            fragmentTransaction.hide(fragment);
+
+        if (_addToBackStack) {
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.add(getFragmentContainer(), _fragment, _fragment.getClass().getName());
+        } else {
+            fragmentTransaction.replace(getFragmentContainer(), _fragment, _fragment.getClass().getName());
+        }
+        fragmentTransaction.show(_fragment);
+        fragmentTransaction.commitAllowingStateLoss();
+        setToolBarTitle(_fragment.setTitle());
+    }
+
+    protected void setToolBarTitle(int _titleRes) {
+        if (getSupportActionBar() != null && _titleRes != 0)
+            getSupportActionBar().setTitle(_titleRes);
+    }
+
+    @Override
+    public void startActivity(Class _activityClass, Bundle _bundle) {
+        Intent intent = new Intent(this, _activityClass);
+        if (_bundle != null) intent.putExtras(_bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
+    }
+
 
 }

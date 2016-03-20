@@ -3,7 +3,8 @@ package com.task.webchallengetask;
 import android.app.Application;
 import android.content.Context;
 
-import com.task.webchallengetask.utils.SharedPrefManager;
+import com.raizlabs.android.dbflow.config.FlowManager;
+import com.squareup.leakcanary.LeakCanary;
 
 
 public class App extends Application {

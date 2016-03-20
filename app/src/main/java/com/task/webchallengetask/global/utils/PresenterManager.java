@@ -1,9 +1,9 @@
-package com.task.webchallengetask.utils;
+package com.task.webchallengetask.global.utils;
 
 import android.os.Bundle;
 import android.util.LruCache;
 
-import com.task.webchallengetask.presenters.BasePresenter;
+import com.task.webchallengetask.ui.base.BasePresenter;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -16,7 +16,7 @@ public class PresenterManager {
 
     private final AtomicLong currentId;
 
-    private final LruCache<Long, BasePresenter<?, ?>> presenters;
+    private final LruCache<Long, BasePresenter> presenters;
 
     PresenterManager() {
         currentId = new AtomicLong();
@@ -30,13 +30,13 @@ public class PresenterManager {
         return instance;
     }
 
-    public <P extends BasePresenter<?, ?>> P restorePresenter(Bundle savedInstanceState) {
+    public <P extends BasePresenter> P restorePresenter(Bundle savedInstanceState) {
         Long presenterId = savedInstanceState.getLong(SIS_KEY_PRESENTER_ID);
         P presenter = (P) presenters.get(presenterId);
         return presenter;
     }
 
-    public void savePresenter(BasePresenter<?, ?> presenter, Bundle outState) {
+    public void savePresenter(BasePresenter presenter, Bundle outState) {
         long presenterId = currentId.incrementAndGet();
         presenters.put(presenterId, presenter);
         outState.putLong(SIS_KEY_PRESENTER_ID, presenterId);

@@ -1,30 +1,27 @@
 package com.task.webchallengetask.ui.base;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.foxtrapp.qualpro.utility.TransitionHelper;
 
-public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Fragment implements BaseView{
+public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Fragment implements BaseView {
 
-    private View rootView;
+    private BaseActivity mActivity;
     private P mPresenter;
 
     protected abstract int setTitle();
+
     protected abstract int getLayoutResource();
+
     protected abstract P initPresenter();
+
     protected abstract void findUI(View rootView);
+
     protected abstract void setupUI();
 
     @Override
@@ -33,19 +30,18 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
         mPresenter = initPresenter();
         if (getPresenter() == null)
             new ClassCastException("Presenter is not created + " + this.getClass().getName());
-        getPresenter().onAttach(((BaseActivity) getActivity()).getActivityPresenter());
-
+        if (context instanceof BaseActivity) mActivity = (BaseActivity) context;
+        else
+            new ClassCastException("Activity should extend BaseActivity " + this.getClass().getName());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(getLayoutResource(), container, false);
-        findUI(rootView);
-
+        View view = inflater.inflate(getLayoutResource(), container, false);
+        getPresenter().bindView(this);
+        findUI(view);
         setHasOptionsMenu(true);
-        getPresenter().setView(this);
-        getPresenter().onCreateView(getArguments());
-        return rootView;
+        return view;
     }
 
     @Override
@@ -62,13 +58,6 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
     }
 
     @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        final Pair<View, String>[] pairs = TransitionHelper.createSafeTransitionParticipants(getActivity(), true);
-        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pairs);
-        super.startActivityForResult(intent, requestCode, transitionActivityOptions.toBundle());
-    }
-
-    @Override
     public void onPause() {
         getPresenter().onPause();
         super.onPause();
@@ -76,31 +65,67 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
 
     @Override
     public void onDestroyView() {
-        getPresenter().onDestroy();
-        rootView = null;
+        getPresenter().unbindView();
+        getPresenter().onDestroyView();
         super.onDestroyView();
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        getPresenter().setTitle(setTitle());
+    public void showLoadingDialog() {
+        mActivity.showLoadingDialog();
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        getPresenter().onActivityResult(requestCode, resultCode, data);
+    public void hideLoadingDialog() {
+        mActivity.hideLoadingDialog();
+    }
+
+    @Override
+    public void showInfoDialog(String _title, String _message, View.OnClickListener _listener) {
+        mActivity.showInfoDialog(_title, _message, _listener);
+    }
+
+    @Override
+    public void showErrorDialog(String _title, String _message, View.OnClickListener _listener) {
+        mActivity.showErrorDialog(_title, _message, _listener);
+    }
+
+    @Override
+    public void showConfirmDialog(String _title, String _message, View.OnClickListener _listener) {
+        mActivity.showConfirmDialog(_title, _message, _listener);
+    }
+
+    @Override
+    public void switchFragment(BaseFragment _fragment, boolean _addToBackStack) {
+        mActivity.switchFragment(_fragment, _addToBackStack);
+    }
+
+    @Override
+    public void startActivity(Class _activityClass, Bundle _bundle) {
+        mActivity.startActivity(_activityClass, _bundle);
+    }
+
+    @Override
+    public void finishActivity() {
+        mActivity.finishActivity();
+    }
+
+    @Override
+    public void onBackPressed() {
+        mPresenter.onBackPressed();
+    }
+
+    @Override
+    public boolean isBackStackEmpty() {
+        return mActivity.getSupportFragmentManager().getBackStackEntryCount() == 0;
+    }
+
+    @Override
+    public void popBackStack() {
+        mActivity.getSupportFragmentManager().popBackStack();
     }
 
     protected P getPresenter() {
         return mPresenter;
     }
-
-    protected <T extends View> T fbi(@IdRes int resId) {
-        if (rootView == null)
-            return null;
-        return (T) rootView.findViewById(resId);
-    }
-
 }

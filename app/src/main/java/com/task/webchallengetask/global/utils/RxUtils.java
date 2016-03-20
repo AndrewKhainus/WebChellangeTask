@@ -1,4 +1,4 @@
-package com.task.webchallengetask.utils;
+package com.task.webchallengetask.global.utils;
 
 import android.view.View;
 
@@ -12,12 +12,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.subscriptions.CompositeSubscription;
 
-/**
- * Created by klim on 21.10.15.
- */
 public class RxUtils {
 
 
@@ -26,15 +21,6 @@ public class RxUtils {
             _subscription.unsubscribe();
         }
     }
-
-    public static CompositeSubscription getNewCompositeSubIfUnsubscribed(CompositeSubscription _subscription) {
-        if (_subscription == null || _subscription.isUnsubscribed()) {
-            return new CompositeSubscription();
-        }
-
-        return _subscription;
-    }
-
 
     public static void click(View _view, Action1 _action) {
         RxView.clicks(_view)
@@ -56,17 +42,6 @@ public class RxUtils {
                 subscriber.onCompleted();
             }
         });
-    }
-
-    public static <T> Func1<List<List<T>>, Observable<List<T>>> listListToList() {
-        return lists -> {
-            List<T> result = new ArrayList<>();
-            for (List<T> list : lists) {
-                for (T table : list)
-                    result.add(table);
-            }
-            return Observable.just(result);
-        };
     }
 
 }
