@@ -2,9 +2,6 @@ package com.task.webchallengetask.global.utils;
 
 import android.util.Log;
 
-/**
- * Created by klim on 03.02.16.
- */
 public class Logger {
 
     public static void e (Throwable _throwable) {

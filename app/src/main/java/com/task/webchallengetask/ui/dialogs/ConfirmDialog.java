@@ -18,7 +18,6 @@ public class ConfirmDialog extends BaseDialog {
     private String mButtonPositiveTitle;
     private String mButtonNegativeTitle;
     private View.OnClickListener mPositiveListener;
-    private View.OnClickListener mNegativeListener;
 
     @Override
     protected int getLayoutResource() {
@@ -39,12 +38,11 @@ public class ConfirmDialog extends BaseDialog {
 
         RxUtils.click(btnNegative).subscribe(o -> dismiss());
         RxUtils.click(btnPositive).subscribe(o -> {
-            if (mPositiveListener != null) mPositiveListener.onClick(null);
             dismiss();
+            if (mPositiveListener != null) mPositiveListener.onClick(null);
         });
 
         RxUtils.click(btnNegative).subscribe(o -> {
-            if (mNegativeListener != null) mNegativeListener.onClick(null);
             dismiss();
         });
 
@@ -72,12 +70,9 @@ public class ConfirmDialog extends BaseDialog {
         mButtonPositiveTitle = _title;
     }
 
-    public void setOnPositiveListener(View.OnClickListener _listener) {
+    @Override
+    public void setOnClickListener(View.OnClickListener _listener) {
         mPositiveListener = _listener;
-    }
 
-    public void setOnNegativeListener(View.OnClickListener _listener) {
-        mNegativeListener = _listener;
     }
-
 }
