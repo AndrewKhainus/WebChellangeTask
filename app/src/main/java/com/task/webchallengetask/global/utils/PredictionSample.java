@@ -1,13 +1,7 @@
 package com.task.webchallengetask.global.utils;
 
-import android.content.Context;
-
-import com.fernandocejas.frodo.annotation.RxLogObservable;
-import com.fernandocejas.frodo.annotation.RxLogSubscriber;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.HttpResponse;
-import com.google.api.client.http.HttpResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -20,12 +14,9 @@ import com.google.api.services.prediction.model.Insert2;
 import com.google.api.services.prediction.model.Output;
 import com.google.api.services.storage.StorageScopes;
 import com.task.webchallengetask.global.Constants;
+import com.task.webchallengetask.global.exceptions.UncomplitedException;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
@@ -34,69 +25,44 @@ import rx.Observable;
 
 public class PredictionSample {
 
-    private static HttpTransport httpTransport;
-    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    private Context context;
+    private JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    private HttpTransport httpTransport;
 
-    public PredictionSample(Context _context) {
-        context = _context;
+    public PredictionSample() {
+        httpTransport = AndroidHttp.newCompatibleTransport();
     }
 
-    private void copyInputStreamToFile(InputStream in, File file) {
+
+    private Observable<GoogleCredential> authorize() {
         try {
-            OutputStream out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-            out.close();
-            in.close();
+            return Observable.just(new GoogleCredential.Builder()
+                    .setTransport(httpTransport)
+                    .setJsonFactory(JSON_FACTORY)
+                    .setServiceAccountId(Constants.SERVICE_ACCT_EMAIL)
+                    .setServiceAccountPrivateKeyFromP12File(AssetManager.getFile(Constants.SERVICE_ACCT_KEYFILE))
+                    .setServiceAccountScopes(Arrays.asList(PredictionScopes.PREDICTION,
+                            StorageScopes.DEVSTORAGE_READ_ONLY))
+                    .build());
         } catch (Exception e) {
             e.printStackTrace();
+            return Observable.error(e);
         }
     }
 
-    private GoogleCredential authorize() throws Exception {
-        File keyFile = new File(context.getCacheDir().getPath() + "/temp");
-        copyInputStreamToFile(context.getAssets().open(Constants.SERVICE_ACCT_KEYFILE), keyFile);
-
-        return new GoogleCredential.Builder()
-                .setTransport(httpTransport)
-                .setJsonFactory(JSON_FACTORY)
-                .setServiceAccountId(Constants.SERVICE_ACCT_EMAIL)
-                .setServiceAccountPrivateKeyFromP12File(keyFile)
-                .setServiceAccountScopes(Arrays.asList(PredictionScopes.PREDICTION,
-                        StorageScopes.DEVSTORAGE_READ_ONLY))
-                .build();
-    }
+    private Observable<Prediction> createPrediction(GoogleCredential credential) {
+        return Observable.just(new Prediction.Builder(
+                httpTransport, JSON_FACTORY, credential).setApplicationName(Constants.APPLICATION_NAME).build());        }
 
     public void run() {
 
-        httpTransport = AndroidHttp.newCompatibleTransport();
-        // authorization
-        GoogleCredential credential = null;
+        Logger.d("Training started.");
         try {
-            credential = authorize();
-            Prediction prediction = new Prediction.Builder(
-                    httpTransport, JSON_FACTORY, credential).setApplicationName(Constants.APPLICATION_NAME).build();
-
-            insert(prediction)
-                    .flatMap(insert2 -> {
-                        try {
-                            return getTrain(prediction);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            return Observable.just("error");
-                        }
-                    })
-                    .subscribe(s -> {
-                        if (s.equals("DONE")) {
-                            Logger.d("Training completed.");
-                        } else {
-                            Logger.d("Error!!!!!");
-                        }
-                    });
+            authorize()
+                    .flatMap(this::createPrediction)
+                    .doOnNext(this::insert)
+                    .flatMap(this::getTrain)
+                    .subscribe(s -> Logger.d("Training completed, result = " + s),
+                            Logger::e);
 //            train(prediction);
 /*
             predict(prediction, "Is this sentence in English?").subscribe(output -> Logger.d("Predicted language: " + output.getOutputLabel()));
@@ -109,8 +75,6 @@ public class PredictionSample {
         }
     }
 
-
-    @RxLogObservable
     private Observable<Insert2> insert(Prediction prediction) {
         Insert trainingData = new Insert();
         trainingData.setId(Constants.MODEL_ID);
@@ -126,74 +90,40 @@ public class PredictionSample {
 
     }
 
-    private Observable<HttpResponse> getResponse(Prediction prediction) throws IOException {
+    private Observable<String> get(Prediction prediction) {
         Logger.d("get response");
-        return Observable.just(prediction.trainedmodels().get(Constants.PROJECT_ID, Constants.MODEL_ID).executeUnparsed());
-    }
-
-    @RxLogObservable
-    private Observable<String> getTrain(Prediction prediction) throws IOException {
-
-        Logger.d("Training started.");
-        Logger.d("Waiting for training to complete");
-
-        return getResponse(prediction)
-                .repeat(10)
-                .timeout(3, TimeUnit.SECONDS)
-                .map(httpResponse1 -> {
+        return Observable.just(true)
+                .map(aBoolean1 -> {
                     try {
-                        Logger.d(httpResponse1.getStatusMessage());
-                        return httpResponse1.parseAs(Insert2.class).getTrainingStatus();
+                        return prediction.trainedmodels().get(Constants.PROJECT_ID, Constants.MODEL_ID).executeUnparsed();
                     } catch (IOException e) {
                         e.printStackTrace();
-                        return "error";
+                        return null;
                     }
-                }).first(s -> {
-                    Logger.d(s);
-                    return s == "DONE";
+                })
+                .flatMap(httpResponse -> {
+                    try {
+                        String result = httpResponse.parseAs(Insert2.class).getTrainingStatus();
+                        if (result.equals("DONE")) return Observable.just(result);
+                        else return Observable.error(new UncomplitedException());
+                    } catch (IOException e) {
+                        return Observable.error(e);
+                    }
                 });
     }
 
-    private void train(Prediction prediction) throws IOException {
-
-
-/*
-        int triesCounter = 0;
-        Insert2 trainingModel;
-        while (triesCounter < 100) {
-            // NOTE: if model not found, it will throw an HttpResponseException with a 404 error
-            try {
-                HttpResponse response = prediction.trainedmodels().get(Constants.PROJECT_ID, Constants.MODEL_ID).executeUnparsed();
-                if (response.getStatusCode() == 200) {
-                    trainingModel = response.parseAs(Insert2.class);
-                    String trainingStatus = trainingModel.getTrainingStatus();
-                    if (trainingStatus.equals("DONE")) {
-                        Logger.d("Training completed.");
-                        Logger.d("" + trainingModel.getModelInfo());
-                        return;
-                    }
-                }
-                response.ignore();
-            } catch (HttpResponseException e) {
-            }
-
-            try {
-                // 5 seconds times the tries counter
-                Thread.sleep(5000 * (triesCounter + 1));
-            } catch (InterruptedException e) {
-                break;
-            }
-            System.out.print(".");
-            System.out.flush();
-            triesCounter++;
-        }
-        error("ERROR: training not completed.");
-*/
+    private Observable<String> getTrain(Prediction prediction) {
+        return get(prediction)
+                .retryWhen(observable -> observable
+                        .flatMap(errors -> {
+                            if (errors instanceof UncomplitedException)
+                                return Observable.just(null);
+                            else return Observable.error(errors);
+                        })
+                        .zipWith(Observable.range(0, 15), (o, integer) -> integer)
+                        .flatMap(retryCount -> Observable.timer(5, TimeUnit.SECONDS)));
     }
 
-    private void error(String errorMessage) {
-        Logger.d(errorMessage);
-    }
 
     private Observable<Output> predict(Prediction prediction, String text) throws IOException {
         Input input = new Input();
