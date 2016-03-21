@@ -1,12 +1,15 @@
 package com.task.webchallengetask.ui.activities.presenters;
 
+import com.task.webchallengetask.App;
+import com.task.webchallengetask.global.utils.PredictionSample;
 import com.task.webchallengetask.ui.activities.MainActivity;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
 import com.task.webchallengetask.ui.base.BaseView;
 
-/**
- * Created by andri on 20.03.2016.
- */
+import rx.Observable;
+import rx.schedulers.Schedulers;
+
+
 public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginView> {
 
     public void onFacebookClicked() {
@@ -16,6 +19,27 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
     public void onGoogleClicked() {
         getView().showInfoDialog("Example", "Login with facebook", null);
     }
+
+    public void onPredictionClicked() {
+        try {
+
+            Observable.just(null)
+                    .subscribeOn(Schedulers.newThread())
+                    .doOnNext(o -> {
+                        PredictionSample sample = new PredictionSample(App.getAppContext());
+                        try {
+                            sample.run();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }).subscribe();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public interface LoginView extends BaseView {
 

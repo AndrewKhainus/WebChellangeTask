@@ -14,7 +14,7 @@ public class RestClient {
 
     private RestClient() {
         RetrofitAdapter adapter = new RetrofitAdapter();
-        mApi = adapter.createApi(RetrofitInterface.class, Constants.BASE_URL);
+        mApi = adapter.createApi(RetrofitInterface.class, Constants.PREDICTION_END_POINT);
     }
 
     public static RestClient getInstance() {

@@ -8,13 +8,12 @@ import com.squareup.leakcanary.LeakCanary;
 
 
 public class App extends Application {
-
-    private static Context mContext;
+    private static App mApp;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = getApplicationContext();
+        mApp = this;
         FlowManager.init(this);
         LeakCanary.install(this);
     }
@@ -25,7 +24,7 @@ public class App extends Application {
     }
 
     public static Context getAppContext() {
-        return mContext;
+        return mApp;
     }
 
 }

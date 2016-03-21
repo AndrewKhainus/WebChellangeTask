@@ -22,6 +22,13 @@
             android:layout_height="wrap_content"
             android:text="Google" />
 
+        <Button
+            android:id="@+id/btnPrediction_AL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prediction" />
+
+
     </LinearLayout>
 
 </FrameLayout>

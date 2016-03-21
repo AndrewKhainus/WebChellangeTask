@@ -12,6 +12,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     private Button btnFacebook;
     private Button btnGoogle;
+    private Button btnPrediction;
 
     @Override
     protected int getLayoutResource() {
@@ -27,11 +28,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     protected void findUI() {
         btnFacebook = (Button) findViewById(R.id.btnFacebook_AL);
         btnGoogle = (Button) findViewById(R.id.btnGoogle_AL);
+        btnPrediction = (Button) findViewById(R.id.btnPrediction_AL);
     }
 
     @Override
     protected void setupUI(Bundle savedInstanceState) {
         RxUtils.click(btnFacebook, o -> getPresenter().onFacebookClicked());
         RxUtils.click(btnGoogle, o -> getPresenter().onGoogleClicked());
+        RxUtils.click(btnPrediction, o -> getPresenter().onPredictionClicked());
     }
 }
