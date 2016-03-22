@@ -106,6 +106,11 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
     }
 
     @Override
+    public void startActivity(Class _activityClass, int ... _flag) {
+        mActivity.startActivity(_activityClass, _flag);
+    }
+
+    @Override
     public void finishActivity() {
         mActivity.finishActivity();
     }

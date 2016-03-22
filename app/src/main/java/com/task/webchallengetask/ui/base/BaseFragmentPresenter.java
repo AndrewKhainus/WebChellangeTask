@@ -1,5 +1,7 @@
 package com.task.webchallengetask.ui.base;
 
+import android.support.annotation.CallSuper;
+
 import com.task.webchallengetask.global.utils.RxUtils;
 
 import rx.Subscription;
@@ -27,18 +29,34 @@ public abstract class BaseFragmentPresenter<V extends BaseView> implements BaseP
     }
 
     @Override
+    @CallSuper
     public void onViewCreated() {
     }
 
     @Override
+    @CallSuper
     public void onResume() {
     }
 
     @Override
+    @CallSuper
     public void onPause() {
     }
 
     @Override
+    @CallSuper
+    public void onStart() {
+
+    }
+
+    @Override
+    @CallSuper
+    public void onStop() {
+
+    }
+
+    @Override
+    @CallSuper
     public void onDestroyView() {
         RxUtils.unsubscribeIfNotNull(mSubscriptions);
     }

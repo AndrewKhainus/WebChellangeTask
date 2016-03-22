@@ -56,8 +56,10 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
 
     @Override
     protected void setupUI(Bundle savedInstanceState) {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if (getSupportActionBar() != null) {
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
@@ -129,13 +131,18 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
 
                 }
             });
-        new Handler().post(() -> mDrawerLayout.closeDrawers());
+        new Handler().post(mDrawerLayout::closeDrawers);
 
     }
 
     @Override
     public void setHeaderAvatar(Bitmap _bitmap) {
         ivNavAvatar.setImageBitmap(_bitmap);
+    }
+
+    @Override
+    public ImageView getImageView() {
+        return ivNavAvatar;
     }
 
     @Override
@@ -150,9 +157,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
 
     public interface DrawerCallBack {
         void onClosed();
-
     }
-
 
 
 }

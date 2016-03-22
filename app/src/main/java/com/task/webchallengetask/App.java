@@ -3,29 +3,32 @@ package com.task.webchallengetask;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.FacebookSdk;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.squareup.leakcanary.LeakCanary;
 
 
 public class App extends Application {
 
-    private static Context mContext;
+    private static App sApp;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = getApplicationContext();
+        sApp = this;
         FlowManager.init(this);
         LeakCanary.install(this);
+        FacebookSdk.sdkInitialize(App.getAppContext());
     }
 
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
+    public void onTerminate() {
+        super.onTerminate();
+        FlowManager.destroy();
     }
 
     public static Context getAppContext() {
-        return mContext;
+        return sApp;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.task.webchallengetask.ui.dialogs;
+package com.task.webchallengetask.ui.base;
 
 
 import android.os.Bundle;
@@ -20,7 +20,7 @@ public abstract class BaseDialog extends DialogFragment {
 
     private int mContentResource = getLayoutResource();
 
-    private CompositeSubscription mSubscriptions = new CompositeSubscription();;
+    private CompositeSubscription mSubscriptions = new CompositeSubscription();
 
     @Nullable
     @Override
@@ -61,14 +61,14 @@ public abstract class BaseDialog extends DialogFragment {
 
     public void setTitle(String _title) {
         new UnsupportedOperationException();
-    };
+    }
 
     public void setMessage(String _message) {
         new UnsupportedOperationException();
-    };
+    }
 
     public void setOnClickListener(View.OnClickListener _listener) {
         new UnsupportedOperationException();
-    };
+    }
 
 }

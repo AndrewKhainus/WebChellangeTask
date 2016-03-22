@@ -13,7 +13,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action1;
 
-public class RxUtils {
+public final class RxUtils {
 
 
     public static void unsubscribeIfNotNull(Subscription _subscription) {
@@ -29,7 +29,7 @@ public class RxUtils {
     }
 
 
-    public static Observable<Object> click(View _view) {
+    public static Observable<Void> click(View _view) {
         return RxView.clicks(_view)
                 .throttleFirst(800, TimeUnit.MILLISECONDS);
     }

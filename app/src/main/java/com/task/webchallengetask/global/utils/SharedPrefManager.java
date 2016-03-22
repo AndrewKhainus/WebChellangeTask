@@ -3,10 +3,12 @@ package com.task.webchallengetask.global.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.CheckResult;
 
 import com.task.webchallengetask.App;
+import com.task.webchallengetask.global.SharedPrefConst;
 
-public class SharedPrefManager {
+public final class SharedPrefManager {
 
     private static SharedPrefManager instance;
     private SharedPreferences sharedPreferences;
@@ -50,6 +52,33 @@ public class SharedPrefManager {
 
     private int retrieveInt(String _s) {
         return sharedPreferences.getInt(_s, -1);
+    }
+
+    public void storeUsername(String _username){
+        saveString(SharedPrefConst.SHARED_PREF_USERNAME, _username);
+    }
+
+    @CheckResult
+    public String retrieveUsername(){
+        return retrieveString(SharedPrefConst.SHARED_PREF_USERNAME);
+    }
+
+    public void storeUrlPhoto(String _url){
+        saveString(SharedPrefConst.SHARED_PREF_URL_PHOTO, _url);
+    }
+
+    @CheckResult
+    public String retrieveUrlPhoto(){
+        return retrieveString(SharedPrefConst.SHARED_PREF_URL_PHOTO);
+    }
+
+    public void storeActiveSocial(String _s){
+        saveString(SharedPrefConst.SHARED_PREF_ACTIVE_SOCIAL, _s);
+    }
+
+    @CheckResult
+    public String retrieveActiveSocial(){
+        return retrieveString(SharedPrefConst.SHARED_PREF_ACTIVE_SOCIAL).intern();
     }
 
 }

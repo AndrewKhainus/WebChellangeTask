@@ -7,7 +7,7 @@ import com.task.webchallengetask.ui.base.BasePresenter;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-public class PresenterManager {
+public final class PresenterManager {
     final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
 
 

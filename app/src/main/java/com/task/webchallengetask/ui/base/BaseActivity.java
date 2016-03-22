@@ -1,14 +1,13 @@
 package com.task.webchallengetask.ui.base;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.task.webchallengetask.ui.dialogs.BaseDialog;
 import com.task.webchallengetask.ui.dialogs.ConfirmDialog;
 import com.task.webchallengetask.ui.dialogs.ErrorDialog;
 import com.task.webchallengetask.ui.dialogs.InfoDialog;
@@ -21,6 +20,7 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     private LoadingDialog progressDialog;
     private BaseDialog mDialog;
 
+    @LayoutRes
     protected abstract int getLayoutResource();
 
     protected abstract P initPresenter();
@@ -60,7 +60,7 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     @Override
     protected void onResume() {
         super.onResume();
-        getPresenter().onResume();
+        mPresenter.onResume();
     }
 
     @Override
@@ -68,6 +68,18 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
         mPresenter.onDestroyView();
         mPresenter.unbindView();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mPresenter.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mPresenter.onStop();
+        super.onStop();
     }
 
     @Override
@@ -161,6 +173,15 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     public void startActivity(Class _activityClass, Bundle _bundle) {
         Intent intent = new Intent(this, _activityClass);
         if (_bundle != null) intent.putExtras(_bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void startActivity(Class _activityClass, int ... _flag) {
+        Intent intent = new Intent(this, _activityClass);
+        for (int a_flag : _flag) {
+            intent.setFlags(a_flag);
+        }
         startActivity(intent);
     }
 

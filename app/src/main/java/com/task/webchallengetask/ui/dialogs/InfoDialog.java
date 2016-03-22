@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.utils.RxUtils;
+import com.task.webchallengetask.ui.base.BaseDialog;
 
 public class InfoDialog extends BaseDialog {
     protected TextView tvTitle;

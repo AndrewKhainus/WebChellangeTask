@@ -6,6 +6,9 @@
     <string name="close">Close</string>
     <string name="open">Open</string>
 
+    <string name="facebook_app_id">237375859939244</string>
+
+
     <!-- Button Text-->
     <string name="text_btn_sign_in">SIGN IN</string>
     <string name="text_btn_send">SEND</string>
