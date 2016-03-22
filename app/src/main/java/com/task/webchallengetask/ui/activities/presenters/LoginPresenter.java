@@ -1,7 +1,5 @@
 package com.task.webchallengetask.ui.activities.presenters;
 
-import com.task.webchallengetask.App;
-import com.task.webchallengetask.global.utils.PredictionSample;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -28,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.BuildConfig;
 import com.task.webchallengetask.global.Constants;
+import com.task.webchallengetask.global.utils.PredictionSample;
 import com.task.webchallengetask.global.utils.SharedPrefManager;
 import com.task.webchallengetask.ui.activities.MainActivity;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
@@ -37,10 +36,6 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 
-public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginView> {
-/**
- * Created by andri on 20.03.2016.
- */
 public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginView> implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, FacebookCallback<LoginResult> {
 
@@ -79,7 +74,7 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
             Observable.just(null)
                     .subscribeOn(Schedulers.newThread())
                     .doOnNext(o -> {
-                        PredictionSample sample = new PredictionSample(App.getAppContext());
+                        PredictionSample sample = new PredictionSample();
                         try {
                             sample.run();
                         } catch (Exception e) {
@@ -264,3 +259,4 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
     }
 
 }
+
