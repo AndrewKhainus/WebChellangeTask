@@ -26,6 +26,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     private boolean isPaused = false;
     private List<String> activitiesList;
     private TimerReceiver mTimerReceiver;
+    private String currentActivity = "";
 
     @Override
     public void onViewCreated() {
@@ -34,14 +35,25 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                 .getStringArray(R.array.activities_list));
         getView().setSpinnerData(activitiesList);
         mTimerReceiver = new TimerReceiver();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         IntentFilter filter = new IntentFilter(Constants.SEND_TIMER_UPDATE_ACTION);
         App.getAppContext().registerReceiver(mTimerReceiver, filter);
+    }
 
+    @Override
+    public void onPause() {
+        if (mTimerReceiver != null) App.getAppContext().unregisterReceiver(mTimerReceiver);
+        super.onPause();
     }
 
     @Override
     public void onDestroyView() {
-        if (mTimerReceiver != null) App.getAppContext().unregisterReceiver(mTimerReceiver);
+        App.getAppContext().startService(IntentManager.
+                getActivityTrackerServiceIntent(Constants.STOP_TIMER_ACTION, ""));
         super.onDestroyView();
     }
 
@@ -52,10 +64,10 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
 
         if (!isPaused) {
             App.getAppContext().startService(IntentManager.
-                    getActivityTrackerServiceIntent(Constants.START_TIMER_ACTION));
+                    getActivityTrackerServiceIntent(Constants.START_TIMER_ACTION, currentActivity));
         } else {
             App.getAppContext().startService(IntentManager.
-                    getActivityTrackerServiceIntent(Constants.PAUSE_TIMER_ACTION));
+                    getActivityTrackerServiceIntent(Constants.PAUSE_TIMER_ACTION, currentActivity));
         }
         getView().setSpinnerEnabled(false);
         getView().toggleStartPause(!isPaused ? "PAUSE" : "RESUME");
@@ -67,13 +79,14 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
             isPaused = false;
 
             App.getAppContext().startService(IntentManager.
-                    getActivityTrackerServiceIntent(Constants.STOP_TIMER_ACTION));
+                    getActivityTrackerServiceIntent(Constants.STOP_TIMER_ACTION, ""));
             getView().setSpinnerEnabled(true);
             getView().toggleStartPause("START");
         }
     }
 
     public void onSpinnerItemSelected(int _position) {
+        currentActivity = activitiesList.get(_position);
         if (_position == 1) {
             getView().setStepsVisible(false);
         }

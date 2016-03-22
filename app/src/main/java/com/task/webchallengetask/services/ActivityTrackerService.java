@@ -36,12 +36,13 @@ public class ActivityTrackerService extends Service {
     private NotificationCompat.Builder mBuilder;
     private NotificationManager notificationManager;
     private Timer mTimer;
+    private String currentActivity;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (notificationManager == null)
             notificationManager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
+        currentActivity = intent.getStringExtra(Constants.ACTIVITY_NAME_KEY);
         switch (intent.getAction()) {
             case START_TIMER_ACTION:
                 if (mTimerTime == null) {
@@ -104,7 +105,7 @@ public class ActivityTrackerService extends Service {
                 notificationIntent, 0);
         if (mBuilder == null) {
             mBuilder = new NotificationCompat.Builder(this)
-                    .setContentTitle("Current job timer")
+                    .setContentTitle(currentActivity)
                     .setContentText(_message)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setLargeIcon(

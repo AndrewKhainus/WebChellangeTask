@@ -30,7 +30,9 @@
 
         </activity>
 
-        <activity android:name=".ui.activities.StartActivity"/>
+        <activity android:name=".ui.activities.StartActivity"
+            android:screenOrientation="sensorPortrait"
+            />
 
         <activity android:name=".googlefit.FitActivity">
 

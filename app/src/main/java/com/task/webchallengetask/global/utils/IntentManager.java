@@ -1,6 +1,5 @@
 package com.task.webchallengetask.global.utils;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -13,9 +12,10 @@ import java.util.Calendar;
 
 public class IntentManager {
 
-    public static Intent getActivityTrackerServiceIntent(String action) {
+    public static Intent getActivityTrackerServiceIntent(String action, String _activityName) {
         Intent intent = new Intent(App.getAppContext(), ActivityTrackerService.class);
         intent.setAction(action);
+        intent.putExtra(Constants.ACTIVITY_NAME_KEY, _activityName);
         return intent;
     }
 

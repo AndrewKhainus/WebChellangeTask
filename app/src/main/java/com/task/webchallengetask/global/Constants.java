@@ -29,20 +29,8 @@ public abstract class Constants {
     public static final String STOP_TIMER_ACTION = "STOP_TIMER_ACTION";
 
     public static final String SEND_TIMER_UPDATE_ACTION = "SEND_TIMER_UPDATE_ACTION";
-
-    public static final String SEND_TOTAL_TIME_KEY = "SEND_TOTAL_TIME_KEY";
-    public static final String SEND_WAIT_TIME_KEY = "SEND_WAIT_TIME_KEY";
     public static final String SEND_TIMER_UPDATE_KEY = "SEND_TIMER_UPDATE_KEY";
-    public static final String SEND_IS_RUNNING_STATE_KEY = "SEND_IS_RUNNING_STATE_KEY";
-    public static final String SEND_IS_FINISHED_STATE_KEY = "SEND_IS_FINISHED_STATE_KEY";
-
-    public static final String SET_TIMER_KEY = "SET_TIMER_KEY";
-    public static final String SET_TOTAL_TIME_KEY = "SET_TOTAL_TIME_KEY";
-    public static final String SET_WAIT_TIME_KEY = "SET_WAIT_TIME_KEY";
-
-    public static final String STOP_TIMER_SERVICE_ACTION = "STOP_TIMER_SERVICE_ACTION";
-
-    public static final String OFFLINE_SERVICE_FINISH_ACTION = "OFFLINE_SERVICE_FINISH_ACTION";
+    public static final String ACTIVITY_NAME_KEY = "ACTIVITY_NAME_KEY";
 
     public static int FOREGROUND_NOTIFICATION_SERVICE_ID = 101;
 
