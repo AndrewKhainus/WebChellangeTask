@@ -69,8 +69,8 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
     }
 
     public void onPredictionClicked() {
-        try {
 
+        try {
             Observable.just(null)
                     .subscribeOn(Schedulers.newThread())
                     .doOnNext(o -> {
@@ -82,7 +82,6 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
                         }
 
                     }).subscribe();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

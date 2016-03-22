@@ -2,32 +2,32 @@ package com.task.webchallengetask;
 
 import android.app.Application;
 import android.content.Context;
-
-import com.facebook.FacebookSdk;
-import com.raizlabs.android.dbflow.config.FlowManager;
+import android.support.multidex.MultiDex;
 
 
 public class App extends Application {
-
-    private static App sApp;
+    private static App mApp;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        sApp = this;
+        mApp = this;
+        MultiDex.install(this);
+/*
         FlowManager.init(this);
-//        LeakCanary.install(this);
-        FacebookSdk.sdkInitialize(this);
+        LeakCanary.install(this);
+*/
     }
 
     @Override
-    public void onTerminate() {
-        super.onTerminate();
-        FlowManager.destroy();
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
     }
 
     public static Context getAppContext() {
-        return sApp;
+        return mApp;
     }
+
+
 
 }
