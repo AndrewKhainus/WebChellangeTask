@@ -90,9 +90,9 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
     
     //memory leak
-    debugCompile "com.squareup.leakcanary:leakcanary-android:${leakcanary_version}" // or 1.4-beta1
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary_version}" // or 1.4-beta1
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary_version}" // or 1.4-beta1
+//    debugCompile "com.squareup.leakcanary:leakcanary-android:${leakcanary_version}" // or 1.4-beta1
+//    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary_version}" // or 1.4-beta1
+//    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary_version}" // or 1.4-beta1
     compile 'com.google.http-client:google-http-client-android:1.21.0'
     compile 'io.reactivex:rxjava-computation-expressions:0.21.0'
 }

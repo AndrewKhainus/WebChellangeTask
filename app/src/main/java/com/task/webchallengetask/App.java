@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.facebook.FacebookSdk;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.squareup.leakcanary.LeakCanary;
 
 
 public class App extends Application {
@@ -17,8 +16,8 @@ public class App extends Application {
         super.onCreate();
         sApp = this;
         FlowManager.init(this);
-        LeakCanary.install(this);
-        FacebookSdk.sdkInitialize(App.getAppContext());
+//        LeakCanary.install(this);
+        FacebookSdk.sdkInitialize(this);
     }
 
     @Override
