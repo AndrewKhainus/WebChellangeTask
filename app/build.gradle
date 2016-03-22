@@ -7,7 +7,7 @@ android {
         config {
             keyAlias 'key'
             keyPassword '123456'
-            storeFile file('/home/klim/Android/Projects/WebChellangeTask/keystore/key.jks')
+            storeFile file('keystore/key.jks')
             storePassword '123456'
         }
     }
@@ -72,17 +72,12 @@ dependencies {
     compile 'com.google.android.gms:play-services-plus:8.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.facebook.android:facebook-android-sdk:4.5.0'
-
-
     // internet connection
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
-
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.1'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
-
     compile 'com.google.http-client:google-http-client-android:1.21.0'
-
 }

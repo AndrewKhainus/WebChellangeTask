@@ -28,7 +28,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
         super.onViewCreated();
         getView().switchFragment(ActivityListFragment.newInstance(), false);
         getView().setHeaderTitle(SharedPrefManager.getInstance().retrieveUsername());
-        Picasso.with(App.getAppContext()).load(SharedPrefManager.getInstance().retrieveUrlPhoto()).into(getView().getImageView());
+//        Picasso.with(App.getAppContext()).load(SharedPrefManager.getInstance().retrieveUrlPhoto()).into(getView().getImageView());
         getView().setHeaderSubTitle("Cool men");
     }
 

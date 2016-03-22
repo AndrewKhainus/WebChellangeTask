@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -21,6 +22,7 @@ public interface BaseView {
 
     void startActivity(Class _activityClass, Bundle _bundle);
     void startActivity(Class _activityClass, int ... _flag);
+    void startService(Intent _intent, int ... flags);
     void finishActivity();
 
 }

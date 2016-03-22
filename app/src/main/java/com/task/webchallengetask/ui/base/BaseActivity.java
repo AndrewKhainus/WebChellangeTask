@@ -170,6 +170,11 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     }
 
     @Override
+    public void startService(Intent _intent, int... flags) {
+        startService(_intent);
+    }
+
+    @Override
     public void startActivity(Class _activityClass, Bundle _bundle) {
         Intent intent = new Intent(this, _activityClass);
         if (_bundle != null) intent.putExtras(_bundle);

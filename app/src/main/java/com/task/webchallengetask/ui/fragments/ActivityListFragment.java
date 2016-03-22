@@ -9,7 +9,8 @@ import com.task.webchallengetask.ui.base.BaseFragment;
 import com.task.webchallengetask.ui.fragments.presenters.ActivityListPresenter;
 
 
-public class ActivityListFragment extends BaseFragment<ActivityListPresenter> {
+public class ActivityListFragment extends BaseFragment<ActivityListPresenter>
+        implements ActivityListPresenter.ActivityListView {
 
     private FloatingActionButton fabCreateActivity;
 
@@ -45,6 +46,5 @@ public class ActivityListFragment extends BaseFragment<ActivityListPresenter> {
     @Override
     protected void setupUI() {
         fabCreateActivity.setOnClickListener(view -> getPresenter().onFABClicked());
-
     }
 }

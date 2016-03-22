@@ -1,6 +1,7 @@
 package com.task.webchallengetask.ui.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -101,6 +102,12 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
     }
 
     @Override
+    public void startService(Intent _intent, int... flags) {
+        mActivity.startService(_intent);
+    }
+
+
+    @Override
     public void startActivity(Class _activityClass, Bundle _bundle) {
         mActivity.startActivity(_activityClass, _bundle);
     }
@@ -133,4 +140,5 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
     protected P getPresenter() {
         return mPresenter;
     }
+
 }
