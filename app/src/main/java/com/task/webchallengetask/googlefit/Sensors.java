@@ -1,5 +1,7 @@
 package com.task.webchallengetask.googlefit;
 
+import android.widget.Toast;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -14,6 +16,7 @@ import com.google.android.gms.fitness.request.DataSourcesRequest;
 import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.google.android.gms.fitness.request.SensorRequest;
 import com.google.android.gms.fitness.result.DataSourcesResult;
+import com.task.webchallengetask.App;
 import com.task.webchallengetask.googlefit.common.Display;
 
 import java.util.ArrayList;
@@ -31,11 +34,13 @@ public class Sensors {
     public ArrayList<String> getDatasources() {
         return datasources;
     }
+
     private ArrayList<String> datasources = new ArrayList<>();
 
     public interface DatasourcesListener {
         public void onDatasourcesListed();
     }
+
     private DatasourcesListener datasourcesListener;
 
     public Sensors(GoogleApiClient client, DatasourcesListener datasourcesListener, Display display) {
@@ -47,10 +52,9 @@ public class Sensors {
     public void listDatasourcesAndSubscribe() {
         Fitness.SensorsApi.findDataSources(client, new DataSourcesRequest.Builder()
                 .setDataTypes(
-                        DataType.TYPE_LOCATION_SAMPLE,
+                        DataType.TYPE_LOCATION_TRACK,
                         DataType.TYPE_STEP_COUNT_DELTA,
-                        DataType.TYPE_DISTANCE_DELTA,
-                        DataType.TYPE_HEART_RATE_BPM )
+                        DataType.TYPE_DISTANCE_DELTA)
                 .setDataSourceTypes(DataSource.TYPE_RAW, DataSource.TYPE_DERIVED)
                 .build())
                 .setResultCallback(new ResultCallback<DataSourcesResult>() {
@@ -65,15 +69,17 @@ public class Sensors {
                             datasources.add(device.getManufacturer() + " " + device.getModel() + " [" + dataSource.getDataType().getName() + " " + fields + "]");
 
                             final DataType dataType = dataSource.getDataType();
-                            if (    dataType.equals(DataType.TYPE_LOCATION_SAMPLE) ||
+                            if (dataType.equals(DataType.TYPE_LOCATION_TRACK) ||
                                     dataType.equals(DataType.TYPE_STEP_COUNT_DELTA) ||
-                                    dataType.equals(DataType.TYPE_DISTANCE_DELTA) ||
-                                    dataType.equals(DataType.TYPE_HEART_RATE_BPM)) {
+                                    dataType.equals(DataType.TYPE_DISTANCE_DELTA)) {
 
                                 final OnDataPointListener listener = new OnDataPointListener() {
                                     @Override
                                     public void onDataPoint(DataPoint dataPoint) {
                                         String msg = "onDataPoint: ";
+                                        if (dataPoint.getDataType() == DataType.TYPE_LOCATION_TRACK) {
+                                            display.show("Location " + dataPoint.getDataType().getFields().get(0));
+                                        }
                                         for (Field field : dataPoint.getDataType().getFields()) {
                                             Value value = dataPoint.getValue(field);
                                             msg += field + "=" + value + ", ";
@@ -110,7 +116,7 @@ public class Sensors {
 
     public void subscribeToHeartRate() {
         Fitness.SensorsApi.findDataSources(client, new DataSourcesRequest.Builder()
-                .setDataTypes( DataType.TYPE_HEART_RATE_BPM )
+                .setDataTypes(DataType.TYPE_HEART_RATE_BPM)
                 .setDataSourceTypes(DataSource.TYPE_RAW, DataSource.TYPE_DERIVED)
                 .build())
                 .setResultCallback(new ResultCallback<DataSourcesResult>() {

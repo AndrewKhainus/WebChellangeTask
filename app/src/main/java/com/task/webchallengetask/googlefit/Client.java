@@ -39,9 +39,9 @@ public class Client {
                 .addApi(Fitness.SENSORS_API)
                 .addApi(Fitness.RECORDING_API)
                 .addApi(Fitness.HISTORY_API)
-                .addScope(Fitness.SCOPE_LOCATION_READ)
-                .addScope(Fitness.SCOPE_ACTIVITY_READ)
+                .addScope(Fitness.SCOPE_ACTIVITY_READ_WRITE)
                 .addScope(Fitness.SCOPE_BODY_READ_WRITE)
+                .addScope(Fitness.SCOPE_LOCATION_READ_WRITE)
                 .addConnectionCallbacks(
                         new GoogleApiClient.ConnectionCallbacks() {
 
