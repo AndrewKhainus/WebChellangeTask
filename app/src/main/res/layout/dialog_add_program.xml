@@ -64,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:hint="0"
+                android:enabled="false"
                 android:inputType="number" />
 
             <TextView
