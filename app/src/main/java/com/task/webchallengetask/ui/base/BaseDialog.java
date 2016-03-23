@@ -1,6 +1,7 @@
 package com.task.webchallengetask.ui.base;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -8,19 +9,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.utils.RxUtils;
+import com.task.webchallengetask.ui.dialogs.presenters.BaseDialogPresenter;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public abstract class BaseDialog extends DialogFragment {
+public abstract class BaseDialog<P extends BaseDialogPresenter> extends DialogFragment
+        implements BaseDialogView<P> {
 
+    private P mPresenter;
     private int mContentResource = getLayoutResource();
 
-    private CompositeSubscription mSubscriptions = new CompositeSubscription();
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mPresenter = initPresenter();
+    }
 
     @Nullable
     @Override
@@ -28,6 +37,8 @@ public abstract class BaseDialog extends DialogFragment {
         super.onCreateView(_inflater, _container, _savedInstanceState);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         View rootView = _inflater.inflate(R.layout.dialog_base_layout, _container, false);
+
+        getPresenter().bindView(this);
         if (mContentResource != 0) {
             FrameLayout frameLayout = (FrameLayout) rootView.findViewById(R.id.content_container_BDL);
             frameLayout.removeAllViews();
@@ -38,26 +49,55 @@ public abstract class BaseDialog extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(View _view, Bundle _savedInstanceState) {
-        super.onViewCreated(_view, _savedInstanceState);
-        setupUI();
+    public void dismissDialog() {
+        dismiss();
     }
 
     @Override
+    public void onViewCreated(View _view, Bundle _savedInstanceState) {
+        super.onViewCreated(_view, _savedInstanceState);
+        setupUI();
+        getPresenter().onViewCreated();
+    }
+
+
+    @Override
     public void onDestroy() {
-        RxUtils.unsubscribeIfNotNull(mSubscriptions);
+        getPresenter().onDestroyView();
+        getPresenter().unbindView();
         super.onDestroy();
     }
 
-    protected void addSubscription(Subscription _subscription) {
-        mSubscriptions.remove(_subscription);
-        mSubscriptions.add(_subscription);
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPresenter().onPause();
     }
 
-    protected abstract int getLayoutResource();
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPresenter().onResume();
+    }
 
-    protected abstract void setupUI();
-    protected abstract void findUI(View rootView);
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPresenter().onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getPresenter().onStop();
+    }
+
+    @Override
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
 
     public void setTitle(String _title) {
         new UnsupportedOperationException();
@@ -71,4 +111,8 @@ public abstract class BaseDialog extends DialogFragment {
         new UnsupportedOperationException();
     }
 
+    @Override
+    public P getPresenter() {
+        return mPresenter;
+    }
 }

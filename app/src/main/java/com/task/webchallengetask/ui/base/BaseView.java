@@ -1,28 +1,17 @@
 package com.task.webchallengetask.ui.base;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 
-public interface BaseView {
+public interface BaseView<P extends BasePresenter> {
 
-    void showInfoDialog(String _title, String _message, View.OnClickListener _listener);
-    void showErrorDialog(String _title, String _message, View.OnClickListener _listener);
-    void showConfirmDialog(String _title, String _message, View.OnClickListener _listener);
+    int getLayoutResource();
 
-    void showLoadingDialog();
-    void hideLoadingDialog();
+    P initPresenter();
 
-    void switchFragment(final BaseFragment _fragment, boolean _addToBackStack);
+    P getPresenter();
 
-    void onBackPressed();
-    boolean isBackStackEmpty();
-    void popBackStack();
+    void findUI(View rootView);
 
-
-    void startActivity(Class _activityClass, Bundle _bundle);
-    void startActivity(Class _activityClass, int ... _flag);
-    void startService(Intent _intent, int ... flags);
-    void finishActivity();
+    void setupUI();
 
 }

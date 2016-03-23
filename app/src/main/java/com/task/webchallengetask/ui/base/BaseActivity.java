@@ -14,20 +14,11 @@ import com.task.webchallengetask.ui.dialogs.InfoDialog;
 import com.task.webchallengetask.ui.dialogs.LoadingDialog;
 
 public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppCompatActivity
-        implements BaseView {
+        implements BaseActivityView<P> {
 
     private P mPresenter;
     private LoadingDialog progressDialog;
     private BaseDialog mDialog;
-
-    @LayoutRes
-    protected abstract int getLayoutResource();
-
-    protected abstract P initPresenter();
-
-    protected abstract void findUI();
-
-    protected abstract void setupUI(Bundle savedInstanceState);
 
     protected int getFragmentContainer() {
         return 0;
@@ -40,8 +31,8 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
         if (getLayoutResource() != 0) setContentView(getLayoutResource());
         mPresenter.bindView(this);
 
-        findUI();
-        setupUI(savedInstanceState);
+        findUI(getWindow().getDecorView().getRootView());
+        setupUI();
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -55,6 +46,11 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
         });
 
         mPresenter.onViewCreated();
+    }
+
+    @Override
+    public P getPresenter() {
+        return mPresenter;
     }
 
     @Override
@@ -99,10 +95,6 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    protected P getPresenter() {
-        return mPresenter;
     }
 
     @Override
@@ -167,11 +159,6 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     protected void setToolBarTitle(int _titleRes) {
         if (getSupportActionBar() != null && _titleRes != 0)
             getSupportActionBar().setTitle(_titleRes);
-    }
-
-    @Override
-    public void startService(Intent _intent, int... flags) {
-        startService(_intent);
     }
 
     @Override

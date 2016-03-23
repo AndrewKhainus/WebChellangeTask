@@ -58,6 +58,29 @@ public final class SharedPrefManager {
         saveString(SharedPrefConst.SHARED_PREF_USERNAME, _username);
     }
 
+    public void storeWeight(int _weight) {
+        saveInt(SharedPrefConst.SHARED_PREF_WEIGHT, _weight);
+    }
+
+    public void storeHeight(int _height) {
+        saveInt(SharedPrefConst.SHARED_PREF_HEIGHT, _height);
+    }
+    public void storeGender(String _gender) {
+        saveString(SharedPrefConst.SHARED_PREF_GENDER, _gender);
+    }
+
+    public int retrieveWeight() {
+        return retrieveInt(SharedPrefConst.SHARED_PREF_WEIGHT);
+    }
+
+    public int retrieveHeight() {
+        return retrieveInt(SharedPrefConst.SHARED_PREF_HEIGHT);
+    }
+
+    public String retrieveGender() {
+        return retrieveString(SharedPrefConst.SHARED_PREF_GENDER);
+    }
+
     @CheckResult
     public String retrieveUsername(){
         return retrieveString(SharedPrefConst.SHARED_PREF_USERNAME);

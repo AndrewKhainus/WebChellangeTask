@@ -1,6 +1,6 @@
 package com.task.webchallengetask.ui.activities;
 
-import android.os.Bundle;
+import android.view.View;
 
 import com.task.webchallengetask.ui.activities.presenters.CheckPresenter;
 import com.task.webchallengetask.ui.base.BaseActivity;
@@ -11,22 +11,22 @@ import com.task.webchallengetask.ui.base.BaseActivity;
 public class CheckActivity extends BaseActivity<CheckPresenter> implements CheckPresenter.CheckView {
 
     @Override
-    protected int getLayoutResource() {
+    public int getLayoutResource() {
         return 0;
     }
 
     @Override
-    protected CheckPresenter initPresenter() {
+    public CheckPresenter initPresenter() {
         return new CheckPresenter();
     }
 
     @Override
-    protected void findUI() {
+    public void findUI(View _rootView) {
 
     }
 
     @Override
-    protected void setupUI(Bundle savedInstanceState) {
+    public void setupUI() {
 
     }
 }

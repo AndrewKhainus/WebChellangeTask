@@ -7,7 +7,7 @@ import com.task.webchallengetask.global.utils.RxUtils;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public abstract class BaseActivityPresenter<V extends BaseView>
+public abstract class BaseActivityPresenter<V extends BaseActivityView>
         implements BasePresenter<V> {
 
     private V mView;

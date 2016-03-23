@@ -8,7 +8,7 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 
-public abstract class BaseFragmentPresenter<V extends BaseView> implements BasePresenter<V> {
+public abstract class BaseFragmentPresenter<V extends BaseFragmentView> implements BasePresenter<V> {
 
     protected V mView;
     private CompositeSubscription mSubscriptions = new CompositeSubscription();

@@ -38,17 +38,17 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
 
 
     @Override
-    protected int getLayoutResource() {
+    public int getLayoutResource() {
         return R.layout.activity_start_activity;
     }
 
     @Override
-    protected StartActivityPresenter initPresenter() {
+    public StartActivityPresenter initPresenter() {
         return new StartActivityPresenter();
     }
 
     @Override
-    protected void findUI() {
+    public void findUI(View _rootView) {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         tvTimer = (TextView) findViewById(R.id.tvTimer_ASA);
         spChooseActivity = (Spinner) findViewById(R.id.spChooseActivity_ASA);
@@ -65,7 +65,7 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
     }
 
     @Override
-    protected void setupUI(Bundle savedInstanceState) {
+    public void setupUI() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(R.string.start_activity);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);

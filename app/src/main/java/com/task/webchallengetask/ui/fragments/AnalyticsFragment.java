@@ -8,7 +8,8 @@ import com.task.webchallengetask.R;
 import com.task.webchallengetask.ui.base.BaseFragment;
 import com.task.webchallengetask.ui.fragments.presenters.AnalyticsPresenter;
 
-public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>{
+public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
+        implements AnalyticsPresenter.AnalyticsView {
 
     public static AnalyticsFragment newInstance() {
 
@@ -25,22 +26,22 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>{
     }
 
     @Override
-    protected int getLayoutResource() {
+    public final int getLayoutResource() {
         return R.layout.fragment_analytics;
     }
 
     @Override
-    protected AnalyticsPresenter initPresenter() {
+    public final  AnalyticsPresenter initPresenter() {
         return new AnalyticsPresenter();
     }
 
     @Override
-    protected void findUI(View rootView) {
+    public final  void findUI(View rootView) {
 
     }
 
     @Override
-    protected void setupUI() {
+    public final  void setupUI() {
 
     }
 }

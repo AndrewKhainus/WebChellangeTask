@@ -7,8 +7,10 @@ import android.widget.TextView;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.ui.base.BaseDialog;
+import com.task.webchallengetask.ui.dialogs.presenters.ConfirmDialogPresenter;
 
-public class ConfirmDialog extends BaseDialog {
+public class ConfirmDialog extends BaseDialog<ConfirmDialogPresenter>
+        implements ConfirmDialogPresenter.ConfirmDialogView{
     protected TextView tvTitle;
     protected TextView tvMessage;
     protected TextView btnNegative;
@@ -21,30 +23,35 @@ public class ConfirmDialog extends BaseDialog {
     private View.OnClickListener mPositiveListener;
 
     @Override
-    protected int getLayoutResource() {
+    public int getLayoutResource() {
         return R.layout.dialog_confirm_layout;
     }
 
     @Override
-    protected void findUI(View rootView) {
+    public ConfirmDialogPresenter initPresenter() {
+        return new ConfirmDialogPresenter();
+    }
+
+    @Override
+    public void findUI(View rootView) {
         tvTitle = (TextView) rootView.findViewById(R.id.tvTitle_DCL);
         tvMessage = (TextView) rootView.findViewById(R.id.tvMessage_DCL);
-        btnNegative = (TextView) rootView.findViewById(R.id.btnNegative_DCL);
+        btnNegative = (TextView) rootView.findViewById(R.id.btnPositive_DCL);
         btnPositive = (TextView) rootView.findViewById(R.id.btnPositive_DCL);
     }
 
     @Override
-    protected void setupUI() {
+    public void setupUI() {
         setCancelable(false);
 
         RxUtils.click(btnNegative).subscribe(o -> dismiss());
         RxUtils.click(btnPositive).subscribe(o -> {
-            dismiss();
+            getPresenter().onPositiviClicked();
             if (mPositiveListener != null) mPositiveListener.onClick(null);
         });
 
         RxUtils.click(btnNegative).subscribe(o -> {
-            dismiss();
+            getPresenter().onNegativeClicked();
         });
 
         if (!TextUtils.isEmpty(mMessage)) tvMessage.setText(mMessage);

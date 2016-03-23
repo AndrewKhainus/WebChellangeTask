@@ -5,7 +5,7 @@ import com.task.webchallengetask.R;
 public class WarningDialog extends ConfirmDialog {
 
     @Override
-    protected int getLayoutResource() {
+    public int getLayoutResource() {
         return R.layout.dialog_warning_layout;
     }
 }

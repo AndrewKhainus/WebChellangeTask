@@ -9,7 +9,7 @@ import rx.Observable;
  */
 public interface Cache {
     /**
-     * Gets an {@link rx.Observable} which will emit a {@link Bitmap}.
+     * Gets an {@link Observable} which will emit a {@link Bitmap}.
      *
      * @param userId The user id to retrieve data.
      */

@@ -29,22 +29,22 @@ public class ActivityListFragment extends BaseFragment<ActivityListPresenter>
     }
 
     @Override
-    protected int getLayoutResource() {
+    public int getLayoutResource() {
         return R.layout.fragment_activity_list;
     }
 
     @Override
-    protected ActivityListPresenter initPresenter() {
+    public ActivityListPresenter initPresenter() {
         return new ActivityListPresenter();
     }
 
     @Override
-    protected void findUI(View rootView) {
+    public void findUI(View rootView) {
         fabCreateActivity = (FloatingActionButton) rootView.findViewById(R.id.fab);
     }
 
     @Override
-    protected void setupUI() {
+    public void setupUI() {
         fabCreateActivity.setOnClickListener(view -> getPresenter().onFABClicked());
     }
 }

@@ -14,8 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.task.webchallengetask.R;
+import com.task.webchallengetask.global.utils.SharedPrefManager;
 import com.task.webchallengetask.ui.activities.presenters.MainActivityPresenter;
 import com.task.webchallengetask.ui.base.BaseActivity;
+import com.task.webchallengetask.ui.dialogs.ProfileDialog;
 
 public class MainActivity extends BaseActivity<MainActivityPresenter>
         implements MainActivityPresenter.MainView, NavigationView.OnNavigationItemSelectedListener {
@@ -29,12 +31,12 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
     private TextView tvNavSubTitle;
 
     @Override
-    protected int getLayoutResource() {
+    public int getLayoutResource() {
         return R.layout.activity_main;
     }
 
     @Override
-    protected MainActivityPresenter initPresenter() {
+    public MainActivityPresenter initPresenter() {
         return new MainActivityPresenter();
     }
 
@@ -44,7 +46,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
     }
 
     @Override
-    protected void findUI() {
+    public void findUI(View _rootView) {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -55,7 +57,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
     }
 
     @Override
-    protected void setupUI(Bundle savedInstanceState) {
+    public void setupUI() {
         if (getSupportActionBar() != null) {
             setSupportActionBar(mToolbar);
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -73,6 +75,15 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
             mDrawerToggle.syncState();
         });
 
+        if (SharedPrefManager.getInstance().retrieveGender().equals("")) {
+            showProfileDialog();
+        }
+
+    }
+
+    private void showProfileDialog() {
+        ProfileDialog dialog = new ProfileDialog();
+        dialog.show(getSupportFragmentManager(), "");
     }
 
     @Override
@@ -89,6 +100,9 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
                 break;
             case R.id.nav_analytics:
                 getPresenter().onAnalyticsClicked();
+                break;
+            case R.id.nav_programs:
+                getPresenter().onProgramsClicked();
                 break;
             case R.id.nav_settings:
                 getPresenter().onSettingsClicked();

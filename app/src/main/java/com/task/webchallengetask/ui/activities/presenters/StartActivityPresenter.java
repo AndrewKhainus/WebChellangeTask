@@ -11,6 +11,7 @@ import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.IntentManager;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
+import com.task.webchallengetask.ui.base.BaseActivityView;
 import com.task.webchallengetask.ui.base.BaseView;
 
 import java.util.Arrays;
@@ -114,7 +115,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     }
 
 
-    public interface StartActivityView extends BaseView {
+    public interface StartActivityView extends BaseActivityView<StartActivityPresenter> {
         void setSpinnerData(List<String> _data);
         void setSpinnerEnabled(boolean _isEnabled);
         void setTimer(String _text);

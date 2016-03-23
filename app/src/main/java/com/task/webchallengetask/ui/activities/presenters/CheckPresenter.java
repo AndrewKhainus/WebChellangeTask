@@ -7,6 +7,7 @@ import com.task.webchallengetask.global.utils.SharedPrefManager;
 import com.task.webchallengetask.ui.activities.LoginActivity;
 import com.task.webchallengetask.ui.activities.MainActivity;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
+import com.task.webchallengetask.ui.base.BaseActivityView;
 import com.task.webchallengetask.ui.base.BaseView;
 
 /**
@@ -26,5 +27,5 @@ public class CheckPresenter extends BaseActivityPresenter<CheckPresenter.CheckVi
         getView().finishActivity();
     }
 
-    public interface CheckView extends BaseView {}
+    public interface CheckView extends BaseActivityView<CheckPresenter> {}
 }

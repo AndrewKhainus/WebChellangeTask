@@ -10,20 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Fragment implements BaseView {
+public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Fragment
+        implements BaseFragmentView<P> {
 
     private BaseActivity mActivity;
     private P mPresenter;
 
     protected abstract int setTitle();
 
-    protected abstract int getLayoutResource();
-
-    protected abstract P initPresenter();
-
-    protected abstract void findUI(View rootView);
-
-    protected abstract void setupUI();
+    @Override
+    public P getPresenter() {
+        return mPresenter;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -102,12 +100,6 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
     }
 
     @Override
-    public void startService(Intent _intent, int... flags) {
-        mActivity.startService(_intent);
-    }
-
-
-    @Override
     public void startActivity(Class _activityClass, Bundle _bundle) {
         mActivity.startActivity(_activityClass, _bundle);
     }
@@ -135,10 +127,6 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
     @Override
     public void popBackStack() {
         mActivity.getSupportFragmentManager().popBackStack();
-    }
-
-    protected P getPresenter() {
-        return mPresenter;
     }
 
 }

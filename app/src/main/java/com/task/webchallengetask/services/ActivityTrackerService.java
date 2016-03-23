@@ -112,7 +112,7 @@ public class ActivityTrackerService extends Service {
                             Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), 128, 128, false))
                     .setContentIntent(pendingIntent)
                     .setOngoing(true);
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mBuilder.setColor(ContextCompat.getColor(this, R.color.red_color));
             }
         }

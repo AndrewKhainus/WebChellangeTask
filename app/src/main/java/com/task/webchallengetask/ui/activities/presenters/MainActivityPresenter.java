@@ -14,9 +14,11 @@ import com.task.webchallengetask.global.utils.SharedPrefManager;
 import com.task.webchallengetask.ui.activities.LoginActivity;
 import com.task.webchallengetask.ui.activities.MainActivity;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
+import com.task.webchallengetask.ui.base.BaseActivityView;
 import com.task.webchallengetask.ui.base.BaseView;
 import com.task.webchallengetask.ui.fragments.ActivityListFragment;
 import com.task.webchallengetask.ui.fragments.AnalyticsFragment;
+import com.task.webchallengetask.ui.fragments.ProgramsListFragment;
 import com.task.webchallengetask.ui.fragments.SettingsFragment;
 
 import java.io.IOException;
@@ -50,6 +52,11 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
                 getView().switchFragment(AnalyticsFragment.newInstance(), false));
     }
 
+    public void onProgramsClicked() {
+        getView().closeDrawer(() ->
+                getView().switchFragment(ProgramsListFragment.newInstance(), false));
+    }
+
     public void onSettingsClicked() {
         getView().closeDrawer(() ->
                 getView().switchFragment(SettingsFragment.newInstance(), false));
@@ -66,7 +73,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
                 });
     }
 
-    public interface MainView extends BaseView {
+    public interface MainView extends BaseActivityView<MainActivityPresenter> {
         boolean isDrawerOpen();
 
         void closeDrawer(MainActivity.DrawerCallBack _callback);

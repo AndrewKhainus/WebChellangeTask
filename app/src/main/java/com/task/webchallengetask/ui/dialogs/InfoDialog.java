@@ -7,8 +7,11 @@ import android.widget.TextView;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.ui.base.BaseDialog;
+import com.task.webchallengetask.ui.dialogs.presenters.InfoDialogPresenter;
 
-public class InfoDialog extends BaseDialog {
+public class InfoDialog extends BaseDialog<InfoDialogPresenter>
+        implements InfoDialogPresenter.InfoDialogView {
+
     protected TextView tvTitle;
     protected TextView tvMessage;
     protected TextView btnClose;
@@ -19,19 +22,24 @@ public class InfoDialog extends BaseDialog {
     private View.OnClickListener mListener;
 
     @Override
-    protected int getLayoutResource() {
+    public int getLayoutResource() {
         return R.layout.dialog_info_layout;
     }
 
     @Override
-    protected void findUI(View rootView) {
+    public InfoDialogPresenter initPresenter() {
+        return new InfoDialogPresenter();
+    }
+
+    @Override
+    public void findUI(View rootView) {
         tvTitle = (TextView) rootView.findViewById(R.id.tvTitle_DIL);
         tvMessage = (TextView) rootView.findViewById(R.id.tvMessage_DIL);
         btnClose = (TextView) rootView.findViewById(R.id.btnNegative_DIL);
     }
 
     @Override
-    protected void setupUI() {
+    public void setupUI() {
         RxUtils.click(btnClose).subscribe(o -> onClick());
 
         if (!TextUtils.isEmpty(mMessage)) tvMessage.setText(mMessage);

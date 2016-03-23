@@ -25,24 +25,24 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     private Button btnPrediction;
 
     @Override
-    protected int getLayoutResource() {
+    public int getLayoutResource() {
         return R.layout.activity_login;
     }
 
     @Override
-    protected LoginPresenter initPresenter() {
+    public LoginPresenter initPresenter() {
         return new LoginPresenter();
     }
 
     @Override
-    protected void findUI() {
+    public void findUI(View _rootView) {
         btnSignIn = (SignInButton) findViewById(R.id.btnSignIn_AL);
         loginButton = (LoginButton) findViewById(R.id.btnFacebookLogin_AL);
         btnPrediction = (Button) findViewById(R.id.btnPrediction_AL);
     }
 
     @Override
-    protected void setupUI(Bundle savedInstanceState) {
+    public void setupUI() {
         btnSignIn.setStyle(SignInButton.SIZE_STANDARD, SignInButton.COLOR_DARK);
         setGooglePlusButtonText(btnSignIn, "Sign up with google +");
         RxUtils.click(btnSignIn, o -> getPresenter().onGoogleSignInClicked());
