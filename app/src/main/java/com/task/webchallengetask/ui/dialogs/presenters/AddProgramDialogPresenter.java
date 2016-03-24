@@ -3,13 +3,13 @@ package com.task.webchallengetask.ui.dialogs.presenters;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
-import com.task.webchallengetask.global.programs.difficults.Difficult;
-import com.task.webchallengetask.global.programs.difficults.DifficultCustom;
 import com.task.webchallengetask.global.programs.Program;
 import com.task.webchallengetask.global.programs.ProgramFactory;
+import com.task.webchallengetask.global.programs.difficults.Difficult;
+import com.task.webchallengetask.global.programs.difficults.DifficultCustom;
+import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseDialogView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,14 +22,8 @@ public class AddProgramDialogPresenter extends BaseDialogPresenter<AddProgramDia
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-
-        programs = new ArrayList<>();
-        programs.add(ProgramFactory.createActiveLifeDistance());
-        programs.add(ProgramFactory.createLongDistance());
-
+        programs = ProgramFactory.getPrograms();
         getView().setPrograms(programs);
-
-
     }
 
     public void onProgrammChoosed(int _position) {
@@ -62,15 +56,16 @@ public class AddProgramDialogPresenter extends BaseDialogPresenter<AddProgramDia
     public void onSaveClicked() {
         getView().hideKeyboard();
         if (validate()) {
-
-            ProgramTable programTable = new ProgramTable();
-
             Program program = programs.get(getView().getProgram());
             Difficult difficult = program.getDifficult().get(getView().getDifficult());
-            difficult.setTarget(getView().getTarget());
-            program.setCurrentDifficult(difficult);
-            programTable.program = program;
+
+            ProgramTable programTable = new ProgramTable();
+            programTable.name = program.getName();
+            programTable.difficult = difficult.getName();
+            programTable.target = getView().getTarget();
             programTable.actualResult = "0";
+            programTable.unit = getView().getUnit();
+            programTable.date = TimeUtil.getCurrentDay();
             programTable.save();
             getView().dismissDialog();
 

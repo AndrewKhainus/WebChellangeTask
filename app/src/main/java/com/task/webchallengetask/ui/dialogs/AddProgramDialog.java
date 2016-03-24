@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.dialogs;
 
+import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -12,8 +13,8 @@ import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.programs.Program;
 import com.task.webchallengetask.global.utils.RxUtils;
-import com.task.webchallengetask.ui.DifficultAdapter;
-import com.task.webchallengetask.ui.ProgramAdapter;
+import com.task.webchallengetask.ui.adapters.DifficultAdapter;
+import com.task.webchallengetask.ui.adapters.ProgramAdapter;
 import com.task.webchallengetask.ui.base.BaseDialog;
 import com.task.webchallengetask.ui.dialogs.presenters.AddProgramDialogPresenter;
 
@@ -32,6 +33,7 @@ public class AddProgramDialog extends BaseDialog<AddProgramDialogPresenter>
     private EditText etTarget;
     private TextView btnSave;
 
+    private DialogListener mListener;
 
     @Override
     public int getLayoutResource() {
@@ -109,6 +111,12 @@ public class AddProgramDialog extends BaseDialog<AddProgramDialogPresenter>
     }
 
     @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (mListener != null) mListener.onDismiss();
+    }
+
+    @Override
     public int getProgram() {
         return spProgram.getSelectedItemPosition();
     }
@@ -165,4 +173,9 @@ public class AddProgramDialog extends BaseDialog<AddProgramDialogPresenter>
     public void setTargetEditable(boolean isEditable) {
         etTarget.setEnabled(isEditable);
     }
+
+    public void setOnDismissListener(DialogListener _listener) {
+        mListener = _listener;
+    }
+
 }

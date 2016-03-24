@@ -12,7 +12,6 @@ public class Program {
     protected String name;
     protected String description;
     protected List<Difficult> difficult;
-    protected Difficult currentDifficult;
 
     public Program(String name, String description, List<Difficult> difficult) {
         this.name = name;
@@ -40,7 +39,4 @@ public class Program {
         this.description = description;
     }
 
-    public void setCurrentDifficult(Difficult difficult) {
-        this.currentDifficult = difficult;
-    }
 }

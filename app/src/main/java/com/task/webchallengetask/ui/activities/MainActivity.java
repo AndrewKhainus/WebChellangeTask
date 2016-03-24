@@ -58,10 +58,8 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
 
     @Override
     public void setupUI() {
-        if (getSupportActionBar() != null) {
-            setSupportActionBar(mToolbar);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
         mDrawerToggle.setDrawerIndicatorEnabled(true);

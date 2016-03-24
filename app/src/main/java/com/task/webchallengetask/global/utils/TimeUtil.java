@@ -38,10 +38,9 @@ public class TimeUtil {
         return calendar.getTime().getTime() / 1000L;
     }
 
-    public static int getCurrentDay() {
+    public static long getCurrentDay() {
         Calendar c = Calendar.getInstance();
-
-        return c.get(Calendar.DAY_OF_MONTH);
+        return c.getTimeInMillis();
     }
 
     public static int getNextDay() {

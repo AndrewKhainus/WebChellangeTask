@@ -1,20 +1,20 @@
-package com.task.webchallengetask.ui;
+package com.task.webchallengetask.ui.adapters;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
-import com.task.webchallengetask.global.programs.difficults.Difficult;
+import com.task.webchallengetask.global.programs.Program;
 
 import java.util.List;
 
 /**
  * Created by klim on 23.03.16.
  */
-public class DifficultAdapter extends ArrayAdapter<String> {
+public class ProgramAdapter extends ArrayAdapter<String> {
 
-    private List<Difficult> data;
+    private List<Program> data;
 
-    public DifficultAdapter(Context context, int resource, List<Difficult> _data) {
+    public ProgramAdapter(Context context, int resource, List<Program> _data) {
         super(context, resource);
         data = _data;
     }

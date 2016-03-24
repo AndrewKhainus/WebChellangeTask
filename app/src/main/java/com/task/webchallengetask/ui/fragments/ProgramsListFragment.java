@@ -2,13 +2,20 @@ package com.task.webchallengetask.ui.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.task.webchallengetask.R;
+import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.global.utils.RxUtils;
+import com.task.webchallengetask.ui.adapters.ProgramListAdapter;
 import com.task.webchallengetask.ui.base.BaseFragment;
 import com.task.webchallengetask.ui.dialogs.AddProgramDialog;
+import com.task.webchallengetask.ui.dialogs.DialogListener;
 import com.task.webchallengetask.ui.fragments.presenters.ProgramsListPresenter;
+
+import java.util.List;
 
 /**
  * Created by klim on 23.03.16.
@@ -17,6 +24,8 @@ public class ProgramsListFragment extends BaseFragment<ProgramsListPresenter>
         implements ProgramsListPresenter.ProgramListView {
 
     private FloatingActionButton fabAddProgram;
+    private RecyclerView rvPrograms;
+    private ProgramListAdapter mAdapter;
 
     public static ProgramsListFragment newInstance() {
 
@@ -45,16 +54,30 @@ public class ProgramsListFragment extends BaseFragment<ProgramsListPresenter>
     @Override
     public void findUI(View rootView) {
         fabAddProgram = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        rvPrograms = (RecyclerView) rootView.findViewById(R.id.rvPrograms_FPL);
     }
 
     @Override
     public void setupUI() {
         RxUtils.click(fabAddProgram, view -> getPresenter().onAddProgramClicked());
+        mAdapter = new ProgramListAdapter();
+
+        rvPrograms.setHasFixedSize(true);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        rvPrograms.setLayoutManager(mLayoutManager);
+        rvPrograms.setAdapter(mAdapter);
+        mAdapter.onItemClickListener(position -> getPresenter().onProgramClicked(position));
     }
 
     @Override
-    public void showAddProgramDialog() {
+    public void showAddProgramDialog(DialogListener _listener) {
         AddProgramDialog dialog = new AddProgramDialog();
+        dialog.setOnDismissListener(_listener);
         dialog.show(getActivity().getSupportFragmentManager(), "");
+    }
+
+    @Override
+    public void showPrograms(List<ProgramTable> _data) {
+        mAdapter.setData(_data);
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class ProgramFactory {
 
-    public static Program createLongDistance() {
+    private static Program createLongDistance() {
         String description = App.getAppContext().getString(R.string.distance_description);
 
         List<Difficult> difficults = new ArrayList<>();
@@ -32,7 +32,7 @@ public class ProgramFactory {
         return new Program("Long distance", description, difficults);
     }
 
-    public static Program createActiveLifeDistance() {
+    private static Program createActiveLifeDistance() {
         String description = App.getAppContext().getString(R.string.activity_description);
 
         List<Difficult> difficults = new ArrayList<>();
@@ -44,5 +44,11 @@ public class ProgramFactory {
         return new Program("Active life", description, difficults);
     }
 
+    public static List<Program> getPrograms() {
+        List<Program> programs = new ArrayList<>();
+        programs.add(ProgramFactory.createActiveLifeDistance());
+        programs.add(ProgramFactory.createLongDistance());
+        return programs;
+    }
 
 }

@@ -1,14 +1,13 @@
 package com.task.webchallengetask.ui.fragments.presenters;
 
-import com.task.webchallengetask.data.data_providers.AnalyticsDataProvider;
+import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.global.utils.Logger;
-import com.task.webchallengetask.global.utils.PredictionManager;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
 
 public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter.AnalyticsView> {
 
-    private AnalyticsDataProvider dataProvider = AnalyticsDataProvider.getInstance();
+    private ProgramDataProvider dataProvider = ProgramDataProvider.getInstance();
 
     @Override
     public void onViewCreated() {

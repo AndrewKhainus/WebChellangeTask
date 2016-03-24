@@ -34,5 +34,5 @@ public abstract class Constants {
 
     public static int FOREGROUND_NOTIFICATION_SERVICE_ID = 101;
 
-
+    public static final String PROGRAM_NAME_KEY = "PROGRAM_NAME_KEY";
 }

@@ -24,6 +24,12 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
     }
 
     @Override
+    public Bundle getFragmentArguments() {
+        return getArguments();
+    }
+
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mPresenter = initPresenter();
@@ -128,5 +134,7 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
     public void popBackStack() {
         mActivity.getSupportFragmentManager().popBackStack();
     }
+
+
 
 }

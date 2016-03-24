@@ -15,14 +15,42 @@ import com.task.webchallengetask.global.programs.Program;
 @Table(database = FitDatabase.class)
 public class ProgramTable extends BaseModel {
 
-    @PrimaryKey(autoincrement = true)
-    public int id;
-
-    @Column(typeConverter = ProgramConverter.class)
-    public Program program;
+    @PrimaryKey()
+    @Column
+    public String name;
 
     @Column
     public String actualResult;
 
+    @Column
+    public String difficult;
 
+    @Column
+    public String target;
+
+    @Column
+    public String unit;
+
+    @Column
+    public Long date;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getActualResult() {
+        return actualResult;
+    }
+
+    public String getDifficult() {
+        return difficult;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
 }
