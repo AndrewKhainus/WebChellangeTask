@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.dialogs;
 
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -36,7 +37,7 @@ public class ConfirmDialog extends BaseDialog<ConfirmDialogPresenter>
     public void findUI(View rootView) {
         tvTitle = (TextView) rootView.findViewById(R.id.tvTitle_DCL);
         tvMessage = (TextView) rootView.findViewById(R.id.tvMessage_DCL);
-        btnNegative = (TextView) rootView.findViewById(R.id.btnPositive_DCL);
+        btnNegative = (TextView) rootView.findViewById(R.id.btnNegative_DCL);
         btnPositive = (TextView) rootView.findViewById(R.id.btnPositive_DCL);
     }
 
