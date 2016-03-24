@@ -36,13 +36,6 @@
             facebook:com_facebook_login_text="Sign up with facebook"
             facebook:com_facebook_logout_text="Sign up with facebook"/>
 
-        <Button
-            android:id="@+id/btnPrediction_AL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Prediction" />
-
-
     </LinearLayout>
 
 </FrameLayout>

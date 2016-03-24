@@ -70,10 +70,10 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     compile ('com.google.apis:google-api-services-prediction:v1.6-rev54-1.21.0')
     compile ('com.google.apis:google-api-services-storage:v1-rev54-1.21.0')
-    compile 'com.google.android.gms:play-services-fitness:8.4.0'
+    compile 'com.google.android.gms:play-services-fitness:8.1.0'
     compile "com.android.support:appcompat-v7:${support_version}"
     compile "com.android.support:design:${support_version}"
-    compile 'com.google.android.gms:play-services-plus:8.4.0'
+    compile 'com.google.android.gms:play-services-plus:8.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.facebook.android:facebook-android-sdk:4.5.0'
     // internet connection

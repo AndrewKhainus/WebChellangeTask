@@ -14,7 +14,7 @@ import com.google.api.services.prediction.model.Insert2;
 import com.google.api.services.prediction.model.Output;
 import com.google.api.services.storage.StorageScopes;
 import com.task.webchallengetask.global.Constants;
-import com.task.webchallengetask.global.exceptions.UncomplitedException;
+import com.task.webchallengetask.global.exceptions.UnCompletedException;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -105,7 +105,7 @@ public class PredictionSample {
                     try {
                         String result = httpResponse.parseAs(Insert2.class).getTrainingStatus();
                         if (result.equals("DONE")) return Observable.just(result);
-                        else return Observable.error(new UncomplitedException());
+                        else return Observable.error(new UnCompletedException());
                     } catch (IOException e) {
                         return Observable.error(e);
                     }
@@ -116,7 +116,7 @@ public class PredictionSample {
         return get(prediction)
                 .retryWhen(observable -> observable
                         .flatMap(errors -> {
-                            if (errors instanceof UncomplitedException)
+                            if (errors instanceof UnCompletedException)
                                 return Observable.just(null);
                             else return Observable.error(errors);
                         })

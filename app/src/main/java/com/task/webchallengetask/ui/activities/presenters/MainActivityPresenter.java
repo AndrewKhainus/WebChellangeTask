@@ -5,11 +5,13 @@ import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.squareup.picasso.Picasso;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.SharedPrefConst;
+import com.task.webchallengetask.global.utils.GoogleApiUtils;
 import com.task.webchallengetask.global.utils.SharedPrefManager;
 import com.task.webchallengetask.ui.activities.LoginActivity;
 import com.task.webchallengetask.ui.activities.MainActivity;
@@ -28,9 +30,9 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
     @Override
     public void onViewCreated() {
         super.onViewCreated();
+        GoogleApiUtils.getInstance().buildGoogleApiClient();
         getView().switchFragment(ActivityListFragment.newInstance(), false);
         getView().setHeaderTitle(SharedPrefManager.getInstance().retrieveUsername());
-//        Picasso.with(App.getAppContext()).load(SharedPrefManager.getInstance().retrieveUrlPhoto()).into(getView().getImageView());
         getView().setHeaderSubTitle("Cool men");
     }
 
@@ -66,21 +68,30 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
         getView().showConfirmDialog("Confirm",
                 "Do you really want to logout?",
                 v -> {
-                    SharedPrefManager.getInstance().storeUsername("");
-                    SharedPrefManager.getInstance().storeActiveSocial("");
+                    revokeAccess();
                     getView().startActivity(LoginActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     getView().finishActivity();
                 });
+    }
+
+    private void revokeAccess() {
+        switch (SharedPrefManager.getInstance().retrieveActiveSocial()){
+            case Constants.SOCIAL_FACEBOOK:
+                LoginManager.getInstance().logOut();
+                break;
+            case Constants.SOCIAL_GOOGLE_PLUS:
+                if (GoogleApiUtils.getInstance().buildGoogleApiClientWithGooglePlus() != null &&
+                        GoogleApiUtils.getInstance().buildGoogleApiClientWithGooglePlus().isConnected())
+                    GoogleApiUtils.getInstance().logoutGooglePlus();
+        }
+        SharedPrefManager.getInstance().storeUsername("");
+        SharedPrefManager.getInstance().storeActiveSocial("");
     }
 
     public interface MainView extends BaseActivityView<MainActivityPresenter> {
         boolean isDrawerOpen();
 
         void closeDrawer(MainActivity.DrawerCallBack _callback);
-
-        void setHeaderAvatar(Bitmap _bitmap);
-
-        ImageView getImageView();
 
         void setHeaderSubTitle(String _description);
 

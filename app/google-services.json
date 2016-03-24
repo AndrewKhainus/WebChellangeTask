@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_id": "woven-fountain-125616",
-    "project_number": "990524092413",
-    "name": "FitKeeper"
+    "project_id": "webchallengeproject",
+    "project_number": "1061853864883",
+    "name": "WebChallengeProject"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:990524092413:android:cd7bed80f368a304",
+        "mobilesdk_app_id": "1:1061853864883:android:cd7bed80f368a304",
         "client_id": "android:com.task.webchallengetask",
         "client_type": 1,
         "android_client_info": {
@@ -17,7 +17,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "990524092413-cuuiisoqo9jccdk0ft37bv7t73v5va93.apps.googleusercontent.com",
+          "client_id": "1061853864883-pftu7btqhjv9j8rvnp8ap0pcpdc578hk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.task.webchallengetask",
@@ -25,7 +25,15 @@
           }
         },
         {
-          "client_id": "990524092413-nrv04pq5hff9i4nrgbl4qt9d40u8r8l6.apps.googleusercontent.com",
+          "client_id": "1061853864883-1s04l9oi4mv60ehdeuo25be385vnukdg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.task.webchallengetask",
+            "certificate_hash": "1108509CCBF34E00EA9C8EC3BD235E3743B14E89"
+          }
+        },
+        {
+          "client_id": "1061853864883-ks4gaijg3o13nkjf8u136ljpb4l81rf9.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

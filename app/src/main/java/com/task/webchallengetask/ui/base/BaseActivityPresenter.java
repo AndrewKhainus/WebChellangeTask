@@ -1,7 +1,11 @@
 package com.task.webchallengetask.ui.base;
 
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.fitness.Fitness;
+import com.task.webchallengetask.App;
 import com.task.webchallengetask.global.utils.RxUtils;
 
 import rx.Subscription;
@@ -74,5 +78,4 @@ public abstract class BaseActivityPresenter<V extends BaseActivityView>
         mSubscriptions.remove(_subscription);
         mSubscriptions.add(_subscription);
     }
-
 }

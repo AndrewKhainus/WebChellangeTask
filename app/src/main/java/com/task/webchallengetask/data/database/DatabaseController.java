@@ -32,9 +32,7 @@ public class DatabaseController {
     }
 
     public Observable<List<ProgramTable>> getPrograms() {
-        return Observable.from(new Select().from(ProgramTable.class).queryList())
-                .distinct(programTable -> programTable.name)
-                .toList();
+        return Observable.from(new Select().from(ProgramTable.class).queryList()).toList();
     }
 
     public Observable<List<ProgramTable>> getProgram(String _name) {

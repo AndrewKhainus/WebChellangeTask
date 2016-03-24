@@ -20,7 +20,7 @@ public abstract class Constants {
     public static final String SOCIAL_GOOGLE_PLUS = "google plus";
     public static final String SOCIAL_FACEBOOK = "facebook";
 
-
+    public static final int PROFILE_PIC_SIZE = 100; // dp
 
     public static final String MAIN_ACTION = "action.main";
 

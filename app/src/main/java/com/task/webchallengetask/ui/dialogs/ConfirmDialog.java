@@ -11,7 +11,7 @@ import com.task.webchallengetask.ui.base.BaseDialog;
 import com.task.webchallengetask.ui.dialogs.presenters.ConfirmDialogPresenter;
 
 public class ConfirmDialog extends BaseDialog<ConfirmDialogPresenter>
-        implements ConfirmDialogPresenter.ConfirmDialogView{
+        implements ConfirmDialogPresenter.ConfirmDialogView {
     protected TextView tvTitle;
     protected TextView tvMessage;
     protected TextView btnNegative;

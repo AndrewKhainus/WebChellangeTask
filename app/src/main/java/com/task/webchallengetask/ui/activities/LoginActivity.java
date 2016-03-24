@@ -22,7 +22,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     private SignInButton btnSignIn;
     private LoginButton loginButton;
-    private Button btnPrediction;
 
     @Override
     public int getLayoutResource() {
@@ -38,7 +37,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     public void findUI(View _rootView) {
         btnSignIn = (SignInButton) findViewById(R.id.btnSignIn_AL);
         loginButton = (LoginButton) findViewById(R.id.btnFacebookLogin_AL);
-        btnPrediction = (Button) findViewById(R.id.btnPrediction_AL);
     }
 
     @Override
@@ -46,7 +44,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         btnSignIn.setStyle(SignInButton.SIZE_STANDARD, SignInButton.COLOR_DARK);
         setGooglePlusButtonText(btnSignIn, "Sign up with google +");
         RxUtils.click(btnSignIn, o -> getPresenter().onGoogleSignInClicked());
-        RxUtils.click(btnPrediction, o -> getPresenter().onPredictionClicked());
     }
 
     @Override

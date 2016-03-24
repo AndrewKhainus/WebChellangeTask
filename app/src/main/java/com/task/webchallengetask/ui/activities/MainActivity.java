@@ -8,11 +8,14 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.utils.SharedPrefManager;
 import com.task.webchallengetask.ui.activities.presenters.MainActivityPresenter;
@@ -73,9 +76,13 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
             mDrawerToggle.syncState();
         });
 
-        if (SharedPrefManager.getInstance().retrieveGender().equals("")) {
+        if (TextUtils.isEmpty(SharedPrefManager.getInstance().retrieveGender())) {
             showProfileDialog();
         }
+
+        Picasso.with(App.getAppContext())
+                .load(SharedPrefManager.getInstance().retrieveUrlPhoto())
+                .into(ivNavAvatar);
 
     }
 
@@ -147,15 +154,10 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
 
     }
 
-    @Override
-    public void setHeaderAvatar(Bitmap _bitmap) {
-        ivNavAvatar.setImageBitmap(_bitmap);
-    }
-
-    @Override
-    public ImageView getImageView() {
-        return ivNavAvatar;
-    }
+//    @Override
+//    public void setHeaderAvatar(Bitmap _bitmap) {
+//        ivNavAvatar.setImageBitmap(_bitmap);
+//    }
 
     @Override
     public void setHeaderSubTitle(String _subTitle) {
