@@ -1,5 +1,7 @@
 package com.task.webchallengetask.ui.activities;
 
+import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -106,6 +108,12 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
     }
 
     @Override
+    public void startSenderIntent(IntentSender _intentSender, int _const) throws IntentSender.SendIntentException {
+        this.startIntentSenderForResult(_intentSender,
+                _const, null, 0, 0, 0);
+    }
+
+    @Override
     public int getSpinnerSelection() {
         return spChooseActivity.getSelectedItemPosition();
     }
@@ -127,7 +135,7 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
 
     @Override
     public void setDistance(String _text) {
-        tvDistance.setText(_text);
+        runOnUiThread(() -> tvDistance.setText(_text));
     }
 
     @Override
@@ -137,6 +145,7 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
 
     @Override
     public void setSteps(String _text) {
+//        runOnUiThread(() -> tvSteps.setText(_text));
         tvSteps.setText(_text);
     }
 
@@ -163,6 +172,11 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
     @Override
     public void setCaloriesVisible(boolean _isVisible) {
         vgCaloriesContainer.setVisibility(_isVisible ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        getPresenter().onActivityRes(resultCode);
     }
 
 }

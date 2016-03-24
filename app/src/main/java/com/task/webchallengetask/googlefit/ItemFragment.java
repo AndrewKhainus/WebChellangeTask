@@ -114,7 +114,7 @@ public class ItemFragment extends ListFragment {
         this.fragId = getArguments().getInt(Constants.FRAG_ID);
 
         data = logProvider.getLog().filter(this.fragId);
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, data);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, data);
         setListAdapter(adapter);
     }
 }

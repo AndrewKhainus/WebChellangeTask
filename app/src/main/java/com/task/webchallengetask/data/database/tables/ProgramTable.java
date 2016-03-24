@@ -15,7 +15,7 @@ import com.task.webchallengetask.global.programs.Program;
 @Table(database = FitDatabase.class)
 public class ProgramTable extends BaseModel {
 
-    @PrimaryKey()
+    @PrimaryKey
     @Column
     public String name;
 
