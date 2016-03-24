@@ -1,6 +1,6 @@
 package com.task.webchallengetask.global;
 
-public abstract class Constants {
+public final class Constants {
 
     public static final String PREDICTION_END_POINT = "https://www.googleapis.com";
     public static final int TIMEOUT = 10;  //seconds

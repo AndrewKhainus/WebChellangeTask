@@ -17,6 +17,12 @@ public class ActionParametersModel extends BaseModel {
     public int id;
 
     @Column
+    public long startTime;
+
+    @Column
+    public long endTime;
+
+    @Column
     public float activityActualTime;
 
     @Column

@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 
-public class PredictionSample {
+public final class PredictionSample {
 
     private JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private HttpTransport httpTransport;

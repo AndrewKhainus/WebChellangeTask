@@ -1,6 +1,5 @@
 package com.task.webchallengetask.ui.activities;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -80,10 +79,14 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
             showProfileDialog();
         }
 
+        loadPhoto();
+
+    }
+
+    private void loadPhoto() {
         Picasso.with(App.getAppContext())
                 .load(SharedPrefManager.getInstance().retrieveUrlPhoto())
                 .into(ivNavAvatar);
-
     }
 
     private void showProfileDialog() {
@@ -151,7 +154,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
                 }
             });
         new Handler().post(mDrawerLayout::closeDrawers);
-
     }
 
 //    @Override

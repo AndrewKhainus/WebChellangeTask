@@ -10,7 +10,7 @@ import com.task.webchallengetask.services.ActivityTrackerService;
 
 import java.util.Calendar;
 
-public class IntentManager {
+public final class IntentManager {
 
     public static Intent getActivityTrackerServiceIntent(String action, String _activityName) {
         Intent intent = new Intent(App.getAppContext(), ActivityTrackerService.class);

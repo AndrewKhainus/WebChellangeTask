@@ -23,7 +23,9 @@ import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.google.android.gms.fitness.request.SensorRequest;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
+import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.global.Constants;
+import com.task.webchallengetask.global.utils.GoogleApiUtils;
 import com.task.webchallengetask.global.utils.IntentManager;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
@@ -45,13 +47,14 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     private boolean isPaused = false;
     private List<String> activitiesList;
     private TimerReceiver mTimerReceiver;
-    private GoogleApiClient mClient = null;
+    private GoogleApiClient googleApiClient;
     private String currentActivity = "";
     private PendingIntent mSignInIntent;
     private OnDataPointListener mListenerDistance;
     private OnDataPointListener mListenerStep;
     private List<DataType> dataTypesList;
     private List<OnDataPointListener> listenerList;
+    private ActionParametersModel actionParametersModel;
     private static final String TAG = "StartActivityPresenter";
 
 
@@ -64,12 +67,23 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         mTimerReceiver = new TimerReceiver();
         dataTypesList = new ArrayList<>();
         listenerList = new ArrayList<>();
+        setupGoogleApiClient();
+    }
+
+    private void setupGoogleApiClient() {
+        googleApiClient = GoogleApiUtils.getInstance().buildGoogleApiClient();
+        googleApiClient.registerConnectionCallbacks(this);
+        googleApiClient.registerConnectionFailedListener(_connectionResult -> {
+            mSignInIntent = _connectionResult.getResolution();
+            resolveSignInError();
+        });
+        googleApiClient.connect();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        buildFitnessClient();
+//        buildFitnessClient();
         IntentFilter filter = new IntentFilter(Constants.SEND_TIMER_UPDATE_ACTION);
         App.getAppContext().registerReceiver(mTimerReceiver, filter);
     }
@@ -141,7 +155,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     private void checkRecording() {
         int size = dataTypesList.size();
         for (int i = 0; i < size; i++) {
-            Fitness.RecordingApi.listSubscriptions(mClient, dataTypesList.get(i))
+            Fitness.RecordingApi.listSubscriptions(googleApiClient, dataTypesList.get(i))
                     .setResultCallback(listSubscriptionsResult -> {
                         for (Subscription sc : listSubscriptionsResult.getSubscriptions()) {
                             DataType dt = sc.getDataType();
@@ -154,7 +168,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     private void subscribe() {
         int size = dataTypesList.size();
         for (int i = 0; i < size; i++) {
-            Fitness.RecordingApi.subscribe(mClient, dataTypesList.get(i))
+            Fitness.RecordingApi.subscribe(googleApiClient, dataTypesList.get(i))
                     .setResultCallback(_status -> {
                         if (_status.isSuccess()) {
                             if (_status.getStatusCode()
@@ -173,7 +187,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
 
     @Override
     public void onConnectionSuspended(int i) {
-        mClient.connect();
+        googleApiClient.connect();
     }
 
     private class TimerReceiver extends BroadcastReceiver {
@@ -189,26 +203,26 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         }
     }
 
-    private void buildFitnessClient() {
-        if (mClient == null) {
-            mClient = new GoogleApiClient.Builder(App.getAppContext())
-                    .addApi(Fitness.SENSORS_API)
-                    .addApi(Fitness.RECORDING_API)
-                    .addApi(Fitness.HISTORY_API)
-                    .addScope(Fitness.SCOPE_ACTIVITY_READ_WRITE)
-                    .addScope(Fitness.SCOPE_LOCATION_READ_WRITE)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(_connectionResult -> {
-                        Log.i(TAG, "Google Play services connection failed. Cause: " +
-                                _connectionResult.toString());
-
-                        mSignInIntent = _connectionResult.getResolution();
-                        resolveSignInError();
-                    })
-                    .build();
-            mClient.connect();
-        }
-    }
+//    private void buildFitnessClient() {
+//        if (mClient == null) {
+//            mClient = new GoogleApiClient.Builder(App.getAppContext())
+//                    .addApi(Fitness.SENSORS_API)
+//                    .addApi(Fitness.RECORDING_API)
+//                    .addApi(Fitness.HISTORY_API)
+//                    .addScope(Fitness.SCOPE_ACTIVITY_READ_WRITE)
+//                    .addScope(Fitness.SCOPE_LOCATION_READ_WRITE)
+//                    .addConnectionCallbacks(this)
+//                    .addOnConnectionFailedListener(_connectionResult -> {
+//                        Log.i(TAG, "Google Play services connection failed. Cause: " +
+//                                _connectionResult.toString());
+//
+//                        mSignInIntent = _connectionResult.getResolution();
+//                        resolveSignInError();
+//                    })
+//                    .build();
+//            mClient.connect();
+//        }
+//    }
 
     private void resolveSignInError() {
         if (mSignInIntent != null) {
@@ -216,23 +230,22 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                 getView().startSenderIntent(mSignInIntent.getIntentSender(),
                         Constants.RC_SIGN_IN_GOOGLE_PLUS);
             } catch (IntentSender.SendIntentException e) {
-                mClient.connect();
+                googleApiClient.connect();
             }
         }
     }
 
-
     public void onActivityRes(int resultCode) {
         if (resultCode == Activity.RESULT_OK) {
-            if (!mClient.isConnecting()) {
-                mClient.connect();
+            if (!googleApiClient.isConnecting()) {
+                googleApiClient.connect();
             }
         }
     }
 
     private void findFitnessDataSources() {
 
-        Fitness.SensorsApi.findDataSources(mClient, new DataSourcesRequest.Builder()
+        Fitness.SensorsApi.findDataSources(googleApiClient, new DataSourcesRequest.Builder()
                 .setDataTypes(
                         DataType.TYPE_ACTIVITY_SAMPLE,
                         DataType.TYPE_LOCATION_SAMPLE,
@@ -257,10 +270,10 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                             registerFitnessStepListener(dataSource,
                                     DataType.TYPE_STEP_COUNT_DELTA);
 
-                        } else if (dataSource.getDataType().equals(DataType.TYPE_DISTANCE_DELTA) && mListenerDistance == null) {
+                        } else if (dataSource.getDataType().equals(DataType.TYPE_DISTANCE_CUMULATIVE) && mListenerDistance == null) {
                             listenerList.add(mListenerDistance);
                             registerDistanceListener(dataSource,
-                                    DataType.TYPE_DISTANCE_DELTA);
+                                    DataType.TYPE_DISTANCE_CUMULATIVE);
                         }
 //
                     }
@@ -281,7 +294,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         };
 
         Fitness.SensorsApi.add(
-                mClient,
+                googleApiClient,
                 new SensorRequest.Builder()
                         .setDataSource(dataSource)
                         .setDataType(dataType)
@@ -312,7 +325,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         };
 
         Fitness.SensorsApi.add(
-                mClient,
+                googleApiClient,
                 new SensorRequest.Builder()
                         .setDataSource(dataSource) // Optional but recommended for custom data sets.
                         .setDataType(dataType)// Can't be omitted.
@@ -336,7 +349,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                 return;
 
             Fitness.SensorsApi.remove(
-                    mClient,
+                    googleApiClient,
                     listenerList.get(i))
                     .setResultCallback(status -> {
                         if (status.isSuccess()) {

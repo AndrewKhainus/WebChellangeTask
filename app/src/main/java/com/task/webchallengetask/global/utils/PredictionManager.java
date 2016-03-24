@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 
-public class PredictionManager {
+public final class PredictionManager {
 
     private static volatile PredictionManager instance;
     private JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();

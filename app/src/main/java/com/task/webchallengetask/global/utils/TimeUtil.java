@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Sergbek on 17.11.2015.
  */
-public class TimeUtil {
+public final class TimeUtil {
 
     public static long getTimeBeginCurrentDay(){
         GregorianCalendar calendar = new GregorianCalendar();

@@ -135,7 +135,7 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
 
     @Override
     public void setDistance(String _text) {
-        runOnUiThread(() -> tvDistance.setText(_text));
+        tvDistance.setText(_text);
     }
 
     @Override
@@ -145,7 +145,6 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
 
     @Override
     public void setSteps(String _text) {
-//        runOnUiThread(() -> tvSteps.setText(_text));
         tvSteps.setText(_text);
     }
 

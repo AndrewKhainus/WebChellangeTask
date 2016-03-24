@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class AssetManager {
+public final class AssetManager {
 
     public static File getFile(String fileName) {
         InputStream in;

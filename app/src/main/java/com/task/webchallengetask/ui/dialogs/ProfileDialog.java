@@ -9,12 +9,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jakewharton.rxbinding.widget.TextViewTextChangeEvent;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.ui.base.BaseDialog;
 import com.task.webchallengetask.ui.dialogs.presenters.ProfileDialogPresenter;
 
 import java.util.List;
+
+import rx.Observable;
 
 public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
         implements ProfileDialogPresenter.ProfileDialogView {
@@ -39,39 +43,44 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
         setCancelable(false);
         RxUtils.click(btnSave, o -> getPresenter().onSaveClicked());
 
-        etWeight.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                etWeight.setError(null);
-            }
+        RxTextView.textChangeEvents(etWeight)
+                .subscribe(t -> etWeight.setError(null));
+        RxTextView.textChangeEvents(etHeight)
+                .subscribe(t -> etHeight.setError(null));
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        etHeight.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                etHeight.setError(null);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+//        etWeight.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                etWeight.setError(null);
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//
+//        etHeight.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                etHeight.setError(null);
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
 
     }
 
