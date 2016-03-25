@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
     private ViewGroup vgCaloriesContainer;
     private TextView btnStartPause;
     private TextView btnStop;
+    private Button btnTest;
 
 
     @Override
@@ -64,6 +66,7 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
         vgCaloriesContainer = (ViewGroup) findViewById(R.id.caloriesContainer_ASA);
         btnStartPause = (TextView) findViewById(R.id.btnStartPause_ASA);
         btnStop = (TextView) findViewById(R.id.btnStop_ASA);
+        btnTest = (Button) findViewById(R.id.btnTest);
     }
 
     @Override
@@ -88,6 +91,7 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
 
         RxUtils.click(btnStartPause, o -> getPresenter().onBtnStartPauseClicked());
         RxUtils.click(btnStop, o -> getPresenter().onBtnStopClicked());
+        RxUtils.click(btnTest, t -> getPresenter().testClicked());
     }
 
     @Override

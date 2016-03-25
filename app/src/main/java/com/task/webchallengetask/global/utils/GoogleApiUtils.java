@@ -1,7 +1,5 @@
 package com.task.webchallengetask.global.utils;
 
-import android.util.Log;
-
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -13,7 +11,6 @@ import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.request.DataReadRequest;
-import com.google.android.gms.fitness.result.DataReadResult;
 import com.google.android.gms.plus.Plus;
 import com.task.webchallengetask.App;
 

@@ -95,6 +95,13 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         googleApiClient.connect();
     }
 
+    public void testClicked(){
+        GoogleApiUtils.getInstance().getHistory().subscribe(t -> {
+            String s = "";
+        });
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -239,7 +246,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     }
 
     private void findFitnessDataSources() {
-
         Fitness.SensorsApi.findDataSources(googleApiClient, new DataSourcesRequest.Builder()
                 .setDataTypes(
                         DataType.TYPE_STEP_COUNT_DELTA,
@@ -252,7 +258,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                     dataTypesList.clear();
                     Log.i(TAG, "Result: " + dataSourcesResult.getStatus().toString());
                     for (DataSource dataSource : dataSourcesResult.getDataSources()) {
-                        dataTypesList.add(dataSource.getDataType());
                         Log.i(TAG, "Data source found: " + dataSource.toString());
                         Log.i(TAG, "Data Source type: " + dataSource.getDataType().getName());
 
@@ -260,15 +265,19 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                             listenerList.add(mListenerStep);
                             registerFitnessStepListener(dataSource,
                                     DataType.TYPE_STEP_COUNT_DELTA);
+                            dataTypesList.add(dataSource.getDataType());
 
                         } else if (dataSource.getDataType().equals(DataType.TYPE_DISTANCE_DELTA) && mListenerDistance == null) {
                             listenerList.add(mListenerDistance);
                             registerDistanceListener(dataSource,
                                     DataType.TYPE_DISTANCE_DELTA);
+
+                            dataTypesList.add(dataSource.getDataType());
                         } else if (dataSource.getDataType().equals(DataType.TYPE_SPEED) && mListenerSpeed == null) {
                             listenerList.add(mListenerSpeed);
                             registerSpeedListener(dataSource,
                                     DataType.TYPE_SPEED);
+                            dataTypesList.add(dataSource.getDataType());
                         }
                     }
                     subscribeDataType();
