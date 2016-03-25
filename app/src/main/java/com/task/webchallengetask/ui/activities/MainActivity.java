@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.activities;
 
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -169,6 +170,13 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
     @Override
     public void setHeaderTitle(String _title) {
         tvNavTitle.setText(_title);
+    }
+
+    @Override
+    public void startSenderIntent(IntentSender _intentSender, int _const)
+            throws IntentSender.SendIntentException {
+        this.startIntentSenderForResult(_intentSender,
+                _const, null, 0, 0, 0);
     }
 
     public interface DrawerCallBack {

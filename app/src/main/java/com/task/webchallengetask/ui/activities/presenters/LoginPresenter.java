@@ -25,7 +25,6 @@ import com.task.webchallengetask.App;
 import com.task.webchallengetask.BuildConfig;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.exceptions.PicassoExeption;
-import com.task.webchallengetask.global.utils.GoogleApiUtils;
 import com.task.webchallengetask.global.utils.SharedPrefManager;
 import com.task.webchallengetask.ui.activities.MainActivity;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
@@ -55,17 +54,11 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
     }
 
     public void onGoogleSignInClicked() {
-        setupGoogleApiClient();
+        googleApiClient = setupGoogleApiClient(this, this, true);
         resolveSignInError();
     }
 
-    private void setupGoogleApiClient() {
-        googleApiClient = GoogleApiUtils.getInstance().buildGoogleApiClientWithGooglePlus();
-        googleApiClient.registerConnectionFailedListener(this);
-        googleApiClient.registerConnectionCallbacks(this);
-        googleApiClient.connect();
-    }
-
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case Constants.RC_SIGN_IN_GOOGLE_PLUS:
@@ -77,6 +70,7 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
                 mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 
     @Override
     public void onStart() {

@@ -1,39 +1,55 @@
 package com.task.webchallengetask.ui.activities.presenters;
 
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.widget.ImageView;
+import android.content.IntentSender;
+import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.plus.Plus;
-import com.squareup.picasso.Picasso;
-import com.task.webchallengetask.App;
 import com.task.webchallengetask.global.Constants;
-import com.task.webchallengetask.global.SharedPrefConst;
 import com.task.webchallengetask.global.utils.GoogleApiUtils;
 import com.task.webchallengetask.global.utils.SharedPrefManager;
 import com.task.webchallengetask.ui.activities.LoginActivity;
 import com.task.webchallengetask.ui.activities.MainActivity;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
 import com.task.webchallengetask.ui.base.BaseActivityView;
-import com.task.webchallengetask.ui.base.BaseView;
 import com.task.webchallengetask.ui.fragments.ActivityListFragment;
 import com.task.webchallengetask.ui.fragments.AnalyticsFragment;
 import com.task.webchallengetask.ui.fragments.ProgramsListFragment;
 import com.task.webchallengetask.ui.fragments.SettingsFragment;
 
-import java.io.IOException;
+public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPresenter.MainView> implements GoogleApiClient.ConnectionCallbacks {
 
-public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPresenter.MainView> {
+    private PendingIntent mSignInIntent;
+    private GoogleApiClient googleApiClient;
+
 
     @Override
     public void onViewCreated() {
         super.onViewCreated();
         GoogleApiUtils.getInstance().buildGoogleApiClient();
+        if (TextUtils.equals(SharedPrefManager.getInstance().retrieveActiveSocial(), Constants.SOCIAL_FACEBOOK)) {
+            googleApiClient = setupGoogleApiClient(this, _connectionResult -> {
+                mSignInIntent = _connectionResult.getResolution();
+                resolveSignInError();
+            }, false);
+        }
         getView().switchFragment(ActivityListFragment.newInstance(), false);
         getView().setHeaderTitle(SharedPrefManager.getInstance().retrieveUsername());
         getView().setHeaderSubTitle("Cool men");
+    }
+
+    private void resolveSignInError() {
+        if (mSignInIntent != null) {
+            try {
+                getView().startSenderIntent(mSignInIntent.getIntentSender(),
+                        Constants.RC_SIGN_IN_GOOGLE_PLUS);
+            } catch (IntentSender.SendIntentException e) {
+                googleApiClient.connect();
+            }
+        }
     }
 
     @Override
@@ -75,7 +91,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
     }
 
     private void revokeAccess() {
-        switch (SharedPrefManager.getInstance().retrieveActiveSocial()){
+        switch (SharedPrefManager.getInstance().retrieveActiveSocial()) {
             case Constants.SOCIAL_FACEBOOK:
                 LoginManager.getInstance().logOut();
                 break;
@@ -88,6 +104,24 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
         SharedPrefManager.getInstance().storeActiveSocial("");
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (!googleApiClient.isConnecting()) {
+            googleApiClient.connect();
+        }
+    }
+
+    @Override
+    public void onConnected(Bundle _bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
     public interface MainView extends BaseActivityView<MainActivityPresenter> {
         boolean isDrawerOpen();
 
@@ -96,6 +130,9 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
         void setHeaderSubTitle(String _description);
 
         void setHeaderTitle(String _title);
+
+        void startSenderIntent(IntentSender _intentSender, int _const) throws IntentSender.SendIntentException;
+
 
     }
 

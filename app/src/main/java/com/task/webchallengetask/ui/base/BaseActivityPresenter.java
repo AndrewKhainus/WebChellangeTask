@@ -1,11 +1,13 @@
 package com.task.webchallengetask.ui.base;
 
+import android.content.Intent;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.fitness.Fitness;
 import com.task.webchallengetask.App;
+import com.task.webchallengetask.global.utils.GoogleApiUtils;
 import com.task.webchallengetask.global.utils.RxUtils;
 
 import rx.Subscription;
@@ -74,8 +76,25 @@ public abstract class BaseActivityPresenter<V extends BaseActivityView>
         else mView.finishActivity();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    }
+
     protected final void addSubscription(Subscription _subscription) {
         mSubscriptions.remove(_subscription);
         mSubscriptions.add(_subscription);
+    }
+
+    protected GoogleApiClient setupGoogleApiClient(GoogleApiClient.ConnectionCallbacks _connectionCallbacks,
+                                                   GoogleApiClient.OnConnectionFailedListener _onConnectionFailedListener,
+                                                   boolean isGooglePlus) {
+        GoogleApiClient googleApiClient = isGooglePlus ? GoogleApiUtils.getInstance().buildGoogleApiClientWithGooglePlus()
+                : GoogleApiUtils.getInstance().buildGoogleApiClient();
+        googleApiClient.registerConnectionFailedListener(_onConnectionFailedListener);
+        googleApiClient.registerConnectionCallbacks(_connectionCallbacks);
+        googleApiClient.connect();
+
+        return googleApiClient;
     }
 }

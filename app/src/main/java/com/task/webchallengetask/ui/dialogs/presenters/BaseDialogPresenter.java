@@ -1,5 +1,7 @@
 package com.task.webchallengetask.ui.dialogs.presenters;
 
+import android.content.Intent;
+
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.ui.base.BaseDialogView;
 import com.task.webchallengetask.ui.base.BasePresenter;
@@ -61,6 +63,11 @@ public abstract class BaseDialogPresenter<V extends BaseDialogView> implements B
 
     @Override
     public void onBackPressed() {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
     }
 

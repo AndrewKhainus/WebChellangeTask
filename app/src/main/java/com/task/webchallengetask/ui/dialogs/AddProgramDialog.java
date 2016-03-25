@@ -62,7 +62,7 @@ public class AddProgramDialog extends BaseDialog<AddProgramDialogPresenter>
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                getPresenter().onProgrammChoosed(position);
+                getPresenter().onProgramChose(position);
             }
 
             @Override

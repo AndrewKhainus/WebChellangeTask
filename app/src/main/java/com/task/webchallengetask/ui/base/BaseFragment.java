@@ -63,6 +63,12 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getPresenter().onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onPause() {
         getPresenter().onPause();
         super.onPause();
@@ -74,6 +80,8 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
         getPresenter().onDestroyView();
         super.onDestroyView();
     }
+
+
 
     @Override
     public void showLoadingDialog() {

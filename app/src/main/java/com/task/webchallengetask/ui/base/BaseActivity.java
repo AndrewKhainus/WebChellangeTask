@@ -2,7 +2,6 @@ package com.task.webchallengetask.ui.base;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -137,6 +136,12 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mPresenter.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void switchFragment(final BaseFragment _fragment, boolean _addToBackStack) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -169,7 +174,7 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     }
 
     @Override
-    public void startActivity(Class _activityClass, int ... _flag) {
+    public void startActivity(Class _activityClass, int... _flag) {
         Intent intent = new Intent(this, _activityClass);
         for (int a_flag : _flag) {
             intent.setFlags(a_flag);

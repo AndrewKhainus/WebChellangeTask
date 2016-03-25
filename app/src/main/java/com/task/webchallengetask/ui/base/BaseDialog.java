@@ -2,6 +2,7 @@ package com.task.webchallengetask.ui.base;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -60,6 +61,11 @@ public abstract class BaseDialog<P extends BaseDialogPresenter> extends DialogFr
         getPresenter().onViewCreated();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getPresenter().onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     public void onDestroy() {

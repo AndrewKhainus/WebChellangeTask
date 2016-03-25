@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.base;
 
+import android.content.Intent;
 import android.support.annotation.CallSuper;
 
 import com.task.webchallengetask.global.utils.RxUtils;
@@ -59,6 +60,11 @@ public abstract class BaseFragmentPresenter<V extends BaseFragmentView> implemen
     @CallSuper
     public void onDestroyView() {
         RxUtils.unsubscribeIfNotNull(mSubscriptions);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
     }
 
     protected void addSubscription(Subscription _subscription) {

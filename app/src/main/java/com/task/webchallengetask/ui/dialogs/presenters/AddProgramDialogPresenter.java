@@ -26,7 +26,7 @@ public class AddProgramDialogPresenter extends BaseDialogPresenter<AddProgramDia
         getView().setPrograms(programs);
     }
 
-    public void onProgrammChoosed(int _position) {
+    public void onProgramChose(int _position) {
         String description = "";
         switch (_position) {
             case 0:

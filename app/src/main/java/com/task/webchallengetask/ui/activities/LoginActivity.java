@@ -1,19 +1,13 @@
 package com.task.webchallengetask.ui.activities;
 
-import android.content.Intent;
 import android.content.IntentSender;
-import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
-import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
-import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.ui.activities.presenters.LoginPresenter;
 import com.task.webchallengetask.ui.base.BaseActivity;
@@ -47,7 +41,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
-    public void startSenderIntent(IntentSender _intentSender, int _const) throws IntentSender.SendIntentException{
+    public void startSenderIntent(IntentSender _intentSender, int _const) throws IntentSender.SendIntentException {
         this.startIntentSenderForResult(_intentSender,
                 _const, null, 0, 0, 0);
     }
@@ -76,8 +70,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        getPresenter().onActivityResult(requestCode, resultCode, data);
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        getPresenter().onActivityResult(requestCode, resultCode, data);
+//    }
 }
