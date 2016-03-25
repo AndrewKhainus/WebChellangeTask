@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:minWidth="300dp"
-    android:orientation="vertical"
-    android:paddingTop="24dp">
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minWidth="300dp"
+              android:orientation="vertical"
+              android:paddingTop="24dp">
 
     <TextView
         android:id="@+id/tvTitle_DIL"
@@ -13,7 +13,7 @@
         android:layout_marginBottom="15dp"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
-        android:text="Profile information" />
+        android:text="Profile information"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,15 +28,45 @@
             style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gender" />
+            android:text="Gender"/>
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spGender_DPL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
-            android:textAlignment="center"
-            android:layout_weight="1" />
+            android:textAlignment="center"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp">
+
+        <TextView
+            style="@style/MainTheme.SubTitle.Normal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="Age"/>
+
+        <EditText
+            android:id="@+id/etAge_DPL"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:hint="0"
+            android:inputType="number"/>
+
+        <Space
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"/>
+
 
     </LinearLayout>
 
@@ -55,22 +85,22 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Height" />
+            android:text="Height"/>
 
         <EditText
             android:id="@+id/etHeight_DPL"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="0"
             android:gravity="left"
+            android:hint="0"
+            android:inputType="number"
             />
 
         <TextView
             style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:text="cm" />
+            android:text="cm"/>
 
 
     </LinearLayout>
@@ -91,15 +121,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Weight" />
+            android:text="Weight"/>
 
         <EditText
             android:id="@+id/etWeight_DPL"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="0"
             android:gravity="left"
+            android:hint="0"
+            android:inputType="number"
             />
 
         <TextView
@@ -107,7 +137,7 @@
             style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:text="kg" />
+            android:text="kg"/>
 
 
     </LinearLayout>
@@ -127,7 +157,7 @@
             android:id="@+id/btnSave_DPL"
             style="@style/DialogButtonStyle"
             android:layout_width="wrap_content"
-            android:text="@string/text_btn_save" />
+            android:text="@string/text_btn_save"/>
 
     </LinearLayout>
 

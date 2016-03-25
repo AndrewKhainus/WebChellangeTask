@@ -34,6 +34,8 @@ public final class GoogleApiUtils {
                     .addApi(Fitness.SENSORS_API)
                     .addApi(Fitness.RECORDING_API)
                     .addApi(Fitness.HISTORY_API)
+                    .addApi(Fitness.SESSIONS_API)
+                    .addApi(Fitness.CONFIG_API)
                     .addScope(Fitness.SCOPE_ACTIVITY_READ_WRITE)
                     .addScope(Fitness.SCOPE_LOCATION_READ_WRITE)
                     .build();
@@ -49,6 +51,8 @@ public final class GoogleApiUtils {
                     .addApi(Fitness.RECORDING_API)
                     .addApi(Plus.API, Plus.PlusOptions.builder().build())
                     .addApi(Fitness.HISTORY_API)
+                    .addApi(Fitness.SESSIONS_API)
+                    .addApi(Fitness.CONFIG_API)
                     .addScope(Fitness.SCOPE_ACTIVITY_READ_WRITE)
                     .addScope(Fitness.SCOPE_LOCATION_READ_WRITE)
                     .addScope(new Scope(Scopes.PROFILE))

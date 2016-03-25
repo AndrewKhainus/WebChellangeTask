@@ -26,6 +26,7 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
     private TextView btnSave;
     private EditText etHeight;
     private EditText etWeight;
+    private EditText etAge;
     private Spinner spGender;
 
     @Override
@@ -47,46 +48,14 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
                 .subscribe(t -> etWeight.setError(null));
         RxTextView.textChangeEvents(etHeight)
                 .subscribe(t -> etHeight.setError(null));
-
-//        etWeight.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                etWeight.setError(null);
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-//
-//        etHeight.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                etHeight.setError(null);
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-
+        RxTextView.textChangeEvents(etAge)
+                .subscribe(t -> etAge.setError(null));
     }
 
     @Override
     public void findUI(View rootView) {
         btnSave = (TextView) rootView.findViewById(R.id.btnSave_DPL);
+        etAge = (EditText) rootView.findViewById(R.id.etAge_DPL);
         etHeight = (EditText) rootView.findViewById(R.id.etHeight_DPL);
         etWeight = (EditText) rootView.findViewById(R.id.etWeight_DPL);
         spGender = (Spinner) rootView.findViewById(R.id.spGender_DPL);
@@ -128,8 +97,25 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
     }
 
     @Override
+    public int getAge() {
+        int value = 0;
+        try {
+            value = Integer.valueOf(etAge.getText().toString());
+        } catch (NumberFormatException e) {
+
+        }
+
+        return value;
+    }
+
+    @Override
     public void showHeightError() {
         etHeight.setError("Please, enter your height");
+    }
+
+    @Override
+    public void showAgeError() {
+        etAge.setError("Please, enter your age");
     }
 
     @Override

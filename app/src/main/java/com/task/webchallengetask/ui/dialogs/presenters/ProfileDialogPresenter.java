@@ -25,6 +25,7 @@ public class ProfileDialogPresenter extends BaseDialogPresenter<ProfileDialogPre
             SharedPrefManager.getInstance().storeHeight(getView().getHeight());
             SharedPrefManager.getInstance().storeWeight(getView().getWeight());
             SharedPrefManager.getInstance().storeGender(genderTypes.get(getView().getGender()));
+            SharedPrefManager.getInstance().storeAge(getView().getAge());
             getView().dismissDialog();
         }
     }
@@ -39,6 +40,10 @@ public class ProfileDialogPresenter extends BaseDialogPresenter<ProfileDialogPre
             getView().showWeightError();
             valid = false;
         }
+        if (getView().getAge() == 0){
+            getView().showAgeError();
+            valid = false;
+        }
         return valid;
     }
 
@@ -47,7 +52,9 @@ public class ProfileDialogPresenter extends BaseDialogPresenter<ProfileDialogPre
         int getGender();
         int getHeight();
         int getWeight();
+        int getAge();
         void showHeightError();
+        void showAgeError();
         void showWeightError();
         void hideKeyboard();
     }

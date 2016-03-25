@@ -100,8 +100,17 @@ public final class SharedPrefManager {
     }
 
     @CheckResult
+    public int retrieveAge(){
+        return retrieveInt(SharedPrefConst.SHARED_PREF_AGE);
+    }
+
+    public void storeAge(int _age){
+        saveInt(SharedPrefConst.SHARED_PREF_AGE, _age);
+    }
+
+    @CheckResult
     public String retrieveActiveSocial(){
-        return retrieveString(SharedPrefConst.SHARED_PREF_ACTIVE_SOCIAL).intern();
+        return retrieveString(SharedPrefConst.SHARED_PREF_ACTIVE_SOCIAL);
     }
 
 }

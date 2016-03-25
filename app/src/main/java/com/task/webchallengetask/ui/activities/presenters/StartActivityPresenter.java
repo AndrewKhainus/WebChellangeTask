@@ -11,6 +11,9 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.fitness.ConfigApi;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessStatusCodes;
 import com.google.android.gms.fitness.data.DataSource;
@@ -19,14 +22,17 @@ import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.data.Subscription;
 import com.google.android.gms.fitness.data.Value;
 import com.google.android.gms.fitness.request.DataSourcesRequest;
+import com.google.android.gms.fitness.request.DataTypeCreateRequest;
 import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.google.android.gms.fitness.request.SensorRequest;
+import com.google.android.gms.fitness.result.DataTypeResult;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.GoogleApiUtils;
 import com.task.webchallengetask.global.utils.IntentManager;
+import com.task.webchallengetask.global.utils.SharedPrefManager;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
 import com.task.webchallengetask.ui.base.BaseActivityView;
@@ -51,10 +57,18 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     private String currentActivity = "";
     private PendingIntent mSignInIntent;
     private OnDataPointListener mListenerDistance;
+    private OnDataPointListener mListenerSpeed;
     private OnDataPointListener mListenerStep;
     private List<DataType> dataTypesList;
     private List<OnDataPointListener> listenerList;
     private ActionParametersModel actionParametersModel;
+
+    private int step;
+    private float speed;
+    private float dist;
+    private int weight = SharedPrefManager.getInstance().retrieveWeight();
+
+
     private static final String TAG = "StartActivityPresenter";
 
 
@@ -68,6 +82,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         dataTypesList = new ArrayList<>();
         listenerList = new ArrayList<>();
         setupGoogleApiClient();
+        actionParametersModel = new ActionParametersModel();
     }
 
     private void setupGoogleApiClient() {
@@ -83,7 +98,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     @Override
     public void onResume() {
         super.onResume();
-//        buildFitnessClient();
         IntentFilter filter = new IntentFilter(Constants.SEND_TIMER_UPDATE_ACTION);
         App.getAppContext().registerReceiver(mTimerReceiver, filter);
     }
@@ -148,8 +162,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     @Override
     public void onConnected(Bundle _bundle) {
         findFitnessDataSources();
-        subscribe();
-        checkRecording();
     }
 
     private void checkRecording() {
@@ -165,7 +177,12 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         }
     }
 
-    private void subscribe() {
+
+    strictfp private float calculationCalories() {
+        return weight * dist;
+    }
+
+    private void subscribeDataType() {
         int size = dataTypesList.size();
         for (int i = 0; i < size; i++) {
             Fitness.RecordingApi.subscribe(googleApiClient, dataTypesList.get(i))
@@ -182,7 +199,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                         }
                     });
         }
-
     }
 
     @Override
@@ -202,27 +218,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
             }
         }
     }
-
-//    private void buildFitnessClient() {
-//        if (mClient == null) {
-//            mClient = new GoogleApiClient.Builder(App.getAppContext())
-//                    .addApi(Fitness.SENSORS_API)
-//                    .addApi(Fitness.RECORDING_API)
-//                    .addApi(Fitness.HISTORY_API)
-//                    .addScope(Fitness.SCOPE_ACTIVITY_READ_WRITE)
-//                    .addScope(Fitness.SCOPE_LOCATION_READ_WRITE)
-//                    .addConnectionCallbacks(this)
-//                    .addOnConnectionFailedListener(_connectionResult -> {
-//                        Log.i(TAG, "Google Play services connection failed. Cause: " +
-//                                _connectionResult.toString());
-//
-//                        mSignInIntent = _connectionResult.getResolution();
-//                        resolveSignInError();
-//                    })
-//                    .build();
-//            mClient.connect();
-//        }
-//    }
 
     private void resolveSignInError() {
         if (mSignInIntent != null) {
@@ -247,12 +242,9 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
 
         Fitness.SensorsApi.findDataSources(googleApiClient, new DataSourcesRequest.Builder()
                 .setDataTypes(
-                        DataType.TYPE_ACTIVITY_SAMPLE,
-                        DataType.TYPE_LOCATION_SAMPLE,
-                        DataType.TYPE_STEP_COUNT_CUMULATIVE,
                         DataType.TYPE_STEP_COUNT_DELTA,
-                        DataType.TYPE_DISTANCE_CUMULATIVE,
-                        DataType.TYPE_DISTANCE_DELTA)
+                        DataType.TYPE_DISTANCE_DELTA,
+                        DataType.TYPE_SPEED)
                 .setDataSourceTypes(DataSource.TYPE_RAW, DataSource.TYPE_DERIVED)
                 .build())
                 .setResultCallback(dataSourcesResult -> {
@@ -264,23 +256,39 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                         Log.i(TAG, "Data source found: " + dataSource.toString());
                         Log.i(TAG, "Data Source type: " + dataSource.getDataType().getName());
 
-                        //Let's register a listener to receive Activity data!
                         if (dataSource.getDataType().equals(DataType.TYPE_STEP_COUNT_DELTA) && mListenerStep == null) {
                             listenerList.add(mListenerStep);
                             registerFitnessStepListener(dataSource,
                                     DataType.TYPE_STEP_COUNT_DELTA);
 
-                        } else if (dataSource.getDataType().equals(DataType.TYPE_DISTANCE_CUMULATIVE) && mListenerDistance == null) {
+                        } else if (dataSource.getDataType().equals(DataType.TYPE_DISTANCE_DELTA) && mListenerDistance == null) {
                             listenerList.add(mListenerDistance);
                             registerDistanceListener(dataSource,
-                                    DataType.TYPE_DISTANCE_CUMULATIVE);
+                                    DataType.TYPE_DISTANCE_DELTA);
+                        } else if (dataSource.getDataType().equals(DataType.TYPE_SPEED) && mListenerSpeed == null) {
+                            listenerList.add(mListenerSpeed);
+                            registerSpeedListener(dataSource,
+                                    DataType.TYPE_SPEED);
                         }
-//
                     }
+                    subscribeDataType();
+                    checkRecording();
+
+                    DataTypeCreateRequest request = new DataTypeCreateRequest.Builder()
+                            .setName("com.task.webchallengetask.custom_calories")
+                            .addField("cal", Field.FORMAT_FLOAT)
+                            .build();
+
+                    PendingResult<DataTypeResult> pendingResult =
+                            Fitness.ConfigApi.createCustomDataType(googleApiClient, request);
+
+                    pendingResult.setResultCallback(
+                            dataTypeResult -> {
+                                DataType customType = dataTypeResult.getDataType();
+                            });
                 });
     }
 
-    private int step;
 
     private void registerFitnessStepListener(DataSource dataSource, DataType dataType) {
         mListenerStep = dataPoint -> {
@@ -310,7 +318,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                 });
     }
 
-    private float dist;
 
     private void registerDistanceListener(DataSource dataSource, DataType dataType) {
         mListenerDistance = dataPoint -> {
@@ -321,6 +328,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                 Log.i(TAG, "Detected DataPoint field: " + field.getName());
                 Log.i(TAG, "Detected DataPoint value: " + val);
                 getView().setDistance(dist + "");
+                getView().setCalories(calculationCalories() + "");
             }
         };
 
@@ -332,6 +340,35 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                         .setSamplingRate(800, TimeUnit.MILLISECONDS)
                         .build(),
                 mListenerDistance)
+                .setResultCallback(status -> {
+                    if (status.isSuccess()) {
+                        Log.i(TAG, "Listener registered!");
+                    } else {
+                        Log.i(TAG, "Listener not registered.");
+                    }
+                });
+    }
+
+    private void registerSpeedListener(DataSource dataSource, DataType dataType) {
+        mListenerSpeed = dataPoint -> {
+            for (Field field : dataPoint.getDataType().getFields()) {
+                Value val = dataPoint.getValue(field);
+
+                speed += val.asFloat();
+                Log.i(TAG, "Detected DataPoint field: " + field.getName());
+                Log.i(TAG, "Detected DataPoint value: " + val);
+                getView().setSpeed(speed + "");
+            }
+        };
+
+        Fitness.SensorsApi.add(
+                googleApiClient,
+                new SensorRequest.Builder()
+                        .setDataSource(dataSource) // Optional but recommended for custom data sets.
+                        .setDataType(dataType)// Can't be omitted.
+                        .setSamplingRate(800, TimeUnit.MILLISECONDS)
+                        .build(),
+                mListenerSpeed)
                 .setResultCallback(status -> {
                     if (status.isSuccess()) {
                         Log.i(TAG, "Listener registered!");
