@@ -32,7 +32,6 @@ public final class PredictionManager {
     private JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private HttpTransport httpTransport;
     private Prediction mPrediction;
-    private ConnectableObservable<Boolean> mTrainObservable;
     private boolean isTrained = false;
 
     private PredictionManager() {
@@ -142,9 +141,12 @@ public final class PredictionManager {
                 });
     }
 
-    private Observable<Boolean> checkifTrainedAlready() {
-        if (isTrained) return Observable.just(true);
-        else return Observable.error(new UnCompletedException());
+    private Observable<String> checkifTrainedAlready() {
+        return Observable.just(true)
+                .flatMap(aBoolean -> {
+                    if (isTrained) return Observable.just("DONE");
+                    else return Observable.error(new UnCompletedException());
+                });
     }
 
     public Observable<Boolean> getTrainForPredict() {
@@ -156,7 +158,11 @@ public final class PredictionManager {
                             else return Observable.error(errors);
                         })
                         .zipWith(Observable.range(0, 15), (o, integer) -> integer)
-                        .flatMap(retryCount -> Observable.timer(5, TimeUnit.SECONDS)));
+                        .flatMap(retryCount -> Observable.timer(5, TimeUnit.SECONDS)))
+                .map(s -> {
+                    Logger.d("Training completed");
+                    return s.equals("DONE");
+                });
     }
 
 

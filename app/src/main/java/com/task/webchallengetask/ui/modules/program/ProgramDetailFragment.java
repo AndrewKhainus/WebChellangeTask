@@ -179,11 +179,16 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     }
 
     @Override
-    public void setDifficult(List<Difficult> _data) {
+    public void setDifficultList(List<Difficult> _data) {
         DifficultAdapter adapter = new DifficultAdapter(this.getContext(), android.R.layout.simple_spinner_item, _data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDifficult.setAdapter(adapter);
 
+    }
+
+    @Override
+    public void setDifficult(int _position) {
+        spDifficult.setSelection(_position);
     }
 
     @Override

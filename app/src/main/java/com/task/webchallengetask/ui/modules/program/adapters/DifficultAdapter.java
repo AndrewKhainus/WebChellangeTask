@@ -33,4 +33,6 @@ public class DifficultAdapter extends ArrayAdapter<String> {
         return data.get(position);
     }
 
+
+
 }
