@@ -2,7 +2,6 @@ package com.task.webchallengetask.ui.base;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -38,11 +37,9 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
             getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                BaseFragment fragment = (BaseFragment) getSupportFragmentManager()
-                        .findFragmentById(getFragmentContainer());
-                setToolBarTitle(fragment.setTitle());
-            }
+            BaseFragment fragment = (BaseFragment) getSupportFragmentManager()
+                    .findFragmentById(getFragmentContainer());
+            setToolBarTitle(fragment.getTitle());
         });
 
         mPresenter.onViewCreated();
@@ -153,7 +150,7 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
         }
         fragmentTransaction.show(_fragment);
         fragmentTransaction.commitAllowingStateLoss();
-        setToolBarTitle(_fragment.setTitle());
+        setToolBarTitle(_fragment.getTitle());
     }
 
     protected void setToolBarTitle(int _titleRes) {
@@ -169,7 +166,7 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     }
 
     @Override
-    public void startActivity(Class _activityClass, int ... _flag) {
+    public void startActivity(Class _activityClass, int... _flag) {
         Intent intent = new Intent(this, _activityClass);
         for (int a_flag : _flag) {
             intent.setFlags(a_flag);

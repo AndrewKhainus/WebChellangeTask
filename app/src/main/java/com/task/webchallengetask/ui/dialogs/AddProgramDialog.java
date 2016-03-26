@@ -13,8 +13,8 @@ import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.programs.Program;
 import com.task.webchallengetask.global.utils.RxUtils;
-import com.task.webchallengetask.ui.adapters.DifficultAdapter;
-import com.task.webchallengetask.ui.adapters.ProgramAdapter;
+import com.task.webchallengetask.ui.modules.program.adapters.DifficultAdapter;
+import com.task.webchallengetask.ui.modules.program.adapters.ProgramAdapter;
 import com.task.webchallengetask.ui.base.BaseDialog;
 import com.task.webchallengetask.ui.dialogs.presenters.AddProgramDialogPresenter;
 

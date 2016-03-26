@@ -2,7 +2,7 @@ package com.task.webchallengetask.ui.dialogs.presenters;
 
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
-import com.task.webchallengetask.global.utils.SharedPrefManager;
+import com.task.webchallengetask.data.data_managers.SharedPrefManager;
 import com.task.webchallengetask.ui.base.BaseDialogView;
 
 import java.util.Arrays;

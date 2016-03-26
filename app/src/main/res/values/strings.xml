@@ -23,6 +23,7 @@
     <string name="error">Error</string>
 
     <string name="activity_list">Activity list</string>
+    <string name="activity_detail">Activity detail</string>
     <string name="start_activity">Start activity</string>
     <string name="analytics">Analytics</string>
     <string name="programs">Programs</string>
