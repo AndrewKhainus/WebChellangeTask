@@ -26,6 +26,34 @@ public final class IntentManager {
         return intent;
     }
 
+    public static Intent sendCaloriesIntent(float _count) {
+        Intent intent = new Intent();
+        intent.setAction(Constants.SEND_CALORIES_ACTION);
+        intent.putExtra(Constants.SEND_CALORIES_KEY, _count);
+        return intent;
+    }
+
+    public static Intent sendDistanceIntent(float _count) {
+        Intent intent = new Intent();
+        intent.setAction(Constants.SEND_DISTANCE_ACTION);
+        intent.putExtra(Constants.SEND_DISTANCE_KEY, _count);
+        return intent;
+    }
+
+    public static Intent sendStepIntent(int _count) {
+        Intent intent = new Intent();
+        intent.setAction(Constants.SEND_STEP_ACTION);
+        intent.putExtra(Constants.SEND_STEP_KEY, _count);
+        return intent;
+    }
+
+    public static Intent sendSpeedIntent(float _count) {
+        Intent intent = new Intent();
+        intent.setAction(Constants.SEND_SPEED_ACTION);
+        intent.putExtra(Constants.SEND_SPEED_KEY, _count);
+        return intent;
+    }
+
     public static boolean isServiceRunning(Context _context, Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) _context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {

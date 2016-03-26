@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.activities.presenters;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -39,6 +40,8 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
 
     private CallbackManager mCallbackManager;
     private GoogleApiClient googleApiClient;
+    private boolean isIntentInProgress;
+    private boolean isSignInClicked;
     private PendingIntent mSignInIntent;
 
     @Override
@@ -54,7 +57,9 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
     }
 
     public void onGoogleSignInClicked() {
-        googleApiClient = setupGoogleApiClient(this, this, true);
+        if (googleApiClient == null)
+            googleApiClient = setupGoogleApiClient(this, this, true);
+        isSignInClicked = true;
         resolveSignInError();
     }
 
@@ -62,6 +67,12 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case Constants.RC_SIGN_IN_GOOGLE_PLUS:
+                if (resultCode != Activity.RESULT_OK) {
+                    isSignInClicked = false;
+                }
+
+                isIntentInProgress = false;
+
                 if (!googleApiClient.isConnecting()) {
                     googleApiClient.connect();
                 }
@@ -86,6 +97,7 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
 
     @Override
     public void onConnected(Bundle _bundle) {
+        isSignInClicked = false;
         Person currentPerson = Plus.PeopleApi.getCurrentPerson(googleApiClient);
 
         if (currentPerson != null) {
@@ -99,6 +111,7 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
                 getView().startSenderIntent(mSignInIntent.getIntentSender(),
                         Constants.RC_SIGN_IN_GOOGLE_PLUS);
             } catch (IntentSender.SendIntentException e) {
+                isIntentInProgress = false;
                 googleApiClient.connect();
             }
         }
@@ -131,8 +144,12 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
 
     @Override
     public void onConnectionFailed(ConnectionResult _connectionResult) {
-        mSignInIntent = _connectionResult.getResolution();
-        resolveSignInError();
+        if (!isIntentInProgress) {
+            mSignInIntent = _connectionResult.getResolution();
+            if (isSignInClicked) {
+                resolveSignInError();
+            }
+        }
     }
 
     @Override

@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.GoogleApiUtils;
+import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.SharedPrefManager;
 import com.task.webchallengetask.ui.activities.LoginActivity;
 import com.task.webchallengetask.ui.activities.MainActivity;
@@ -20,21 +22,21 @@ import com.task.webchallengetask.ui.fragments.AnalyticsFragment;
 import com.task.webchallengetask.ui.fragments.ProgramsListFragment;
 import com.task.webchallengetask.ui.fragments.SettingsFragment;
 
-public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPresenter.MainView> implements GoogleApiClient.ConnectionCallbacks {
+public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPresenter.MainView> implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private PendingIntent mSignInIntent;
     private GoogleApiClient googleApiClient;
 
-
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        GoogleApiUtils.getInstance().buildGoogleApiClient();
-        if (TextUtils.equals(SharedPrefManager.getInstance().retrieveActiveSocial(), Constants.SOCIAL_FACEBOOK)) {
-            googleApiClient = setupGoogleApiClient(this, _connectionResult -> {
-                mSignInIntent = _connectionResult.getResolution();
-                resolveSignInError();
-            }, false);
+
+        if (!GoogleApiUtils.getInstance().isNotEmptyClient()) {
+            getView().showLoadingDialog();
+            boolean isGooglePlus = TextUtils.equals(SharedPrefManager.getInstance().retrieveActiveSocial(),
+                    Constants.SOCIAL_GOOGLE_PLUS);
+            googleApiClient = setupGoogleApiClient(this, this, isGooglePlus);
         }
         getView().switchFragment(ActivityListFragment.newInstance(), false);
         getView().setHeaderTitle(SharedPrefManager.getInstance().retrieveUsername());
@@ -44,6 +46,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
     private void resolveSignInError() {
         if (mSignInIntent != null) {
             try {
+                getView().hideLoadingDialog();
                 getView().startSenderIntent(mSignInIntent.getIntentSender(),
                         Constants.RC_SIGN_IN_GOOGLE_PLUS);
             } catch (IntentSender.SendIntentException e) {
@@ -94,9 +97,11 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
         switch (SharedPrefManager.getInstance().retrieveActiveSocial()) {
             case Constants.SOCIAL_FACEBOOK:
                 LoginManager.getInstance().logOut();
+                if (GoogleApiUtils.getInstance().isNotEmptyClient())
+                    GoogleApiUtils.getInstance().disableFit();
                 break;
             case Constants.SOCIAL_GOOGLE_PLUS:
-                if (GoogleApiUtils.getInstance().buildGoogleApiClientWithGooglePlus() != null &&
+                if (GoogleApiUtils.getInstance().isNotEmptyClient() &&
                         GoogleApiUtils.getInstance().buildGoogleApiClientWithGooglePlus().isConnected())
                     GoogleApiUtils.getInstance().logoutGooglePlus();
         }
@@ -114,12 +119,19 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
 
     @Override
     public void onConnected(Bundle _bundle) {
-
+        getView().hideLoadingDialog();
+        Logger.d("Google API client onConnected");
     }
 
     @Override
     public void onConnectionSuspended(int i) {
+        googleApiClient.connect();
+    }
 
+    @Override
+    public void onConnectionFailed(ConnectionResult _connectionResult) {
+        mSignInIntent = _connectionResult.getResolution();
+        resolveSignInError();
     }
 
     public interface MainView extends BaseActivityView<MainActivityPresenter> {

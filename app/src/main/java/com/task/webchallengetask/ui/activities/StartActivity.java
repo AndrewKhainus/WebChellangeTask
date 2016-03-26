@@ -177,9 +177,4 @@ public class StartActivity extends BaseActivity<StartActivityPresenter>
         vgCaloriesContainer.setVisibility(_isVisible ? View.VISIBLE : View.GONE);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        getPresenter().onActivityRes(resultCode);
-    }
-
 }
