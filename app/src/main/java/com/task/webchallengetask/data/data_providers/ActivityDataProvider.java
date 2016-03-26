@@ -37,46 +37,83 @@ public class ActivityDataProvider extends BaseDataProvider {
         return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate)));
     }
 
-    public Observable<List<Float>> getDistance(long _startDate, long _endDate) {
-        return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
-        .flatMap(Observable::from))
-                .map(ActionParametersModel::getDistance)
-                .toList();
+    public Observable<Float> getDistance(long _startDate, long _endDate) {
 
+        return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
+                .flatMap(Observable::from))
+                .map(ActionParametersModel::getDistance)
+                .toList()
+                .map(aFloat -> {
+                    float totalDistance = 0;
+                    for (float value : aFloat) {
+                        totalDistance += value;
+                    }
+                    return totalDistance;
+                });
     }
 
-    public Observable<List<Integer>> getSteps(long _startDate, long _endDate) {
+    public Observable<Integer> getSteps(long _startDate, long _endDate) {
         return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
                 .flatMap(Observable::from))
                 .map(ActionParametersModel::getStep)
-                .toList();
+                .toList()
+                .map(integers -> {
+                    int totalDistance = 0;
+                    for (float value : integers) {
+                        totalDistance += value;
+                    }
+                    return totalDistance;
+                });
 
     }
 
-    public Observable<List<Float>> getActualTime(long _startDate, long _endDate) {
+    public Observable<Float> getActualTime(long _startDate, long _endDate) {
         return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
                 .flatMap(Observable::from))
                 .map(ActionParametersModel::getActivityActualTime)
-                .toList();
+                .toList()
+                .map(aFloat -> {
+                    float totalActualTime = 0;
+                    for (float value : aFloat) {
+                        totalActualTime += value;
+                    }
+                    return totalActualTime;
+                });
+
 
     }
 
-    public Observable<List<Float>> getSpeed(long _startDate, long _endDate) {
+    public Observable<Float> getSpeed(long _startDate, long _endDate) {
         return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
                 .flatMap(Observable::from))
                 .map(ActionParametersModel::getActivityActualTime)
-                .toList();
+                .toList()
+                .map(aFloat -> {
+                    float totalSteps = 0;
+                    for (float value : aFloat) {
+                        totalSteps += value;
+                    }
+                    return totalSteps;
+                });
+
 
     }
 
-    public Observable<List<Float>> getCalories(long _startDate, long _endDate) {
+    public Observable<Float> getCalories(long _startDate, long _endDate) {
         return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
                 .flatMap(Observable::from))
                 .map(ActionParametersModel::getActivityActualTime)
-                .toList();
+                .toList()
+                .map(aFloat -> {
+                    float totalCalories = 0;
+                    for (float value : aFloat) {
+                        totalCalories += value;
+                    }
+                    return totalCalories;
+                });
+
 
     }
-
 
 
 }

@@ -1,6 +1,9 @@
 package com.task.webchallengetask.ui.modules.program.presenters;
 
+import android.support.v4.util.Pair;
+
 import com.google.android.gms.fitness.data.DataPoint;
+import com.google.api.client.util.Data;
 import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.FitDataProvider;
@@ -20,6 +23,8 @@ import com.task.webchallengetask.ui.base.BaseFragmentView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +38,8 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     private ActivityDataProvider mActivityDataProvider = ActivityDataProvider.getInstance();
     private FitDataProvider mFitDataProvider = FitDataProvider.getInstance();
     private ProgramTable todayProgram;
+    private Program mProgram;
+    private List<Pair<Date, Object>> mDataList = new ArrayList<>();
 
     @Override
     public void onViewCreated() {
@@ -46,14 +53,10 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         Date start = weekAgo;
         Date end = new Date();
 
-        do {
-            getDataByDay(start.getTime(), TimeUtil.addDayToDate(start, 1).getTime());
-        } while (start.before(end) || start.equals(end));
-
         mProgramDataProvider.getProgram(getView().getFragmentArguments().getString(Constants.PROGRAM_NAME_KEY))
-                .subscribe(programTables -> {
-                    createDiagram(programTables);
-                    todayProgram = programTables.get(0);
+                .subscribe(programTable -> {
+                    createDiagram(programTable);
+                    todayProgram = programTable;
                     fillProgram(todayProgram);
                 }, Logger::e);
 
@@ -63,12 +66,15 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         GoogleApiUtils.describeDataPoint(_dataPoint, new SimpleDateFormat("dd.MM.yyyy"));
     }
 
-    private void getDataByDay(long _startDay, long _endDay) {
-        mFitDataProvider.getDistance(_startDay, _endDay)
-                .subscribe(value -> {
-                    Logger.d("value is = " + value.asFloat());
-                }, Logger::e);
+    private Program defineProgram(ProgramTable _table) {
+        for (Program program : ProgramFactory.getPrograms()) {
+            if (program.getName().equals(_table.getName())) {
+                return program;
+            }
+        }
+        return null;
     }
+
 
     public void onStartDateClicked() {
         getView().openStartDateCalendar(_date -> getView().setStartDate(TimeUtil.dateToString(_date)));
@@ -88,6 +94,8 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         } else {
             getView().setTargetEnabled(false);
         }
+
+
     }
 
     private List<Difficult> getDifficultList(String _name) {
@@ -109,8 +117,60 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         return null;
     }
 
+    private void prepareResult() {
+
+        final Date startDate = TimeUtil.parseDate(getView().getStartDate());
+        final Date endDate = TimeUtil.parseDate(getView().getEndDate());
+
+        int complited = 0;
+        int uncomplited = 0;
+
+        Date currentDate = startDate;
+        do {
+
+            switch (mProgram.getType()) {
+                case ACTIVE_LIFE:
+
+                    break;
+                case LONG_DISTANCE:
+                    for (Pair<Date, Object> value : mDataList) {
+
+                    }
+
+
+                    break;
+            }
+        } while (startDate.after(endDate));
+
+
+    }
+
     public void onAnalyze() {
         getView().showLoadingDialog();
+        final Date startDate = TimeUtil.parseDate(getView().getStartDate());
+        final Date endDate = TimeUtil.parseDate(getView().getEndDate());
+        Date currentDate = startDate;
+        do {
+
+            switch (mProgram.getType()) {
+                case ACTIVE_LIFE:
+
+                    break;
+                case LONG_DISTANCE:
+
+                    mActivityDataProvider.getDistance(startDate.getTime(), startDate.getTime())
+                            .subscribe(floatValue -> {
+                               mDataList.add(new Pair<>(currentDate, floatValue));
+                            });
+                    break;
+            }
+
+        } while (startDate.after(endDate));
+
+//        Collections.sort(mDataList, (lhs, rhs) -> lhs.first.before(rhs.first) ? 1 : 0);
+
+
+
         mPredictionDataProvider.analyzeWeeklyTrendResults(7, 0)
                 .subscribe(s -> {
                     String message = "";
@@ -139,7 +199,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     }
 
 
-    private void createDiagram(List<ProgramTable> programs) {
+    private void createDiagram(ProgramTable programs) {
         getView().setDiagram();
     }
 
@@ -167,5 +227,9 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         void setStartDate(String _text);
 
         void setEndDate(String _text);
+
+        String getStartDate();
+
+        String getEndDate();
     }
 }

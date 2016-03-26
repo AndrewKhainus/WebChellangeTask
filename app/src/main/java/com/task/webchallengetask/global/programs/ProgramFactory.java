@@ -2,6 +2,7 @@ package com.task.webchallengetask.global.programs;
 
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
+import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.programs.difficults.DifficultActiveBeginner;
 import com.task.webchallengetask.global.programs.difficults.DifficultActiveCustom;
@@ -29,7 +30,7 @@ public class ProgramFactory {
         difficults.add(new DifficultRunnerProfessional());
         difficults.add(new DifficultRunnerCustom());
 
-        return new Program("Long distance", description, difficults);
+        return new Program("Long distance", description, difficults, Constants.PROGRAM_TYPES.LONG_DISTANCE);
     }
 
     private static Program createActiveLifeDistance() {
@@ -41,7 +42,7 @@ public class ProgramFactory {
         difficults.add(new DifficultActiveProfessional());
         difficults.add(new DifficultActiveCustom());
 
-        return new Program("Active life", description, difficults);
+        return new Program("Active life", description, difficults, Constants.PROGRAM_TYPES.ACTIVE_LIFE);
     }
 
     public static List<Program> getPrograms() {
