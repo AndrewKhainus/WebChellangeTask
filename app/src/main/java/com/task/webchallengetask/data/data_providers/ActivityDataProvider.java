@@ -44,4 +44,46 @@ public class ActivityDataProvider extends BaseDataProvider {
         return newThread(Observable.just(mDbController.getActionParametersModel(_id)));
     }
 
+    public Observable<List<Float>> getDistance(long _startDate, long _endDate) {
+        return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
+        .flatMap(Observable::from))
+                .map(ActionParametersModel::getDistance)
+                .toList();
+
+    }
+
+    public Observable<List<Integer>> getSteps(long _startDate, long _endDate) {
+        return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
+                .flatMap(Observable::from))
+                .map(ActionParametersModel::getStep)
+                .toList();
+
+    }
+
+    public Observable<List<Float>> getActualTime(long _startDate, long _endDate) {
+        return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
+                .flatMap(Observable::from))
+                .map(ActionParametersModel::getActivityActualTime)
+                .toList();
+
+    }
+
+    public Observable<List<Float>> getSpeed(long _startDate, long _endDate) {
+        return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
+                .flatMap(Observable::from))
+                .map(ActionParametersModel::getActivityActualTime)
+                .toList();
+
+    }
+
+    public Observable<List<Float>> getCalories(long _startDate, long _endDate) {
+        return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
+                .flatMap(Observable::from))
+                .map(ActionParametersModel::getActivityActualTime)
+                .toList();
+
+    }
+
+
+
 }

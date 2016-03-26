@@ -111,11 +111,11 @@ public final class GoogleApiUtils {
                     .readData(googleApiClient, requestHistory(startTime, endTime))
                     .setResultCallback(_dataReadResult -> {
                         if (_dataReadResult.getBuckets().size() > 0) {
-                            Logger.d("DataSet.size(): " + _dataReadResult.getBuckets().size());
+//                            Logger.d("DataSet.size(): " + _dataReadResult.getBuckets().size());
                             for (Bucket bucket : _dataReadResult.getBuckets()) {
                                 List<DataSet> dataSets = bucket.getDataSets();
                                 for (DataSet dataSet : dataSets) {
-                                    Logger.d("dataSet.dataType: " + dataSet.getDataType().getName());
+//                                    Logger.d("dataSet.dataType: " + dataSet.getDataType().getName());
 
                                     for (DataPoint dp : dataSet.getDataPoints()) {
                                         describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));
@@ -124,9 +124,9 @@ public final class GoogleApiUtils {
                                 }
                             }
                         } else if (_dataReadResult.getDataSets().size() > 0) {
-                            Logger.d("dataSet.size(): " + _dataReadResult.getDataSets().size());
+//                            Logger.d("dataSet.size(): " + _dataReadResult.getDataSets().size());
                             for (DataSet dataSet : _dataReadResult.getDataSets()) {
-                                Logger.d("dataType: " + dataSet.getDataType().getName());
+//                                Logger.d("dataType: " + dataSet.getDataType().getName());
 
                                 for (DataPoint dp : dataSet.getDataPoints()) {
                                     describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));
@@ -153,11 +153,11 @@ public final class GoogleApiUtils {
                     .readData(googleApiClient, requestHistory(startTime, endTime))
                     .setResultCallback(_dataReadResult -> {
                         if (_dataReadResult.getBuckets().size() > 0) {
-                            Logger.d("DataSet.size(): " + _dataReadResult.getBuckets().size());
+//                            Logger.d("DataSet.size(): " + _dataReadResult.getBuckets().size());
                             for (Bucket bucket : _dataReadResult.getBuckets()) {
                                 List<DataSet> dataSets = bucket.getDataSets();
                                 for (DataSet dataSet : dataSets) {
-                                    Logger.d("dataSet.dataType: " + dataSet.getDataType().getName());
+//                                    Logger.d("dataSet.dataType: " + dataSet.getDataType().getName());
 
                                     for (DataPoint dp : dataSet.getDataPoints()) {
                                         describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));
@@ -166,9 +166,9 @@ public final class GoogleApiUtils {
                                 }
                             }
                         } else if (_dataReadResult.getDataSets().size() > 0) {
-                            Logger.d("dataSet.size(): " + _dataReadResult.getDataSets().size());
+//                            Logger.d("dataSet.size(): " + _dataReadResult.getDataSets().size());
                             for (DataSet dataSet : _dataReadResult.getDataSets()) {
-                                Logger.d("dataType: " + dataSet.getDataType().getName());
+//                                Logger.d("dataType: " + dataSet.getDataType().getName());
 
                                 for (DataPoint dp : dataSet.getDataPoints()) {
                                     describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));
@@ -180,7 +180,7 @@ public final class GoogleApiUtils {
         });
     }
 
-    public Observable<DataPoint> getHistory(int _start, int _end) {
+    public Observable<DataPoint> getHistory(long _start, long _end) {
 
         return Observable.create(_history -> {
             if (googleApiClient == null)
@@ -190,11 +190,11 @@ public final class GoogleApiUtils {
                     .readData(googleApiClient, requestHistory(_start, _end))
                     .setResultCallback(_dataReadResult -> {
                         if (_dataReadResult.getBuckets().size() > 0) {
-                            Logger.d("DataSet.size(): " + _dataReadResult.getBuckets().size());
+//                            Logger.d("DataSet.size(): " + _dataReadResult.getBuckets().size());
                             for (Bucket bucket : _dataReadResult.getBuckets()) {
                                 List<DataSet> dataSets = bucket.getDataSets();
                                 for (DataSet dataSet : dataSets) {
-                                    Logger.d("dataSet.dataType: " + dataSet.getDataType().getName());
+//                                    Logger.d("dataSet.dataType: " + dataSet.getDataType().getName());
 
                                     for (DataPoint dp : dataSet.getDataPoints()) {
                                         describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));
@@ -203,9 +203,9 @@ public final class GoogleApiUtils {
                                 }
                             }
                         } else if (_dataReadResult.getDataSets().size() > 0) {
-                            Logger.d("dataSet.size(): " + _dataReadResult.getDataSets().size());
+//                            Logger.d("dataSet.size(): " + _dataReadResult.getDataSets().size());
                             for (DataSet dataSet : _dataReadResult.getDataSets()) {
-                                Logger.d("dataType: " + dataSet.getDataType().getName());
+//                                Logger.d("dataType: " + dataSet.getDataType().getName());
 
                                 for (DataPoint dp : dataSet.getDataPoints()) {
                                     describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));
@@ -227,7 +227,7 @@ public final class GoogleApiUtils {
                 .build();
     }
 
-    public void describeDataPoint(DataPoint dp, DateFormat dateFormat) {
+    public static void describeDataPoint(DataPoint dp, DateFormat dateFormat) {
         String msg = "dataPoint: "
                 + "type: " + dp.getDataType().getName() + "\n"
                 + ", range: [" + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS))

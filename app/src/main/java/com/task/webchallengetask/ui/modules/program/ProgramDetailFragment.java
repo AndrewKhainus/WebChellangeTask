@@ -121,6 +121,11 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     }
 
     @Override
+    public void setSaveVisible(boolean _isVisible) {
+        menuSave.setVisible(_isVisible);
+    }
+
+    @Override
     public void setTitle(String _text) {
         tvTitle.setText(_text);
     }
@@ -129,6 +134,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_program_detail, menu);
         menuSave = menu.findItem(R.id.menu_save);
+        menuSave.setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -189,8 +195,4 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         tvEndDate.setText(_text);
     }
 
-    @Override
-    public void setEditVisible(boolean _isVisible) {
-        menuSave.setVisible(_isVisible);
-    }
 }
