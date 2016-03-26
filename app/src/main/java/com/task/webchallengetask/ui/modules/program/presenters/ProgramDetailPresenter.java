@@ -14,9 +14,9 @@ import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.programs.difficults.DifficultCustom;
 import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
-import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
+import com.task.webchallengetask.ui.custom.CalendarView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +33,8 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     private ActivityDataProvider mActivityDataProvider = ActivityDataProvider.getInstance();
     private FitDataProvider mFitDataProvider = FitDataProvider.getInstance();
     private ProgramTable todayProgram;
+    private Program mProgram;
+    private List<Object> mDataList = new ArrayList<>();
 
     @Override
     public void onViewCreated() {
@@ -46,14 +48,10 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         Date start = weekAgo;
         Date end = new Date();
 
-        do {
-            getDataByDay(start.getTime(), TimeUtil.addDayToDate(start, 1).getTime());
-        } while (start.before(end) || start.equals(end));
-
         mProgramDataProvider.getProgram(getView().getFragmentArguments().getString(Constants.PROGRAM_NAME_KEY))
-                .subscribe(programTables -> {
-                    createDiagram(programTables);
-                    todayProgram = programTables.get(0);
+                .subscribe(programTable -> {
+                    createDiagram(programTable);
+                    todayProgram = programTable;
                     fillProgram(todayProgram);
                 }, Logger::e);
 
@@ -63,12 +61,15 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         GoogleApiUtils.describeDataPoint(_dataPoint, new SimpleDateFormat("dd.MM.yyyy"));
     }
 
-    private void getDataByDay(long _startDay, long _endDay) {
-        mFitDataProvider.getDistance(_startDay, _endDay)
-                .subscribe(value -> {
-                    Logger.d("value is = " + value.asFloat());
-                }, Logger::e);
+    private Program defineProgram(ProgramTable _table) {
+        for (Program program : ProgramFactory.getPrograms()) {
+            if (program.getName().equals(_table.getName())) {
+                return program;
+            }
+        }
+        return null;
     }
+
 
     public void onStartDateClicked() {
         getView().openStartDateCalendar(_date -> getView().setStartDate(TimeUtil.dateToString(_date)));
@@ -88,6 +89,8 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         } else {
             getView().setTargetEnabled(false);
         }
+
+
     }
 
     private List<Difficult> getDifficultList(String _name) {
@@ -109,8 +112,40 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         return null;
     }
 
-    public void onAnalyze() {
+    private void prepareResult() {
+
+        final Date startDate = TimeUtil.parseDate(getView().getStartDate());
+        final Date endDate = TimeUtil.parseDate(getView().getEndDate());
+
+        int complited = 0;
+        int uncomplited = 0;
+
+        Date currentDate = startDate;
+        do {
+
+            switch (mProgram.getType()) {
+                case ACTIVE_LIFE:
+
+                    break;
+                case LONG_DISTANCE:
+
+                    break;
+            }
+        } while (startDate.after(endDate));
+
+
+    }
+
+    private void getDistnances() {
         getView().showLoadingDialog();
+        final Date startDate = TimeUtil.parseDate(getView().getStartDate());
+        final Date endDate = TimeUtil.parseDate(getView().getEndDate());
+
+
+    }
+
+    public void onAnalyze() {
+
         mPredictionDataProvider.analyzeWeeklyTrendResults(7, 0)
                 .subscribe(s -> {
                     String message = "";
@@ -139,7 +174,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     }
 
 
-    private void createDiagram(List<ProgramTable> programs) {
+    private void createDiagram(ProgramTable programs) {
         getView().setDiagram();
     }
 
@@ -167,5 +202,9 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         void setStartDate(String _text);
 
         void setEndDate(String _text);
+
+        String getStartDate();
+
+        String getEndDate();
     }
 }

@@ -33,8 +33,15 @@ public class ProgramDataProvider extends BaseDataProvider {
         return newThread(mDatabaseController.getPrograms());
     }
 
-    public Observable<List<ProgramTable>> getProgram(String _name) {
+    public Observable<ProgramTable> getProgram(String _name) {
         return newThread(mDatabaseController.getProgram(_name));
     }
+
+/*
+    public Observable<Boolean> checkDistance() {
+
+    }
+*/
+
 
 }

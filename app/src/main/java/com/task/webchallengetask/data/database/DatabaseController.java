@@ -58,10 +58,10 @@ public class DatabaseController {
         return Observable.from(new Select().from(ProgramTable.class).queryList()).toList();
     }
 
-    public Observable<List<ProgramTable>> getProgram(String _name) {
+    public Observable<ProgramTable> getProgram(String _name) {
         return Observable.just(new Select().from(ProgramTable.class)
                 .where(ProgramTable_Table.name.eq(_name))
-                .queryList());
+                .querySingle());
     }
 
 }

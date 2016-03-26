@@ -54,6 +54,10 @@ public final class Constants {
 
     public static final String PROGRAM_NAME_KEY = "PROGRAM_NAME_KEY";
 
+    public enum PROGRAM_TYPES {
+        LONG_DISTANCE,
+        ACTIVE_LIFE
+    }
 
     public enum DATA_TYPES {
         ACTIVITY_TIME,
