@@ -64,5 +64,8 @@
                 android:paddingRight="4dp" />
         </LinearLayout>
     </LinearLayout>
-
+    <com.github.mikephil.charting.charts.CombinedChart
+        android:id="@+id/chart_FA"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

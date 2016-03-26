@@ -60,7 +60,7 @@ public final class Constants {
         STEP,
         DISTANCE,
         CALORIES,
-        All
+//        All
     }
 
 

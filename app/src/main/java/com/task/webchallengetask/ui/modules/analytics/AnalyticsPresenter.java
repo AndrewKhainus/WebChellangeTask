@@ -2,6 +2,7 @@ package com.task.webchallengetask.ui.modules.analytics;
 
 import android.support.v4.util.Pair;
 
+import com.github.mikephil.charting.data.Entry;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.global.Constants;
@@ -23,7 +24,7 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
     public static final Pair<Constants.DATA_TYPES, String> stepDataType = new Pair(Constants.DATA_TYPES.STEP, "Steps");
     public static final Pair<Constants.DATA_TYPES, String> distanceDataType = new Pair(Constants.DATA_TYPES.DISTANCE, "Distance");
     public static final Pair<Constants.DATA_TYPES, String> caloriesDataType = new Pair(Constants.DATA_TYPES.CALORIES, "Calories");
-    public static final Pair<Constants.DATA_TYPES, String> allDataType = new Pair(Constants.DATA_TYPES.All, "All");
+//    public static final Pair<Constants.DATA_TYPES, String> allDataType = new Pair(Constants.DATA_TYPES.All, "All");
 
     @Override
     public void onViewCreated() {
@@ -34,7 +35,7 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         dataTypesList.add(stepDataType);
         dataTypesList.add(distanceDataType);
         dataTypesList.add(caloriesDataType);
-        dataTypesList.add(allDataType);
+//        dataTypesList.add(allDataType);
         getView().setDataTypes(dataTypesList);
 
         getView().setEndDate(TimeUtil.timeToString(TimeUtil.getCurrentDay()));
@@ -45,9 +46,7 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         long endDate = TimeUtil.parseDate(getView().getEndDate()).getTime();
         mActivitiesProvider.getActivities(startDate, endDate)
                 .subscribe(actionParametersModels -> {
-
                 }, Logger::e);
-
 
     }
 
@@ -66,7 +65,7 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
 
     public interface AnalyticsView extends BaseFragmentView<AnalyticsPresenter> {
 
-        void setDiagram();
+        void setDiagram(ArrayList<Entry> _data);
         void openStartDateCalendar(CalendarView.Callback _callBack);
         void openEndDateCalendar(CalendarView.Callback _callBack);
         void setStartDate(String _text);
