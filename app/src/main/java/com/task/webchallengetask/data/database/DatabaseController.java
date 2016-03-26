@@ -41,6 +41,19 @@ public class DatabaseController {
                 .queryList();
     }
 
+    public List<ActionParametersModel> getAllActionParametersModel(){
+
+        return new Select().from(ActionParametersModel.class)
+                .orderBy(ActionParametersModel_Table.startTime, true)
+                .queryList();
+    }
+
+    public ActionParametersModel getActionParametersModel(int _id){
+        return new Select().from(ActionParametersModel.class)
+                .where(ActionParametersModel_Table.id.eq(_id))
+                .querySingle();
+    }
+
     public Observable<List<ProgramTable>> getPrograms() {
         return Observable.from(new Select().from(ProgramTable.class).queryList()).toList();
     }

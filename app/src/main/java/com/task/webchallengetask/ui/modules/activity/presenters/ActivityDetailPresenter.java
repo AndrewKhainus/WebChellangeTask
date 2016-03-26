@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.modules.activity.presenters;
 
+import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.TimeUtil;
@@ -11,29 +12,23 @@ import com.task.webchallengetask.ui.base.BaseFragmentView;
  */
 public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetailPresenter.ActivityDetailView> {
 
+    ActionParametersModel actionParametersModel;
     @Override
     public void onViewCreated() {
         super.onViewCreated();
         final int id = getView().getFragmentArguments().getInt(Constants.ACTIVITY_ID_KEY);
 
-        // TODO: get real activity from DB
-        ActionParametersModel model = new ActionParametersModel();
-        model.name = "StepByStep";
-        model.startTime = TimeUtil.parseTime("12:00:00").getTime();
-        model.endTime = TimeUtil.parseTime("12:30:00").getTime();
-        model.activityActualTime = 30;
-        model.calories = 3000;
-        model.step = 1500;
-        model.distance = 1234;
-
-        getView().setAllFieldsEditable(false);
-        getView().setStartTime(TimeUtil.timeToString(model.getStartTime()));
-        getView().setEndTime(TimeUtil.timeToString(model.getEndTime()));
-        getView().setActivityTime(String.valueOf(model.getActivityActualTime()));
-        getView().setDistance(String.valueOf(model.getDistance()));
-        getView().setStep(String.valueOf(model.getStep()));
-        getView().setCalories(String.valueOf(model.getCalories()));
-
+        ActivityDataProvider.getInstance().getActivitie(id)
+                .subscribe(_model -> {
+                    actionParametersModel = _model;
+                    getView().setAllFieldsEditable(false);
+                    getView().setStartTime(TimeUtil.timeToString(_model.getStartTime()));
+                    getView().setEndTime(TimeUtil.timeToString(_model.getEndTime()));
+                    getView().setActivityTime(String.valueOf(_model.getActivityActualTime()));
+                    getView().setDistance(String.valueOf(_model.getDistance()));
+                    getView().setStep(String.valueOf(_model.getStep()));
+                    getView().setCalories(String.valueOf(_model.getCalories()));
+                });
     }
 
     public void onEditClicked() {
@@ -46,7 +41,11 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
         getView().setSaveVisible(false);
         getView().setEditVisible(true);
         getView().setAllFieldsEditable(false);
-        // TODO: save to db
+        actionParametersModel.distance = Float.parseFloat(getView().getDistance());
+        actionParametersModel.activityActualTime = Float.parseFloat(getView().getActivityTime());
+        actionParametersModel.step = Integer.parseInt(getView().getStep());
+        actionParametersModel.calories = Float.parseFloat(getView().getCalories());
+        actionParametersModel.save();
     }
 
     public interface ActivityDetailView extends BaseFragmentView<ActivityDetailPresenter> {

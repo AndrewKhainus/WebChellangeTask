@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.ui.dialogs.ConfirmDialog;
 import com.task.webchallengetask.ui.dialogs.ErrorDialog;
 import com.task.webchallengetask.ui.dialogs.InfoDialog;
@@ -129,8 +130,14 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
 
     @Override
     public void hideLoadingDialog() {
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+        try {
+            if (progressDialog != null && progressDialog.isShowing())
+                progressDialog.dismiss();
+        }
+        catch (IllegalStateException e){
+            Logger.e(e);
+        }
+
     }
 
     @Override
