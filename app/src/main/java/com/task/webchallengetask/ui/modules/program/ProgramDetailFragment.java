@@ -195,4 +195,14 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         tvEndDate.setText(_text);
     }
 
+    @Override
+    public String getStartDate() {
+        return null;
+    }
+
+    @Override
+    public String getEndDate() {
+        return null;
+    }
+
 }

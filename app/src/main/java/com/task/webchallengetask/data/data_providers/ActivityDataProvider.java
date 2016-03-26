@@ -1,5 +1,7 @@
 package com.task.webchallengetask.data.data_providers;
 
+import android.util.Pair;
+
 import com.task.webchallengetask.data.database.DatabaseController;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.global.utils.TimeUtil;
@@ -47,7 +49,7 @@ public class ActivityDataProvider extends BaseDataProvider {
         return newThread(Observable.just(mDbController.getActionParametersModel(_id)));
     }
 
-    public Observable<List<Float>> getDistance(Date _startDate, Date _endDate) {
+    public Observable<List<Pair<Long, Float>>> getDistance(Date _startDate, Date _endDate) {
 
         List<Date> dateList = new ArrayList<>();
         Date currentDate = _startDate;
@@ -62,7 +64,7 @@ public class ActivityDataProvider extends BaseDataProvider {
                 .toList()));
     }
 
-    public Observable<List<Integer>> getSteps(Date _startDate, Date _endDate) {
+    public Observable<List<Pair<Long, Float>>> getSteps(Date _startDate, Date _endDate) {
 
         List<Date> dateList = new ArrayList<>();
         Date currentDate = _startDate;
@@ -77,7 +79,7 @@ public class ActivityDataProvider extends BaseDataProvider {
                         .toList()));
     }
 
-    public Observable<List<Float>> getActualTime(Date _startDate, Date _endDate) {
+    public Observable<List<Pair<Long, Float>>> getActualTime(Date _startDate, Date _endDate) {
 
         List<Date> dateList = new ArrayList<>();
         Date currentDate = _startDate;
@@ -92,7 +94,7 @@ public class ActivityDataProvider extends BaseDataProvider {
                         .toList()));
     }
 
-    public Observable<List<Float>> getCalories(Date _startDate, Date _endDate) {
+    public Observable<List<Pair<Long, Float>>> getCalories(Date _startDate, Date _endDate) {
 
         List<Date> dateList = new ArrayList<>();
         Date currentDate = _startDate;
@@ -110,7 +112,7 @@ public class ActivityDataProvider extends BaseDataProvider {
 
 
 
-    public Observable<Float> getDistance(long _date) {
+    public Observable<Pair<Long, Float>> getDistance(long _date) {
 
         return newThread(Observable.just(mDbController.getActionParametersModel(_date, _date))
                 .flatMap(Observable::from))
@@ -121,26 +123,26 @@ public class ActivityDataProvider extends BaseDataProvider {
                     for (float value : aFloat) {
                         totalDistance += value;
                     }
-                    return totalDistance;
+                    return new Pair<Long, Float>(_date, totalDistance);
                 });
     }
 
-    public Observable<Integer> getSteps(long _date) {
+    public Observable<Pair<Long, Float>> getSteps(long _date) {
         return newThread(Observable.just(mDbController.getActionParametersModel(_date, _date))
                 .flatMap(Observable::from))
                 .map(ActionParametersModel::getStep)
                 .toList()
                 .map(integers -> {
-                    int totalDistance = 0;
+                    float totalDistance = 0;
                     for (float value : integers) {
                         totalDistance += value;
                     }
-                    return totalDistance;
+                    return new Pair<Long, Float>(_date, totalDistance);
                 });
 
     }
 
-    public Observable<Float> getActualTime(long _date) {
+    public Observable<Pair<Long, Float>> getActualTime(long _date) {
         return newThread(Observable.just(mDbController.getActionParametersModel(_date, _date))
                 .flatMap(Observable::from))
                 .map(ActionParametersModel::getActivityActualTime)
@@ -150,7 +152,7 @@ public class ActivityDataProvider extends BaseDataProvider {
                     for (float value : aFloat) {
                         totalActualTime += value;
                     }
-                    return totalActualTime;
+                    return new Pair<Long, Float>(_date, totalActualTime);
                 });
 
 
@@ -172,7 +174,7 @@ public class ActivityDataProvider extends BaseDataProvider {
 
     }
 
-    public Observable<Float> getCalories(long _date) {
+    public Observable<Pair<Long, Float>> getCalories(long _date) {
         return newThread(Observable.just(mDbController.getActionParametersModel(_date, _date))
                 .flatMap(Observable::from))
                 .map(ActionParametersModel::getActivityActualTime)
@@ -182,7 +184,7 @@ public class ActivityDataProvider extends BaseDataProvider {
                     for (float value : aFloat) {
                         totalCalories += value;
                     }
-                    return totalCalories;
+                    return new Pair<Long, Float>(_date, totalCalories);
                 });
 
 

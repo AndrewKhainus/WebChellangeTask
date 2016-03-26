@@ -15,12 +15,7 @@ import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.RxUtils;
@@ -28,7 +23,6 @@ import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.base.BaseFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
@@ -39,7 +33,6 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
     private TextView tvEndDate;
     private FrameLayout lDiagramContainer;
     private CombinedChart mChart;
-    private final int itemcount = 12;
 
     public static AnalyticsFragment newInstance() {
 
@@ -91,12 +84,8 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
         RxUtils.click(tvEndDate, o -> getPresenter().onEndDateClicked());
     }
 
-    public String[] mMonths = new String[] {
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
-    };
-
     @Override
-    public void setDiagram(ArrayList<Entry> _data) {
+    public void setDiagram(BarData _value, CombinedData _date) {
         mChart.setDescription("");
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDrawGridBackground(false);
@@ -116,37 +105,9 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
-
-        CombinedData data = new CombinedData(mMonths);
-
-        data.setData(generateBarData());
-
-        mChart.setData(data);
+        _date.setData(_value);
+        mChart.setData(_date);
         mChart.invalidate();
-    }
-
-    private float getRandom(float range, float startsfrom) {
-        return (float) (Math.random() * range) + startsfrom;
-    }
-
-    private BarData generateBarData() {
-
-        BarData d = new BarData();
-
-        ArrayList<BarEntry> entries = new ArrayList<>();
-
-        for (int index = 0; index < itemcount; index++)
-            entries.add(new BarEntry(getRandom(15, 30), index));
-
-        BarDataSet set = new BarDataSet(entries, "Bar DataSet");
-        set.setColor(Color.rgb(60, 220, 78));
-        set.setValueTextColor(Color.rgb(60, 220, 78));
-        set.setValueTextSize(10f);
-        d.addDataSet(set);
-
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-
-        return d;
     }
 
     @Override
@@ -189,5 +150,10 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
     @Override
     public String getEndDate() {
         return tvEndDate.getText().toString();
+    }
+
+    @Override
+    public Pair<Constants.DATA_TYPES, String> getDataTypes() {
+        return ((DataTypesAdapter) spDataType.getAdapter()).getDataType(spDataType.getSelectedItemPosition());
     }
 }

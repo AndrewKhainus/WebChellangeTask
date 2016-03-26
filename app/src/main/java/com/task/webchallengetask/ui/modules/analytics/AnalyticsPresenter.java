@@ -1,12 +1,16 @@
 package com.task.webchallengetask.ui.modules.analytics;
 
+import android.graphics.Color;
 import android.support.v4.util.Pair;
 
-import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.CombinedData;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.global.Constants;
-import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
@@ -20,10 +24,10 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
 
     private ProgramDataProvider dataProvider = ProgramDataProvider.getInstance();
     private ActivityDataProvider mActivitiesProvider = ActivityDataProvider.getInstance();
-    public static final Pair<Constants.DATA_TYPES, String> activityDataType = new Pair(Constants.DATA_TYPES.ACTIVITY_TIME, "Activity time");
-    public static final Pair<Constants.DATA_TYPES, String> stepDataType = new Pair(Constants.DATA_TYPES.STEP, "Steps");
-    public static final Pair<Constants.DATA_TYPES, String> distanceDataType = new Pair(Constants.DATA_TYPES.DISTANCE, "Distance");
-    public static final Pair<Constants.DATA_TYPES, String> caloriesDataType = new Pair(Constants.DATA_TYPES.CALORIES, "Calories");
+    public static final Pair<Constants.DATA_TYPES, String> activityDataType = new Pair<>(Constants.DATA_TYPES.ACTIVITY_TIME, "Activity time");
+    public static final Pair<Constants.DATA_TYPES, String> stepDataType = new Pair<>(Constants.DATA_TYPES.STEP, "Steps");
+    public static final Pair<Constants.DATA_TYPES, String> distanceDataType = new Pair<>(Constants.DATA_TYPES.DISTANCE, "Distance");
+    public static final Pair<Constants.DATA_TYPES, String> caloriesDataType = new Pair<>(Constants.DATA_TYPES.CALORIES, "Calories");
 //    public static final Pair<Constants.DATA_TYPES, String> allDataType = new Pair(Constants.DATA_TYPES.All, "All");
 
     @Override
@@ -42,30 +46,79 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         Date weekAgo = TimeUtil.minusDayFromDate(new Date(), 7);
         getView().setStartDate(TimeUtil.timeToString(weekAgo.getTime()));
 
-        long startDate = TimeUtil.parseDate(getView().getStartDate()).getTime();
-        long endDate = TimeUtil.parseDate(getView().getEndDate()).getTime();
-        mActivitiesProvider.getActivities(startDate, endDate)
-                .subscribe(actionParametersModels -> {
-                }, Logger::e);
+//        getDiagram(activityDataType);
 
+   }
+
+    public void getDiagram(Pair<Constants.DATA_TYPES, String> _dataType){
+        Date start = TimeUtil.parseDate(getView().getStartDate());
+        Date end = TimeUtil.parseDate(getView().getEndDate());
+        switch (_dataType.first){
+            case ACTIVITY_TIME:
+                ActivityDataProvider.getInstance().getActualTime(start,end).subscribe((floats) -> {
+                    setDiagramData(floats, "Time");
+                });
+                break;
+            case STEP:
+                ActivityDataProvider.getInstance().getSteps(start,end).subscribe((floats) -> {
+                    setDiagramData(floats, "Steps");
+                });
+                break;
+            case DISTANCE:
+                ActivityDataProvider.getInstance().getDistance(start,end).subscribe((floats) -> {
+                    setDiagramData(floats, "Meters");
+                });
+                break;
+            case CALORIES:
+                ActivityDataProvider.getInstance().getCalories(start,end).subscribe((floats) -> {
+                    setDiagramData(floats, "Calories");
+                });
+                break;
+        }
+    }
+
+    public void setDiagramData(List<android.util.Pair<Long, Float>> floats, String _units){
+        ArrayList<BarEntry> _entry = new ArrayList<>();
+        BarData mDiagram = new BarData();
+        String[] dates = new String[floats.size()];
+        for (int i = 0; i < floats.size(); i++){
+          dates[i] = TimeUtil.timeToString(floats.get(i).first);
+            _entry.add(new BarEntry(floats.get(i).second, i));
+        }
+        CombinedData data = new CombinedData(dates);
+        BarDataSet set = new BarDataSet(_entry, _units);
+        set.setColor(Color.rgb(60, 220, 78));
+        set.setValueTextColor(Color.rgb(60, 220, 78));
+        set.setValueTextSize(10f);
+        mDiagram.addDataSet(set);
+
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        getView().setDiagram(mDiagram, data);
     }
 
     public void onStartDateClicked() {
-        getView().openStartDateCalendar(_date -> getView().setStartDate(TimeUtil.dateToString(_date)));
+        getView().openStartDateCalendar(_date -> {
+            getView().setStartDate(TimeUtil.dateToString(_date));
+            getDiagram(getView().getDataTypes());
+        });
     }
 
     public void onEndDateClicked() {
-        getView().openEndDateCalendar(_date -> getView().setEndDate(TimeUtil.dateToString(_date)));
+        getView().openEndDateCalendar(_date -> {
+            getView().setEndDate(TimeUtil.dateToString(_date));
+            getDiagram(getView().getDataTypes());
+        });
     }
 
 
     public void onDataTypeChoosed(Pair<Constants.DATA_TYPES, String> _dataType) {
         // TODO: change diagram
+        getDiagram(_dataType);
     }
 
     public interface AnalyticsView extends BaseFragmentView<AnalyticsPresenter> {
 
-        void setDiagram(ArrayList<Entry> _data);
+        void setDiagram(BarData _data, CombinedData data);
         void openStartDateCalendar(CalendarView.Callback _callBack);
         void openEndDateCalendar(CalendarView.Callback _callBack);
         void setStartDate(String _text);
@@ -73,6 +126,7 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         void setDataTypes(List<Pair<Constants.DATA_TYPES, String>> _data);
         String getStartDate();
         String getEndDate();
+        Pair<Constants.DATA_TYPES, String> getDataTypes();
     }
 
 }
