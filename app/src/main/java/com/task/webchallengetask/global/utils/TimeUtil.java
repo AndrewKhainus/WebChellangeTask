@@ -15,6 +15,7 @@ import java.util.Locale;
 public final class TimeUtil {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.US);
+    private static final SimpleDateFormat dateFormatDDMM = new SimpleDateFormat("dd/MM", Locale.US);
     private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.UK);
 
     public static long getCurrentDay() {
@@ -24,6 +25,10 @@ public final class TimeUtil {
 
     public static String timeToString(long _time) {
         return dateFormat.format(new Date(_time));
+    }
+
+    public static String timeToStringDDMM(long _time) {
+        return dateFormatDDMM.format(new Date(_time));
     }
 
     public static String dateToString(Date _date) {

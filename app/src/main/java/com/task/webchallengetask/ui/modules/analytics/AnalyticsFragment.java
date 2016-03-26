@@ -1,6 +1,7 @@
 package com.task.webchallengetask.ui.modules.analytics;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
 import android.view.View;
@@ -10,6 +11,11 @@ import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.CombinedData;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.RxUtils;
@@ -25,7 +31,7 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
     private Spinner spDataType;
     private TextView tvStartDate;
     private TextView tvEndDate;
-    private FrameLayout lDiagramContainer;
+    private CombinedChart mChart;
 
     public static AnalyticsFragment newInstance() {
 
@@ -56,8 +62,7 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
         spDataType = (Spinner) rootView.findViewById(R.id.spDataType_FA);
         tvStartDate = (TextView) rootView.findViewById(R.id.tvStartDate_FA);
         tvEndDate = (TextView) rootView.findViewById(R.id.tvEndDate_FA);
-        lDiagramContainer = (FrameLayout) rootView.findViewById(R.id.diagram_container_FA);
-
+        mChart = (CombinedChart) rootView.findViewById(R.id.chart_FA);
     }
 
     @Override
@@ -75,12 +80,32 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
         });
         RxUtils.click(tvStartDate, o -> getPresenter().onStartDateClicked());
         RxUtils.click(tvEndDate, o -> getPresenter().onEndDateClicked());
-
     }
 
     @Override
-    public void setDiagram() {
+    public void setDiagram(BarData _value, CombinedData _date) {
+        mChart.setDescription("");
+        mChart.setBackgroundColor(Color.WHITE);
+        mChart.setDrawGridBackground(false);
+        mChart.setDrawBarShadow(false);
+        // draw bars behind lines
+        mChart.setDrawOrder(new CombinedChart.DrawOrder[] {
+                CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.BUBBLE, CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
+        });
 
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+        _date.setData(_value);
+        mChart.setData(_date);
+        mChart.invalidate();
     }
 
     @Override
@@ -123,5 +148,10 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
     @Override
     public String getEndDate() {
         return tvEndDate.getText().toString();
+    }
+
+    @Override
+    public Pair<Constants.DATA_TYPES, String> getDataTypes() {
+        return ((DataTypesAdapter) spDataType.getAdapter()).getDataType(spDataType.getSelectedItemPosition());
     }
 }

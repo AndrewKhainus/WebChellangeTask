@@ -7,7 +7,6 @@ public class SettingsPresenter extends BaseFragmentPresenter<SettingsPresenter.S
 
 
     public interface SettingsView extends BaseFragmentView<SettingsPresenter> {
-
     }
 
 }

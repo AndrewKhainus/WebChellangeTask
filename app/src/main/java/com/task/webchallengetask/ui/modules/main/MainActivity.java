@@ -30,7 +30,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
     private NavigationView mNavigationView;
     private ImageView ivNavAvatar;
     private TextView tvNavTitle;
-    private TextView tvNavSubTitle;
 
     @Override
     public int getLayoutResource() {
@@ -55,7 +54,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         ivNavAvatar = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.ivAvatar_ND);
         tvNavTitle = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.tvTitle_ND);
-        tvNavSubTitle = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.tvSubTitle_ND);
     }
 
     @Override
@@ -160,11 +158,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
 //    public void setHeaderAvatar(Bitmap _bitmap) {
 //        ivNavAvatar.setImageBitmap(_bitmap);
 //    }
-
-    @Override
-    public void setHeaderSubTitle(String _subTitle) {
-        tvNavSubTitle.setText(_subTitle);
-    }
 
     @Override
     public void setHeaderTitle(String _title) {

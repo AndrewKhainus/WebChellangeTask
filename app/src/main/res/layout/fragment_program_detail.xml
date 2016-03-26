@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:weightSum="10"
     android:padding="16dp">
 
     <TextView
@@ -10,17 +11,21 @@
         style="@style/MainTheme.Title.Big.Bold"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        />
 
-    <FrameLayout
-        android:id="@+id/diagram_container"
+    <com.github.mikephil.charting.charts.CombinedChart
+        android:id="@+id/chart_FP"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="7"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:layout_marginRight="10dp"
         android:baselineAligned="false">
 
         <LinearLayout
@@ -29,6 +34,7 @@
             android:layout_weight="1">
 
             <TextView
+                style="@style/MainTheme.SubTitle.Normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -36,6 +42,7 @@
 
             <TextView
                 android:id="@+id/tvStartDate_FP"
+                style="@style/MainTheme.Description.Normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -43,15 +50,18 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1">
 
             <TextView
+                style="@style/MainTheme.SubTitle.Normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="End date:" />
 
             <TextView
+                style="@style/MainTheme.Description.Normal"
                 android:id="@+id/tvEndDate_FP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -66,6 +76,7 @@
         android:gravity="center_vertical">
 
         <TextView
+            style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -85,6 +96,7 @@
         android:gravity="center_vertical">
 
         <TextView
+            style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -92,6 +104,7 @@
 
         <EditText
             android:id="@+id/etTarget_FP"
+            style="@style/BlueEditAut"
             android:layout_width="50dp"
             android:inputType="number"
             android:hint="0"
@@ -99,6 +112,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            style="@style/MainTheme.SubTitle.Normal"
             android:id="@+id/tvUnitTarget_FP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -112,6 +126,7 @@
         android:gravity="center_vertical">
 
         <TextView
+            style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -133,6 +148,7 @@
         android:id="@+id/btnAnalyze_FP"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/raised_button"
         android:text="Analyze your achievements"
         />
 

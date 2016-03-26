@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.modules.program;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,18 +11,22 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.CombinedData;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.global.utils.TimeUtil;
+import com.task.webchallengetask.ui.base.BaseFragment;
 import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.modules.program.adapters.DifficultAdapter;
-import com.task.webchallengetask.ui.base.BaseFragment;
 import com.task.webchallengetask.ui.modules.program.presenters.ProgramDetailPresenter;
 
 import java.util.List;
@@ -33,21 +38,22 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         ProgramDetailPresenter.ProgramDetailView {
 
     private TextView tvTitle;
-    private FrameLayout lDiagramContainer;
     private TextView tvStartDate;
     private TextView tvEndDate;
     private EditText etTarget;
+    private TextView tvUnitTarget;
+    private TextView tvUnitActual;
     private Spinner spDifficult;
     private TextView tvActualResult;
     private Button btnAnalyze;
-
+    private CombinedChart mChart;
     private MenuItem menuSave;
 
 
-    public static ProgramDetailFragment newInstance(String _programName) {
+    public static ProgramDetailFragment newInstance(int _programId) {
 
         Bundle args = new Bundle();
-        args.putString(Constants.PROGRAM_NAME_KEY, _programName);
+        args.putInt(Constants.PROGRAM_ID_KEY, _programId);
         ProgramDetailFragment fragment = new ProgramDetailFragment();
         fragment.setArguments(args);
         return fragment;
@@ -71,14 +77,15 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     @Override
     public void findUI(View rootView) {
         tvTitle = (TextView) rootView.findViewById(R.id.tvTitle_FP);
-        lDiagramContainer  = (FrameLayout) rootView.findViewById(R.id.diagram_container);
         tvStartDate  = (TextView) rootView.findViewById(R.id.tvStartDate_FP);
         tvEndDate  = (TextView) rootView.findViewById(R.id.tvEndDate_FP);
         etTarget  = (EditText) rootView.findViewById(R.id.etTarget_FP);
         spDifficult = (Spinner) rootView.findViewById(R.id.spDifficult_FP);
         tvActualResult = (TextView) rootView.findViewById(R.id.tvActualResult_FP);
         btnAnalyze = (Button) rootView.findViewById(R.id.btnAnalyze_FP);
-
+        tvUnitTarget = (TextView) rootView.findViewById(R.id.tvUnitTarget_FP);
+        tvUnitActual = (TextView) rootView.findViewById(R.id.tvUnitActual_FP);
+        mChart = (CombinedChart) rootView.findViewById(R.id.chart_FP);
     }
 
 
@@ -139,12 +146,41 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     }
 
     @Override
-    public void setDiagram() {
-
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_save) {
+            getPresenter().onSaveClicked();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void setDifficult(List<Difficult> _data) {
+    public void setDiagram(BarData _value, CombinedData _date) {
+        mChart.setDescription("");
+        mChart.setBackgroundColor(Color.WHITE);
+        mChart.setDrawGridBackground(false);
+        mChart.setDrawBarShadow(false);
+        // draw bars behind lines
+        mChart.setDrawOrder(new CombinedChart.DrawOrder[] {
+                CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.BUBBLE, CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
+        });
+
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+        _date.setData(_value);
+        mChart.setData(_date);
+        mChart.invalidate();
+    }
+
+    @Override
+    public void setDifficultList(List<Difficult> _data) {
         DifficultAdapter adapter = new DifficultAdapter(this.getContext(), android.R.layout.simple_spinner_item, _data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDifficult.setAdapter(adapter);
@@ -152,8 +188,19 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     }
 
     @Override
+    public void setDifficult(int _position) {
+        spDifficult.setSelection(_position);
+    }
+
+    @Override
     public void setTarget(String _text) {
         etTarget.setText(_text);
+    }
+
+    @Override
+    public void setUnit(String _text) {
+        tvUnitTarget.setText(_text);
+        tvUnitActual.setText(_text);
     }
 
     @Override
@@ -193,6 +240,26 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     @Override
     public void setEndDate(String _text) {
         tvEndDate.setText(_text);
+    }
+
+    @Override
+    public String getStartDate() {
+        return tvStartDate.getText().toString();
+    }
+
+    @Override
+    public String getEndDate() {
+        return tvEndDate.getText().toString();
+    }
+
+    @Override
+    public String getTarget() {
+        return etTarget.getText().toString();
+    }
+
+    @Override
+    public Difficult getDifficult() {
+        return ((DifficultAdapter) spDifficult.getAdapter()).getDifficult(spDifficult.getSelectedItemPosition());
     }
 
 }

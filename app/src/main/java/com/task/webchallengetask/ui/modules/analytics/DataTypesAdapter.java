@@ -35,4 +35,7 @@ public class DataTypesAdapter extends ArrayAdapter<String> {
         return data.get(position);
     }
 
+    public Pair<Constants.DATA_TYPES, String> getDataType(int position) {
+        return data.get(position);
+    }
 }

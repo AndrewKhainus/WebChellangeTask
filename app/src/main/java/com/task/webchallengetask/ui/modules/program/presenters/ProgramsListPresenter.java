@@ -40,7 +40,7 @@ public class ProgramsListPresenter extends BaseFragmentPresenter<ProgramsListPre
     }
 
     public void onProgramClicked(int position) {
-        getView().switchFragment(ProgramDetailFragment.newInstance(programs.get(position).getName()), true);
+        getView().switchFragment(ProgramDetailFragment.newInstance(programs.get(position).getId()), true);
     }
 
     public interface ProgramListView extends BaseFragmentView<ProgramsListPresenter> {

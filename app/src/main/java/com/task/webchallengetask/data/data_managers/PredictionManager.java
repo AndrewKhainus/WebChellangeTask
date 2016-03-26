@@ -32,7 +32,7 @@ public final class PredictionManager {
     private JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private HttpTransport httpTransport;
     private Prediction mPrediction;
-    private ConnectableObservable<Boolean> mTrainObservable;
+    private boolean isTrained = false;
 
     private PredictionManager() {
     }
@@ -73,19 +73,18 @@ public final class PredictionManager {
     }
 
 
-    public ConnectableObservable<Boolean> connectToGoogleApi() {
+    public Observable<Boolean> connectToGoogleApi() {
         if (httpTransport == null)
             httpTransport = AndroidHttp.newCompatibleTransport();
 
-        if (mTrainObservable == null)
-            mTrainObservable = authorize()
-                    .subscribeOn(Schedulers.newThread())
-                    .flatMap(this::createPrediction)
-                    .doOnNext(prediction -> mPrediction = prediction)
-                    .doOnNext(this::insert)
-                    .flatMap(this::getTrain)
-                    .publish();
-        return mTrainObservable;
+        return authorize()
+                .subscribeOn(Schedulers.newThread())
+                .flatMap(this::createPrediction)
+                .doOnNext(prediction -> mPrediction = prediction)
+                .doOnNext(this::insert)
+                .flatMap(this::getTrain)
+                .doOnNext(aBoolean -> isTrained = aBoolean);
+
     }
 
     private Observable<Insert2> insert(Prediction prediction) {
@@ -128,6 +127,30 @@ public final class PredictionManager {
 
     private Observable<Boolean> getTrain(Prediction prediction) {
         return checkTraining(prediction)
+                .retryWhen(observable -> observable
+                        .flatMap(errors -> {
+                            if (errors instanceof UnCompletedException)
+                                return Observable.just(null);
+                            else return Observable.error(errors);
+                        })
+                        .zipWith(Observable.range(0, 15), (o, integer) -> integer)
+                        .flatMap(retryCount -> Observable.timer(5, TimeUnit.SECONDS)))
+                .map(s -> {
+                    Logger.d("Training completed");
+                    return s.equals("DONE");
+                });
+    }
+
+    private Observable<String> checkifTrainedAlready() {
+        return Observable.just(true)
+                .flatMap(aBoolean -> {
+                    if (isTrained) return Observable.just("DONE");
+                    else return Observable.error(new UnCompletedException());
+                });
+    }
+
+    public Observable<Boolean> getTrainForPredict() {
+        return checkifTrainedAlready()
                 .retryWhen(observable -> observable
                         .flatMap(errors -> {
                             if (errors instanceof UnCompletedException)

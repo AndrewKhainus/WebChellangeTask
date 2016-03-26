@@ -54,6 +54,11 @@
 
     <string name="distance_description">this is a description for distance program </string>
     <string name="activity_description">this is a description of thr program for people, who want to be active </string>
+    <string name="c_meters">Meters</string>
+    <string name="c_step">Steps</string>
+    <string name="c_time">Time</string>
+    <string name="c_calories">Calories</string>
+    <string name="difficult">Difficult:</string>
 
 
 </resources>

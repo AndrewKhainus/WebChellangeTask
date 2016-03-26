@@ -13,7 +13,9 @@ import com.task.webchallengetask.data.database.FitDatabase;
 @Table(database = FitDatabase.class)
 public class ProgramTable extends BaseModel {
 
-    @PrimaryKey
+    @PrimaryKey(autoincrement = true)
+    public int id;
+
     @Column
     public String name;
 
@@ -21,7 +23,7 @@ public class ProgramTable extends BaseModel {
     public String difficult;
 
     @Column
-    public String target;
+    public int target;
 
     @Column
     public String unit;
@@ -34,8 +36,12 @@ public class ProgramTable extends BaseModel {
         return difficult;
     }
 
-    public String getTarget() {
+    public int getTarget() {
         return target;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUnit() {
