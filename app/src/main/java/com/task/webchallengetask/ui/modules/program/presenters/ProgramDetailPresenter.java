@@ -32,9 +32,9 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     private PredictionDataProvider mPredictionDataProvider = PredictionDataProvider.getInstance();
     private ActivityDataProvider mActivityDataProvider = ActivityDataProvider.getInstance();
     private FitDataProvider mFitDataProvider = FitDataProvider.getInstance();
-    private ProgramTable todayProgram;
+    private ProgramTable mProgramTable;
     private Program mProgram;
-    private List<Object> mDataList = new ArrayList<>();
+    private List<Integer> mDataList = new ArrayList<>();
 
     @Override
     public void onViewCreated() {
@@ -45,14 +45,11 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         Date weekAgo = TimeUtil.minusDayFromDate(new Date(), 7);
         getView().setStartDate(TimeUtil.timeToString(weekAgo.getTime()));
 
-        Date start = weekAgo;
-        Date end = new Date();
-
         mProgramDataProvider.getProgram(getView().getFragmentArguments().getString(Constants.PROGRAM_NAME_KEY))
                 .subscribe(programTable -> {
                     createDiagram(programTable);
-                    todayProgram = programTable;
-                    fillProgram(todayProgram);
+                    mProgramTable = programTable;
+                    fillProgram(mProgramTable);
                 }, Logger::e);
 
     }
@@ -82,8 +79,8 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     private void fillProgram(ProgramTable _programTable) {
         getView().setTitle(_programTable.getName());
         getView().setDifficult(getDifficultList(_programTable.getName()));
-        getView().setTarget(_programTable.getTarget());
-//        getView().setActualResults(_programTable.getActualResult());
+        getView().setTarget(String.valueOf(_programTable.getTarget()));
+
         if (getDifficult(_programTable.getName(), _programTable.getDifficult()) instanceof DifficultCustom) {
             getView().setTargetEnabled(true);
         } else {
@@ -112,41 +109,20 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         return null;
     }
 
-    private void prepareResult() {
-
-        final Date startDate = TimeUtil.parseDate(getView().getStartDate());
-        final Date endDate = TimeUtil.parseDate(getView().getEndDate());
+    public void onAnalyze() {
 
         int complited = 0;
         int uncomplited = 0;
 
-        Date currentDate = startDate;
-        do {
+        for (int value : mDataList) {
+            if (value == 0) continue;
+            if (value >= mProgramTable.getTarget()) {
+                complited++;
+            } else
+                uncomplited++;
+        }
 
-            switch (mProgram.getType()) {
-                case ACTIVE_LIFE:
-
-                    break;
-                case LONG_DISTANCE:
-
-                    break;
-            }
-        } while (startDate.after(endDate));
-
-
-    }
-
-    private void getDistnances() {
-        getView().showLoadingDialog();
-        final Date startDate = TimeUtil.parseDate(getView().getStartDate());
-        final Date endDate = TimeUtil.parseDate(getView().getEndDate());
-
-
-    }
-
-    public void onAnalyze() {
-
-        mPredictionDataProvider.analyzeWeeklyTrendResults(7, 0)
+        mPredictionDataProvider.analyzeWeeklyTrendResults(complited, uncomplited)
                 .subscribe(s -> {
                     String message = "";
                     if (s.equals("Increase")) {
@@ -165,7 +141,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     }
 
     public void onDifficultChanged(int _position) {
-        List<Difficult> diffList = getDifficultList(todayProgram.getName());
+        List<Difficult> diffList = getDifficultList(mProgramTable.getName());
         if (diffList.get(_position) instanceof DifficultCustom) {
             getView().setTargetEnabled(true);
         } else {
