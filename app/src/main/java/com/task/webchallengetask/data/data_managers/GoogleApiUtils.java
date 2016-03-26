@@ -180,7 +180,7 @@ public final class GoogleApiUtils {
         });
     }
 
-    public Observable<DataPoint> getHistory(int _start, int _end) {
+    public Observable<DataPoint> getHistory(long _start, long _end) {
 
         return Observable.create(_history -> {
             if (googleApiClient == null)

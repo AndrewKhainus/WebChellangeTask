@@ -1,5 +1,8 @@
 package com.task.webchallengetask.ui.modules.program.presenters;
 
+import com.google.android.gms.fitness.data.DataPoint;
+import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
+import com.task.webchallengetask.data.data_providers.FitDataProvider;
 import com.task.webchallengetask.data.data_providers.PredictionDataProvider;
 import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
@@ -25,6 +28,8 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
     private ProgramDataProvider mProgramDataProvider = ProgramDataProvider.getInstance();
     private PredictionDataProvider mPredictionDataProvider = PredictionDataProvider.getInstance();
+    private ActivityDataProvider mActivityDataProvider = ActivityDataProvider.getInstance();
+    private FitDataProvider mFitDataProvider = FitDataProvider.getInstance();
     private ProgramTable todayProgram;
 
     @Override
@@ -36,7 +41,12 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         Date weekAgo = TimeUtil.minusDayFromDate(new Date(), 7);
         getView().setStartDate(TimeUtil.timeToString(weekAgo.getTime()));
 
+        Date start = weekAgo;
+        Date end = new Date();
 
+        do {
+            getDataByDay(start.getTime(), TimeUtil.addDayToDate(start, 1).getTime());
+        } while (start.before(end) || start.equals(end));
 
         mProgramDataProvider.getProgram(getView().getFragmentArguments().getString(Constants.PROGRAM_NAME_KEY))
                 .subscribe(programTables -> {
@@ -45,6 +55,17 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
                     fillProgram(todayProgram);
                 }, Logger::e);
 
+    }
+
+    private void getData(DataPoint _dataPoint) {
+        Logger.d(_dataPoint.toString());
+    }
+
+    private void getDataByDay(long _startDay, long _endDay) {
+        mFitDataProvider.getHistory(_startDay, _endDay)
+                .subscribe(dataPoint -> {
+                    getData(dataPoint);
+                }, Logger::e);
     }
 
     public void onStartDateClicked() {
@@ -88,7 +109,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
     public void onAnalyze() {
         getView().showLoadingDialog();
-        mPredictionDataProvider.analyzeWeeklyTrendResults(7,0)
+        mPredictionDataProvider.analyzeWeeklyTrendResults(7, 0)
                 .subscribe(s -> {
                     String message = "";
                     if (s.equals("Increase")) {
@@ -102,6 +123,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
                     }
                     getView().setDifficultEnabled(true);
                     getView().showInfoDialog("Recommendation", message, null);
+                    getView().setSaveVisible(false);
                 }, Logger::e, () -> getView().hideLoadingDialog());
     }
 
@@ -120,17 +142,28 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     }
 
     public interface ProgramDetailView extends BaseFragmentView<ProgramDetailPresenter> {
+        void setSaveVisible(boolean _isVisible);
+
         void setTitle(String _text);
+
         void setDiagram();
+
         void setDifficult(List<Difficult> _data);
+
         void setTarget(String _text);
+
         void setActualResults(String _text);
+
         void setTargetEnabled(boolean _isEnabled);
+
         void setDifficultEnabled(boolean _isEnabled);
+
         void openStartDateCalendar(CalendarView.Callback _callBack);
+
         void openEndDateCalendar(CalendarView.Callback _callBack);
+
         void setStartDate(String _text);
+
         void setEndDate(String _text);
-        void setEditVisible(boolean _isVisible);
     }
 }

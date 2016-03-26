@@ -1,5 +1,6 @@
 package com.task.webchallengetask.global.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -75,6 +76,22 @@ public final class TimeUtil {
         }
 
     }
+
+    public static long getDifferenceByDay(Date _startDate, Date _endDate) {
+        long startTime = _startDate.getTime();
+        long endTime = _endDate.getTime();
+        long diffTime = endTime - startTime;
+        return diffTime / (1000 * 60 * 60 * 24);
+    }
+
+    public static Date addDayToDate(Date date, int _days) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, _days);
+        date.setTime(c.getTime().getTime());
+        return date;
+    }
+
 
     public static Date minusDayFromDate(Date date, int _days) {
         Calendar c = Calendar.getInstance();
