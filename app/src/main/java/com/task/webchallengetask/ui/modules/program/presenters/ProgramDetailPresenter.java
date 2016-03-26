@@ -1,6 +1,7 @@
 package com.task.webchallengetask.ui.modules.program.presenters;
 
 import com.google.android.gms.fitness.data.DataPoint;
+import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.FitDataProvider;
 import com.task.webchallengetask.data.data_providers.PredictionDataProvider;
@@ -17,6 +18,7 @@ import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,13 +60,13 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     }
 
     private void getData(DataPoint _dataPoint) {
-        Logger.d(_dataPoint.toString());
+        GoogleApiUtils.describeDataPoint(_dataPoint, new SimpleDateFormat("dd.MM.yyyy"));
     }
 
     private void getDataByDay(long _startDay, long _endDay) {
-        mFitDataProvider.getHistory(_startDay, _endDay)
-                .subscribe(dataPoint -> {
-                    getData(dataPoint);
+        mFitDataProvider.getDistance(_startDay, _endDay)
+                .subscribe(value -> {
+                    Logger.d("value is = " + value.asFloat());
                 }, Logger::e);
     }
 
