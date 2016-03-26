@@ -37,11 +37,9 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
             getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                BaseFragment fragment = (BaseFragment) getSupportFragmentManager()
-                        .findFragmentById(getFragmentContainer());
-                setToolBarTitle(fragment.setTitle());
-            }
+            BaseFragment fragment = (BaseFragment) getSupportFragmentManager()
+                    .findFragmentById(getFragmentContainer());
+            setToolBarTitle(fragment.getTitle());
         });
 
         mPresenter.onViewCreated();
@@ -158,7 +156,7 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
         }
         fragmentTransaction.show(_fragment);
         fragmentTransaction.commitAllowingStateLoss();
-        setToolBarTitle(_fragment.setTitle());
+        setToolBarTitle(_fragment.getTitle());
     }
 
     protected void setToolBarTitle(int _titleRes) {

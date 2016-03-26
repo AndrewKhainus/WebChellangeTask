@@ -64,7 +64,7 @@ public class Client {
                 )
                 .addOnConnectionFailedListener(
                         new GoogleApiClient.OnConnectionFailedListener() {
-                            // Called whenever the API client fails to connect.
+                            // Called whenever the API client fails to connectToGoogleApi.
                             @Override
                             public void onConnectionFailed(ConnectionResult result) {
                                 display.log("Connection failed. Cause: " + result.toString());
@@ -112,9 +112,9 @@ public class Client {
             display.log("onActivityResult: REQUEST_OAUTH");
             authInProgress = false;
             if (resultCode == Activity.RESULT_OK) {
-                // Make sure the app is not already connected or attempting to connect
+                // Make sure the app is not already connected or attempting to connectToGoogleApi
                 if (!client.isConnecting() && !client.isConnected()) {
-                    display.log("onActivityResult: client.connect()");
+                    display.log("onActivityResult: client.connectToGoogleApi()");
                     client.connect();
                 }
             }

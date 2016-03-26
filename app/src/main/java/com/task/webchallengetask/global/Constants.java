@@ -1,5 +1,9 @@
 package com.task.webchallengetask.global;
 
+import android.support.v4.util.Pair;
+
+import java.util.HashMap;
+
 public final class Constants {
 
     public static final String PREDICTION_END_POINT = "https://www.googleapis.com";
@@ -31,8 +35,20 @@ public final class Constants {
     public static final String SEND_TIMER_UPDATE_ACTION = "SEND_TIMER_UPDATE_ACTION";
     public static final String SEND_TIMER_UPDATE_KEY = "SEND_TIMER_UPDATE_KEY";
     public static final String ACTIVITY_NAME_KEY = "ACTIVITY_NAME_KEY";
+    public static final String ACTIVITY_ID_KEY = "ACTIVITY_ID_KEY";
 
     public static int FOREGROUND_NOTIFICATION_SERVICE_ID = 101;
 
     public static final String PROGRAM_NAME_KEY = "PROGRAM_NAME_KEY";
+
+
+    public enum DATA_TYPES {
+        ACTIVITY_TIME,
+        STEP,
+        DISTANCE,
+        CALORIES,
+        All
+    }
+
+
 }

@@ -16,9 +16,9 @@ import android.support.v4.content.ContextCompat;
 
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.Constants;
-import com.task.webchallengetask.global.utils.IntentManager;
+import com.task.webchallengetask.global.utils.IntentHelper;
 import com.task.webchallengetask.global.utils.TimeUtil;
-import com.task.webchallengetask.ui.activities.StartActivity;
+import com.task.webchallengetask.ui.modules.activity.views.ActivityStartActivity;
 
 import java.util.Calendar;
 import java.util.Timer;
@@ -89,14 +89,14 @@ public class ActivityTrackerService extends Service {
                 notificationManager.notify(Constants.FOREGROUND_NOTIFICATION_SERVICE_ID, mBuilder.build());
 
             }
-            sendBroadcast(IntentManager.sendTimerUpdateIntent(mTimerTime));
+            sendBroadcast(IntentHelper.sendTimerUpdateIntent(mTimerTime));
 
         }
 
     }
 
     private NotificationCompat.Builder getNotification(String _message) {
-        Intent notificationIntent = new Intent(this, StartActivity.class);
+        Intent notificationIntent = new Intent(this, ActivityStartActivity.class);
         notificationIntent.setAction(Constants.MAIN_ACTION);
         notificationIntent.setAction(Intent.ACTION_MAIN);
         notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);

@@ -109,7 +109,7 @@ public class FitActivity extends AppCompatActivity implements ItemFragment.LogPr
     @Override
     protected void onStart() {
         super.onStart();
-        display.show("client connect");
+        display.show("client connectToGoogleApi");
 //        start connection - required
         client.connect();
     }

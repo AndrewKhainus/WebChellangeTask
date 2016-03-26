@@ -16,7 +16,7 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
     private BaseActivity mActivity;
     private P mPresenter;
 
-    protected abstract int setTitle();
+    protected abstract int getTitle();
 
     @Override
     public P getPresenter() {

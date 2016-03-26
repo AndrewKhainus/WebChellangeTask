@@ -9,12 +9,16 @@ import com.task.webchallengetask.data.database.FitDatabase;
 /**
  * Created by Sergbek on 24.03.2016.
  */
+
 @Table(database = FitDatabase.class)
 public class ActionParametersModel extends BaseModel {
 
     @PrimaryKey(autoincrement = true)
     @Column
     public int id;
+
+    @Column
+    public String name;
 
     @Column
     public long startTime;
@@ -39,4 +43,45 @@ public class ActionParametersModel extends BaseModel {
 
     @Column
     public boolean synchroniz;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public float getActivityActualTime() {
+        return activityActualTime;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public float getCalories() {
+        return calories;
+    }
+
+    public boolean isSynchroniz() {
+        return synchroniz;
+    }
 }
