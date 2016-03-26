@@ -84,7 +84,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         tvActualResult = (TextView) rootView.findViewById(R.id.tvActualResult_FP);
         btnAnalyze = (Button) rootView.findViewById(R.id.btnAnalyze_FP);
         tvUnit = (TextView) rootView.findViewById(R.id.tvUnitTarget_FP);
-        mChart = (CombinedChart) rootView.findViewById(R.id.chart_FA);
+        mChart = (CombinedChart) rootView.findViewById(R.id.chart_FP);
     }
 
 
