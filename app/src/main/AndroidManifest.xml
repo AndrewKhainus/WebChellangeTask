@@ -29,10 +29,6 @@
             android:screenOrientation="sensorPortrait"
             />
 
-        <activity android:name=".googlefit.FitActivity">
-
-        </activity>
-
         <activity android:name=".ui.modules.check.CheckActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

@@ -58,6 +58,7 @@
     <string name="c_step">Steps</string>
     <string name="c_time">Time</string>
     <string name="c_calories">Calories</string>
+    <string name="difficult">Difficult:</string>
 
 
 </resources>

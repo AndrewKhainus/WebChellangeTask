@@ -40,7 +40,6 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
         }
         getView().switchFragment(ActivityListFragment.newInstance(), false);
         getView().setHeaderTitle(SharedPrefManager.getInstance().retrieveUsername());
-        getView().setHeaderSubTitle("Cool men");
 
         PredictionDataProvider.getInstance().connectAndTrain()
                 .subscribe(aBoolean -> {}, Logger::e);
@@ -142,8 +141,6 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
         boolean isDrawerOpen();
 
         void closeDrawer(MainActivity.DrawerCallBack _callback);
-
-        void setHeaderSubTitle(String _description);
 
         void setHeaderTitle(String _title);
 

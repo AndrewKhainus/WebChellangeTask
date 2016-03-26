@@ -5,10 +5,14 @@
     <color name="color_primary">#00BCD4</color>
     <color name="color_text_primary">#ffffff</color>
     <color name="color_window_background">#fafafa</color>
+    <color name="color_accent">#FFC107</color>
 
     <color name="red_color">#f44336</color>
     <color name="white_color">#FFFFFF</color>
     <color name="black_color">#000000</color>
+
+
+    <color name="color_btn_pressed">#FFA000</color>
 
     <!--  google palette -->
            <!--- white -> grey  -->

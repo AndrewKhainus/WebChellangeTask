@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -25,9 +24,9 @@ import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.global.utils.TimeUtil;
+import com.task.webchallengetask.ui.base.BaseFragment;
 import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.modules.program.adapters.DifficultAdapter;
-import com.task.webchallengetask.ui.base.BaseFragment;
 import com.task.webchallengetask.ui.modules.program.presenters.ProgramDetailPresenter;
 
 import java.util.List;
@@ -42,7 +41,8 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     private TextView tvStartDate;
     private TextView tvEndDate;
     private EditText etTarget;
-    private TextView tvUnit;
+    private TextView tvUnitTarget;
+    private TextView tvUnitActual;
     private Spinner spDifficult;
     private TextView tvActualResult;
     private Button btnAnalyze;
@@ -83,7 +83,8 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         spDifficult = (Spinner) rootView.findViewById(R.id.spDifficult_FP);
         tvActualResult = (TextView) rootView.findViewById(R.id.tvActualResult_FP);
         btnAnalyze = (Button) rootView.findViewById(R.id.btnAnalyze_FP);
-        tvUnit = (TextView) rootView.findViewById(R.id.tvUnitTarget_FP);
+        tvUnitTarget = (TextView) rootView.findViewById(R.id.tvUnitTarget_FP);
+        tvUnitActual = (TextView) rootView.findViewById(R.id.tvUnitActual_FP);
         mChart = (CombinedChart) rootView.findViewById(R.id.chart_FP);
     }
 
@@ -198,7 +199,8 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
 
     @Override
     public void setUnit(String _text) {
-        tvUnit.setText(_text);
+        tvUnitTarget.setText(_text);
+        tvUnitActual.setText(_text);
     }
 
     @Override
