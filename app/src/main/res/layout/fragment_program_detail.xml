@@ -12,10 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <FrameLayout
-        android:id="@+id/diagram_container"
+    <com.github.mikephil.charting.charts.CombinedChart
+        android:id="@+id/chart_FP"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="400dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

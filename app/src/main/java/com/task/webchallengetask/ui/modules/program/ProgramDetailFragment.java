@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.modules.program;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +15,11 @@ import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.CombinedData;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
@@ -33,7 +39,6 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         ProgramDetailPresenter.ProgramDetailView {
 
     private TextView tvTitle;
-    private FrameLayout lDiagramContainer;
     private TextView tvStartDate;
     private TextView tvEndDate;
     private EditText etTarget;
@@ -41,7 +46,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     private Spinner spDifficult;
     private TextView tvActualResult;
     private Button btnAnalyze;
-
+    private CombinedChart mChart;
     private MenuItem menuSave;
 
 
@@ -72,7 +77,6 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     @Override
     public void findUI(View rootView) {
         tvTitle = (TextView) rootView.findViewById(R.id.tvTitle_FP);
-        lDiagramContainer  = (FrameLayout) rootView.findViewById(R.id.diagram_container);
         tvStartDate  = (TextView) rootView.findViewById(R.id.tvStartDate_FP);
         tvEndDate  = (TextView) rootView.findViewById(R.id.tvEndDate_FP);
         etTarget  = (EditText) rootView.findViewById(R.id.etTarget_FP);
@@ -80,6 +84,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         tvActualResult = (TextView) rootView.findViewById(R.id.tvActualResult_FP);
         btnAnalyze = (Button) rootView.findViewById(R.id.btnAnalyze_FP);
         tvUnit = (TextView) rootView.findViewById(R.id.tvUnitTarget_FP);
+        mChart = (CombinedChart) rootView.findViewById(R.id.chart_FA);
     }
 
 
@@ -148,8 +153,29 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     }
 
     @Override
-    public void setDiagram() {
+    public void setDiagram(BarData _value, CombinedData _date) {
+        mChart.setDescription("");
+        mChart.setBackgroundColor(Color.WHITE);
+        mChart.setDrawGridBackground(false);
+        mChart.setDrawBarShadow(false);
+        // draw bars behind lines
+        mChart.setDrawOrder(new CombinedChart.DrawOrder[] {
+                CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.BUBBLE, CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
+        });
 
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
+        _date.setData(_value);
+        mChart.setData(_date);
+        mChart.invalidate();
     }
 
     @Override

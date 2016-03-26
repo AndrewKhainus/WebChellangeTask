@@ -1,7 +1,15 @@
 package com.task.webchallengetask.ui.modules.program.presenters;
 
+import android.graphics.Color;
 import android.util.Pair;
 
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.CombinedData;
+import com.task.webchallengetask.App;
+import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.FitDataProvider;
 import com.task.webchallengetask.data.data_providers.PredictionDataProvider;
@@ -102,7 +110,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
                             mDataList.addAll(floats);
                             if (!floats.isEmpty())
                                 getView().setActualResults(String.valueOf(floats.get(floats.size() - 1)));
-                            fillDiagram();
+                            setDiagramData(floats, App.getAppContext().getString(R.string.c_time));
                         });
                 break;
             case LONG_DISTANCE:
@@ -112,15 +120,29 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
                             mDataList.addAll(floats);
                             if (!floats.isEmpty())
                                 getView().setActualResults(String.valueOf(floats.get(floats.size() - 1)));
-
-                            fillDiagram();
+                            setDiagramData(floats, App.getAppContext().getString(R.string.c_meters));
                         });
                 break;
         }
     }
 
-    private void fillDiagram() {
-        getView().setDiagram();
+    public void setDiagramData(List<android.util.Pair<Long, Float>> floats, String _units){
+        ArrayList<BarEntry> _entry = new ArrayList<>();
+        BarData mDiagram = new BarData();
+        String[] dates = new String[floats.size()];
+        for (int i = 0; i < floats.size(); i++){
+            dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
+            _entry.add(new BarEntry(floats.get(i).second, i));
+        }
+        CombinedData data = new CombinedData(dates);
+        BarDataSet set = new BarDataSet(_entry, _units);
+        set.setColor(Color.rgb(60, 220, 78));
+        set.setValueTextColor(Color.rgb(60, 220, 78));
+        set.setValueTextSize(10f);
+        mDiagram.addDataSet(set);
+
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        getView().setDiagram(mDiagram, data);
     }
 
     private List<Difficult> getDifficultList(String _name) {
@@ -195,7 +217,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
         void setTitle(String _text);
 
-        void setDiagram();
+        void setDiagram(BarData _data, CombinedData data);
 
         void setDifficult(List<Difficult> _data);
 

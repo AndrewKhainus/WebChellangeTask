@@ -31,7 +31,6 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
     private Spinner spDataType;
     private TextView tvStartDate;
     private TextView tvEndDate;
-    private FrameLayout lDiagramContainer;
     private CombinedChart mChart;
 
     public static AnalyticsFragment newInstance() {
@@ -63,7 +62,6 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
         spDataType = (Spinner) rootView.findViewById(R.id.spDataType_FA);
         tvStartDate = (TextView) rootView.findViewById(R.id.tvStartDate_FA);
         tvEndDate = (TextView) rootView.findViewById(R.id.tvEndDate_FA);
-//        lDiagramContainer = (FrameLayout) rootView.findViewById(R.id.diagram_container_FA);
         mChart = (CombinedChart) rootView.findViewById(R.id.chart_FA);
     }
 
