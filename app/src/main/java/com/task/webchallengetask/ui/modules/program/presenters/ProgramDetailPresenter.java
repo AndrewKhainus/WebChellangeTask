@@ -3,7 +3,6 @@ package com.task.webchallengetask.ui.modules.program.presenters;
 import android.util.Pair;
 
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
-import com.task.webchallengetask.data.data_providers.FitDataProvider;
 import com.task.webchallengetask.data.data_providers.PredictionDataProvider;
 import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
@@ -81,7 +80,8 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
     private void fillProgram(ProgramTable _programTable) {
         getView().setTitle(_programTable.getName());
-        getView().setDifficult(getDifficultList(_programTable.getName()));
+        getView().setDifficultList(getDifficultList(_programTable.getName()));
+        getView().setDifficult(getDifficultPosition(_programTable.getName(), _programTable.getDifficult()));
         getView().setTarget(String.valueOf(_programTable.getTarget()));
         getView().setUnit(_programTable.getUnit());
         if (getDifficult(_programTable.getName(), _programTable.getDifficult()) instanceof DifficultCustom) {
@@ -101,7 +101,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
                             mDataList.clear();
                             mDataList.addAll(floats);
                             if (!floats.isEmpty())
-                                getView().setActualResults(String.valueOf(floats.get(floats.size() - 1)));
+                                getView().setActualResults(String.valueOf(floats.get(floats.size() - 1).second));
                             fillDiagram();
                         });
                 break;
@@ -111,7 +111,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
                             mDataList.clear();
                             mDataList.addAll(floats);
                             if (!floats.isEmpty())
-                                getView().setActualResults(String.valueOf(floats.get(floats.size() - 1)));
+                                getView().setActualResults(String.valueOf(floats.get(floats.size() - 1).second));
 
                             fillDiagram();
                         });
@@ -141,6 +141,17 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         }
         return null;
     }
+
+    private int getDifficultPosition(String _programName, String _difficultName) {
+        List<Difficult> list = getDifficultList(_programName);
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getName().equals(_difficultName)) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
 
     public void onAnalyze() {
         int complited = 0;
@@ -197,7 +208,9 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
         void setDiagram();
 
-        void setDifficult(List<Difficult> _data);
+        void setDifficultList(List<Difficult> _data);
+
+        void setDifficult(int _position);
 
         void setTarget(String _text);
 
