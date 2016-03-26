@@ -1,8 +1,11 @@
 package com.task.webchallengetask.data.database;
 
 
+import com.raizlabs.android.dbflow.sql.language.ConditionGroup;
 import com.raizlabs.android.dbflow.sql.language.Select;
 //import com.task.webchallengetask.data.database.tables.ActionParametersModel;
+import com.task.webchallengetask.data.database.tables.ActionParametersModel;
+import com.task.webchallengetask.data.database.tables.ActionParametersModel_Table;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.data.database.tables.ProgramTable_Table;
 
@@ -26,10 +29,16 @@ public class DatabaseController {
         }
         return localInstance;
     }
-//
-//    public List<ActionParametersModel> getActionParametersModel(){
-//        return new Select().from(ActionParametersModel.class).queryList();
-//    }
+
+    public List<ActionParametersModel> getActionParametersModel(long _startDate, long _endDate){
+        ConditionGroup conditionGroup = ConditionGroup.clause();
+        conditionGroup.and(ActionParametersModel_Table.startTime.greaterThanOrEq(_startDate));
+        conditionGroup.and(ActionParametersModel_Table.endTime.lessThanOrEq(_endDate));
+
+        return new Select().from(ActionParametersModel.class)
+                .where(conditionGroup)
+                .queryList();
+    }
 
     public Observable<List<ProgramTable>> getPrograms() {
         return Observable.from(new Select().from(ProgramTable.class).queryList()).toList();

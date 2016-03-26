@@ -18,9 +18,6 @@ public class ProgramTable extends BaseModel {
     public String name;
 
     @Column
-    public String actualResult;
-
-    @Column
     public String difficult;
 
     @Column
@@ -29,15 +26,8 @@ public class ProgramTable extends BaseModel {
     @Column
     public String unit;
 
-    @Column
-    public Long date;
-
     public String getName() {
         return name;
-    }
-
-    public String getActualResult() {
-        return actualResult;
     }
 
     public String getDifficult() {

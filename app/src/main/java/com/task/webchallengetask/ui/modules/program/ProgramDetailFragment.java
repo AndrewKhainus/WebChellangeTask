@@ -3,6 +3,9 @@ package com.task.webchallengetask.ui.modules.program;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -37,6 +40,8 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     private Spinner spDifficult;
     private TextView tvActualResult;
     private Button btnAnalyze;
+
+    private MenuItem menuSave;
 
 
     public static ProgramDetailFragment newInstance(String _programName) {
@@ -121,6 +126,13 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_program_detail, menu);
+        menuSave = menu.findItem(R.id.menu_save);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public void setDiagram() {
 
     }
@@ -175,5 +187,10 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     @Override
     public void setEndDate(String _text) {
         tvEndDate.setText(_text);
+    }
+
+    @Override
+    public void setEditVisible(boolean _isVisible) {
+        menuSave.setVisible(_isVisible);
     }
 }

@@ -59,7 +59,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         getView().setTitle(_programTable.getName());
         getView().setDifficult(getDifficultList(_programTable.getName()));
         getView().setTarget(_programTable.getTarget());
-        getView().setActualResults(_programTable.getActualResult());
+//        getView().setActualResults(_programTable.getActualResult());
         if (getDifficult(_programTable.getName(), _programTable.getDifficult()) instanceof DifficultCustom) {
             getView().setTargetEnabled(true);
         } else {
@@ -131,5 +131,6 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         void openEndDateCalendar(CalendarView.Callback _callBack);
         void setStartDate(String _text);
         void setEndDate(String _text);
+        void setEditVisible(boolean _isVisible);
     }
 }
