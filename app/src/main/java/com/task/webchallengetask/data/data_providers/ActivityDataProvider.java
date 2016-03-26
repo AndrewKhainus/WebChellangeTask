@@ -44,7 +44,6 @@ public class ActivityDataProvider extends BaseDataProvider {
         return newThread(Observable.just(mDbController.getActionParametersModel(_id)));
     }
 
-    public Observable<List<Float>> getDistance(long _startDate, long _endDate) {
     public Observable<Float> getDistance(long _startDate, long _endDate) {
 
         return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
