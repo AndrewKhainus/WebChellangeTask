@@ -27,6 +27,7 @@ import com.google.android.gms.fitness.request.SensorRequest;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
 import com.task.webchallengetask.data.data_managers.SharedPrefManager;
+import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.global.Constants;
 
 import com.task.webchallengetask.global.utils.IntentHelper;
@@ -57,7 +58,7 @@ public class ActivityTrackerService extends Service {
     private Timer mTimer;
     private String currentActivity;
     private GoogleApiClient googleApiClient;
-//    private boolean isPause;
+    private boolean isPause;
 
     private OnDataPointListener mListenerDistance;
     private OnDataPointListener mListenerSpeed;
@@ -65,17 +66,23 @@ public class ActivityTrackerService extends Service {
 
     private HashMap<OnDataPointListener, DataSource> listenerDataTypeHashMap;
 
+    private ActionParametersModel actionParametersModel;
+    private long startTime;
+    private long endTime;
     private int step;
     private float speed;
     private float dist;
     private int weight = SharedPrefManager.getInstance().retrieveWeight();
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public ActivityTrackerService() {
+        super();
         listenerDataTypeHashMap = new HashMap<>(3);
         googleApiClient = GoogleApiUtils.getInstance().buildGoogleApiClientWithGooglePlus();
         findFitnessDataSources();
+    }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
         if (notificationManager == null)
             notificationManager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
         currentActivity = intent.getStringExtra(Constants.ACTIVITY_NAME_KEY);
@@ -86,24 +93,27 @@ public class ActivityTrackerService extends Service {
                 }
                 mTimer = new Timer();
                 mTimer.schedule(new CounterRunnable(), 0, 1000);
+                startTime = Calendar.getInstance().getTimeInMillis();
                 startForeground(Constants.FOREGROUND_NOTIFICATION_SERVICE_ID,
                         getNotification(TimeUtil.getStringFromCalendar(mTimerTime)).build());
-//                isPause = false;
+                isPause = false;
                 break;
             case Constants.PAUSE_TIMER_ACTION:
                 if (mTimer != null) {
                     mTimer.cancel();
                     mTimer.purge();
                 }
-//                isPause = true;
+                isPause = true;
                 break;
             case Constants.STOP_TIMER_ACTION:
                 if (mTimer != null) {
                     mTimer.cancel();
                     mTimer.purge();
                 }
-//                isPause = false;
+                isPause = false;
+                endTime = Calendar.getInstance().getTimeInMillis();
                 unregisterFitnessDataListener();
+                saveData();
                 mTimerTime = null;
                 notificationManager.cancel(Constants.FOREGROUND_NOTIFICATION_SERVICE_ID);
                 stopForeground(true);
@@ -111,6 +121,18 @@ public class ActivityTrackerService extends Service {
                 break;
         }
         return Service.START_NOT_STICKY;
+    }
+
+    private void saveData() {
+        actionParametersModel = new ActionParametersModel();
+        actionParametersModel.name = currentActivity;
+        actionParametersModel.calories = calculationCalories();
+        actionParametersModel.distance = dist;
+        actionParametersModel.speed = speed;
+        actionParametersModel.step = step;
+        actionParametersModel.startTime = startTime;
+        actionParametersModel.endTime = endTime;
+        actionParametersModel.save();
     }
 
     private void registerListeners() {
@@ -140,7 +162,7 @@ public class ActivityTrackerService extends Service {
 
     private void implStepListener() {
         mListenerStep = _dataPoint -> {
-//            if (!isPause) {
+            if (!isPause) {
             for (Field field : _dataPoint.getDataType().getFields()) {
                 Value val = _dataPoint.getValue(field);
                 step += val.asInt();
@@ -148,13 +170,13 @@ public class ActivityTrackerService extends Service {
                 Logger.d("Detected DataPoint value: " + val);
                 sendBroadcast(IntentHelper.sendStepIntent(step));
             }
-//            }
+            }
         };
     }
 
     private void implDistanceListener() {
         mListenerDistance = _dataPoint -> {
-//            if (!isPause) {
+            if (!isPause) {
             for (Field field : _dataPoint.getDataType().getFields()) {
                 Value val = _dataPoint.getValue(field);
 
@@ -164,13 +186,13 @@ public class ActivityTrackerService extends Service {
                 sendBroadcast(IntentHelper.sendDistanceIntent(dist));
                 sendBroadcast(IntentHelper.sendCaloriesIntent(calculationCalories()));
             }
-//            }
+            }
         };
     }
 
     private void implSpeedListener() {
         mListenerSpeed = _dataPoint -> {
-//            if (isPause) {
+            if (isPause) {
             for (Field field : _dataPoint.getDataType().getFields()) {
                 Value val = _dataPoint.getValue(field);
 
@@ -179,7 +201,7 @@ public class ActivityTrackerService extends Service {
                 Logger.d("Detected DataPoint value: " + val);
                 sendBroadcast(IntentHelper.sendSpeedIntent(speed));
             }
-//            }
+            }
         };
     }
 

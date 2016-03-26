@@ -28,8 +28,6 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
     private PendingIntent mSignInIntent;
     private GoogleApiClient googleApiClient;
 
-
-
     @Override
     public void onViewCreated() {
         super.onViewCreated();
@@ -124,7 +122,8 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
 
     @Override
     public void onConnected(Bundle _bundle) {
-        getView().hideLoadingDialog();
+        if (getView() != null)
+            getView().hideLoadingDialog();
         Logger.d("Google API client onConnected");
     }
 

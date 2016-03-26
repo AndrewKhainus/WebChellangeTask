@@ -1,6 +1,5 @@
 package com.task.webchallengetask.ui.modules.activity.presenters;
 
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,19 +7,15 @@ import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.util.Log;
 
-import com.google.android.gms.fitness.data.DataType;
-import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
-import com.task.webchallengetask.data.data_managers.SharedPrefManager;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.IntentHelper;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
 import com.task.webchallengetask.ui.base.BaseActivityView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -36,22 +31,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     private TimerReceiver mTimerReceiver;
     private ActivityTrackerReceiver activityTrackerReceiver;
     private String currentActivity = "";
-    private PendingIntent mSignInIntent;
-    private OnDataPointListener mListenerDistance;
-    private OnDataPointListener mListenerSpeed;
-    private OnDataPointListener mListenerStep;
-    private List<DataType> dataTypesList;
-    private List<OnDataPointListener> listenerList;
-//    private ActionParametersModel actionParametersModel;
-
-    private int step;
-    private float speed;
-    private float dist;
-    private int weight = SharedPrefManager.getInstance().retrieveWeight();
-
-
-    private static final String TAG = "StartActivityPresenter";
-
 
     @Override
     public void onViewCreated() {
@@ -60,11 +39,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                 .getStringArray(R.array.activities_list));
         getView().setSpinnerData(activitiesList);
         mTimerReceiver = new TimerReceiver();
-        dataTypesList = new ArrayList<>();
-        listenerList = new ArrayList<>();
-//        actionParametersModel = new ActionParametersModel();
         activityTrackerReceiver = new ActivityTrackerReceiver();
-
     }
 
     public void testClicked() {
@@ -102,14 +77,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         super.onPause();
     }
 
-    @Override
-    public void onDestroyView() {
-
-//        App.getAppContext().startService(IntentManager.
-//                getActivityTrackerServiceIntent(Constants.STOP_TIMER_ACTION, ""));
-        super.onDestroyView();
-    }
-
     public void onBtnStartPauseClicked() {
         if (isStarted) {
             isPaused = !isPaused;
@@ -132,7 +99,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
             isPaused = false;
 
             App.getAppContext().startService(IntentHelper.
-                    getActivityTrackerServiceIntent(Constants.STOP_TIMER_ACTION, ""));
+                    getActivityTrackerServiceIntent(Constants.STOP_TIMER_ACTION, currentActivity));
             getView().setSpinnerEnabled(true);
             getView().toggleStartPause("START");
         }

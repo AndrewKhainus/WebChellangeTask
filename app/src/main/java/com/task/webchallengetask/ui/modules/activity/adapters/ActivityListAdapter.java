@@ -24,9 +24,6 @@ public class ActivityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int HEADER = 0;
     private static final int ACTIVITY = 1;
 
-    public ActivityListAdapter() {
-        mData = new ArrayList<>();
-    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -66,7 +63,7 @@ public class ActivityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return mData.size();
     }
 
-    class ActivityItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ActivityItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         OnItemClickListener mExternalListener;
         TextView tvTitle;
         TextView tvSubTitle;
@@ -90,19 +87,16 @@ public class ActivityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public void setExternalListener(OnItemClickListener _listener) {
             mExternalListener = _listener;
         }
-
     }
 
-    class HeaderHolder extends RecyclerView.ViewHolder {
+    private class HeaderHolder extends RecyclerView.ViewHolder {
         TextView tvTitle;
 
         public HeaderHolder(View itemView) {
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.tvHeader_AIH);
         }
-
     }
-
 
     @Override
     public int getItemViewType(int position) {

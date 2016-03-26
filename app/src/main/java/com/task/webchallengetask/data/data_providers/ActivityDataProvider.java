@@ -32,9 +32,16 @@ public class ActivityDataProvider extends BaseDataProvider {
         return localInstance;
     }
 
-
     public Observable<List<ActionParametersModel>> getActivities(long _startDate, long _endDate) {
         return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate)));
+    }
+
+    public  Observable<List<ActionParametersModel>> getActivities(){
+        return newThread(Observable.just(mDbController.getAllActionParametersModel()));
+    }
+
+    public  Observable<ActionParametersModel> getActivitie(int _id){
+        return newThread(Observable.just(mDbController.getActionParametersModel(_id)));
     }
 
 }
