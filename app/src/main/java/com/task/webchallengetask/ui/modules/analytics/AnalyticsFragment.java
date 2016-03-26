@@ -114,4 +114,14 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDataType.setAdapter(adapter);
     }
+
+    @Override
+    public String getStartDate() {
+        return tvStartDate.getText().toString();
+    }
+
+    @Override
+    public String getEndDate() {
+        return tvEndDate.getText().toString();
+    }
 }

@@ -37,6 +37,7 @@ public class DatabaseController {
 
         return new Select().from(ActionParametersModel.class)
                 .where(conditionGroup)
+                .orderBy(ActionParametersModel_Table.startTime, true)
                 .queryList();
     }
 

@@ -2,8 +2,10 @@ package com.task.webchallengetask.ui.modules.analytics;
 
 import android.support.v4.util.Pair;
 
+import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.global.Constants;
+import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
@@ -16,6 +18,7 @@ import java.util.List;
 public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter.AnalyticsView> {
 
     private ProgramDataProvider dataProvider = ProgramDataProvider.getInstance();
+    private ActivityDataProvider mActivitiesProvider = ActivityDataProvider.getInstance();
     public static final Pair<Constants.DATA_TYPES, String> activityDataType = new Pair(Constants.DATA_TYPES.ACTIVITY_TIME, "Activity time");
     public static final Pair<Constants.DATA_TYPES, String> stepDataType = new Pair(Constants.DATA_TYPES.STEP, "Steps");
     public static final Pair<Constants.DATA_TYPES, String> distanceDataType = new Pair(Constants.DATA_TYPES.DISTANCE, "Distance");
@@ -37,6 +40,14 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         getView().setEndDate(TimeUtil.timeToString(TimeUtil.getCurrentDay()));
         Date weekAgo = TimeUtil.minusDayFromDate(new Date(), 7);
         getView().setStartDate(TimeUtil.timeToString(weekAgo.getTime()));
+
+        long startDate = TimeUtil.parseDate(getView().getStartDate()).getTime();
+        long endDate = TimeUtil.parseDate(getView().getEndDate()).getTime();
+        mActivitiesProvider.getActivities(startDate, endDate)
+                .subscribe(actionParametersModels -> {
+
+                }, Logger::e);
+
 
     }
 
@@ -61,6 +72,9 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         void setStartDate(String _text);
         void setEndDate(String _text);
         void setDataTypes(List<Pair<Constants.DATA_TYPES, String>> _data);
+        String getStartDate();
+        String getEndDate();
     }
 
 }
+
