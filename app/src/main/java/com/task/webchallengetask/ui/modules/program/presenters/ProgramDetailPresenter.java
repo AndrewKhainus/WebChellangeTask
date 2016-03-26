@@ -1,9 +1,6 @@
 package com.task.webchallengetask.ui.modules.program.presenters;
 
-import android.support.v4.util.Pair;
-
 import com.google.android.gms.fitness.data.DataPoint;
-import com.google.api.client.util.Data;
 import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.FitDataProvider;
@@ -17,14 +14,12 @@ import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.programs.difficults.DifficultCustom;
 import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
-import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
+import com.task.webchallengetask.ui.custom.CalendarView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +34,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     private FitDataProvider mFitDataProvider = FitDataProvider.getInstance();
     private ProgramTable todayProgram;
     private Program mProgram;
-    private List<Pair<Date, Object>> mDataList = new ArrayList<>();
+    private List<Object> mDataList = new ArrayList<>();
 
     @Override
     public void onViewCreated() {
@@ -133,10 +128,6 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
                     break;
                 case LONG_DISTANCE:
-                    for (Pair<Date, Object> value : mDataList) {
-
-                    }
-
 
                     break;
             }
@@ -145,31 +136,15 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
     }
 
-    public void onAnalyze() {
+    private void getDistnances() {
         getView().showLoadingDialog();
         final Date startDate = TimeUtil.parseDate(getView().getStartDate());
         final Date endDate = TimeUtil.parseDate(getView().getEndDate());
-        Date currentDate = startDate;
-        do {
-
-            switch (mProgram.getType()) {
-                case ACTIVE_LIFE:
-
-                    break;
-                case LONG_DISTANCE:
-
-                    mActivityDataProvider.getDistance(startDate.getTime(), startDate.getTime())
-                            .subscribe(floatValue -> {
-                               mDataList.add(new Pair<>(currentDate, floatValue));
-                            });
-                    break;
-            }
-
-        } while (startDate.after(endDate));
-
-//        Collections.sort(mDataList, (lhs, rhs) -> lhs.first.before(rhs.first) ? 1 : 0);
 
 
+    }
+
+    public void onAnalyze() {
 
         mPredictionDataProvider.analyzeWeeklyTrendResults(7, 0)
                 .subscribe(s -> {
