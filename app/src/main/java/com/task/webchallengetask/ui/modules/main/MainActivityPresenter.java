@@ -2,56 +2,43 @@ package com.task.webchallengetask.ui.modules.main;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-<<<<<<< HEAD:app/src/main/java/com/task/webchallengetask/ui/activities/presenters/MainActivityPresenter.java
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.task.webchallengetask.global.Constants;
-import com.task.webchallengetask.global.utils.GoogleApiUtils;
-import com.task.webchallengetask.global.utils.SharedPrefManager;
-import com.task.webchallengetask.ui.activities.LoginActivity;
-import com.task.webchallengetask.ui.activities.MainActivity;
-import com.task.webchallengetask.ui.base.BaseActivityPresenter;
-import com.task.webchallengetask.ui.base.BaseActivityView;
-import com.task.webchallengetask.ui.fragments.ActivityListFragment;
-import com.task.webchallengetask.ui.fragments.AnalyticsFragment;
-import com.task.webchallengetask.ui.fragments.ProgramsListFragment;
-import com.task.webchallengetask.ui.fragments.SettingsFragment;
-
-public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPresenter.MainView> implements GoogleApiClient.ConnectionCallbacks {
-
-    private PendingIntent mSignInIntent;
-    private GoogleApiClient googleApiClient;
-=======
-
-import com.facebook.login.LoginManager;
+import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
+import com.task.webchallengetask.data.data_managers.SharedPrefManager;
 import com.task.webchallengetask.data.data_providers.PredictionDataProvider;
 import com.task.webchallengetask.global.Constants;
-import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
 import com.task.webchallengetask.global.utils.Logger;
-import com.task.webchallengetask.data.data_managers.SharedPrefManager;
-import com.task.webchallengetask.ui.modules.login.LoginActivity;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
 import com.task.webchallengetask.ui.base.BaseActivityView;
 import com.task.webchallengetask.ui.modules.activity.views.ActivityListFragment;
 import com.task.webchallengetask.ui.modules.analytics.AnalyticsFragment;
+import com.task.webchallengetask.ui.modules.login.LoginActivity;
 import com.task.webchallengetask.ui.modules.program.ProgramsListFragment;
 import com.task.webchallengetask.ui.modules.settings.SettingsFragment;
->>>>>>> 98afec53d2551c676bef39fdc5c655b54d058f3c:app/src/main/java/com/task/webchallengetask/ui/modules/main/MainActivityPresenter.java
+
+public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPresenter.MainView> implements
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    private PendingIntent mSignInIntent;
+    private GoogleApiClient googleApiClient;
+
 
 
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        GoogleApiUtils.getInstance().buildGoogleApiClient();
-        if (TextUtils.equals(SharedPrefManager.getInstance().retrieveActiveSocial(), Constants.SOCIAL_FACEBOOK)) {
-            googleApiClient = setupGoogleApiClient(this, _connectionResult -> {
-                mSignInIntent = _connectionResult.getResolution();
-                resolveSignInError();
-            }, false);
+
+        if (!GoogleApiUtils.getInstance().isNotEmptyClient()) {
+            getView().showLoadingDialog();
+            boolean isGooglePlus = TextUtils.equals(SharedPrefManager.getInstance().retrieveActiveSocial(),
+                    Constants.SOCIAL_GOOGLE_PLUS);
+            googleApiClient = setupGoogleApiClient(this, this, isGooglePlus);
         }
         getView().switchFragment(ActivityListFragment.newInstance(), false);
         getView().setHeaderTitle(SharedPrefManager.getInstance().retrieveUsername());
@@ -64,6 +51,7 @@ import com.task.webchallengetask.ui.modules.settings.SettingsFragment;
     private void resolveSignInError() {
         if (mSignInIntent != null) {
             try {
+                getView().hideLoadingDialog();
                 getView().startSenderIntent(mSignInIntent.getIntentSender(),
                         Constants.RC_SIGN_IN_GOOGLE_PLUS);
             } catch (IntentSender.SendIntentException e) {
@@ -114,9 +102,11 @@ import com.task.webchallengetask.ui.modules.settings.SettingsFragment;
         switch (SharedPrefManager.getInstance().retrieveActiveSocial()) {
             case Constants.SOCIAL_FACEBOOK:
                 LoginManager.getInstance().logOut();
+                if (GoogleApiUtils.getInstance().isNotEmptyClient())
+                    GoogleApiUtils.getInstance().disableFit();
                 break;
             case Constants.SOCIAL_GOOGLE_PLUS:
-                if (GoogleApiUtils.getInstance().buildGoogleApiClientWithGooglePlus() != null &&
+                if (GoogleApiUtils.getInstance().isNotEmptyClient() &&
                         GoogleApiUtils.getInstance().buildGoogleApiClientWithGooglePlus().isConnected())
                     GoogleApiUtils.getInstance().logoutGooglePlus();
         }
@@ -134,12 +124,19 @@ import com.task.webchallengetask.ui.modules.settings.SettingsFragment;
 
     @Override
     public void onConnected(Bundle _bundle) {
-
+        getView().hideLoadingDialog();
+        Logger.d("Google API client onConnected");
     }
 
     @Override
     public void onConnectionSuspended(int i) {
+        googleApiClient.connect();
+    }
 
+    @Override
+    public void onConnectionFailed(ConnectionResult _connectionResult) {
+        mSignInIntent = _connectionResult.getResolution();
+        resolveSignInError();
     }
 
     public interface MainView extends BaseActivityView<MainActivityPresenter> {

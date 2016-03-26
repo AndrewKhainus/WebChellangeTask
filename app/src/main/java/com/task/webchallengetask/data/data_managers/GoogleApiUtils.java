@@ -81,9 +81,18 @@ public final class GoogleApiUtils {
         return googleApiClient;
     }
 
+    public boolean isNotEmptyClient() {
+        return googleApiClient != null;
+    }
+
     public void logoutGooglePlus() {
         Plus.AccountApi.clearDefaultAccount(googleApiClient);
         Plus.AccountApi.revokeAccessAndDisconnect(googleApiClient);
+        disableFit();
+    }
+
+    public void disableFit() {
+        Fitness.ConfigApi.disableFit(googleApiClient);
         googleApiClient = null;
     }
 

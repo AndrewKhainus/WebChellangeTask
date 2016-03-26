@@ -3,7 +3,6 @@ package com.task.webchallengetask.data.database;
 
 import com.raizlabs.android.dbflow.sql.language.ConditionGroup;
 import com.raizlabs.android.dbflow.sql.language.Select;
-//import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel_Table;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
@@ -12,6 +11,7 @@ import com.task.webchallengetask.data.database.tables.ProgramTable_Table;
 import java.util.List;
 
 import rx.Observable;
+
 
 public class DatabaseController {
 
@@ -48,7 +48,7 @@ public class DatabaseController {
     public Observable<List<ProgramTable>> getProgram(String _name) {
         return Observable.just(new Select().from(ProgramTable.class)
                 .where(ProgramTable_Table.name.eq(_name))
-                .orderBy(ProgramTable_Table.date, false)
+//                .orderBy(ProgramTable_Table., false)
                 .queryList());
     }
 

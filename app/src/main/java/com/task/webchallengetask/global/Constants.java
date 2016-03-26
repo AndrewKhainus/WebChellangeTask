@@ -34,6 +34,19 @@ public final class Constants {
 
     public static final String SEND_TIMER_UPDATE_ACTION = "SEND_TIMER_UPDATE_ACTION";
     public static final String SEND_TIMER_UPDATE_KEY = "SEND_TIMER_UPDATE_KEY";
+
+
+    public static final String SEND_DISTANCE_ACTION = "SEND_DISTANCE_ACTION";
+    public static final String SEND_SPEED_ACTION = "SEND_SPEED_ACTION";
+    public static final String SEND_STEP_ACTION = "SEND_STEP_ACTION";
+    public static final String SEND_CALORIES_ACTION = "SEND_CALORIES_ACTION";
+
+    public static final String SEND_DISTANCE_KEY = "SEND_DISTANCE_KEY";
+    public static final String SEND_SPEED_KEY = "SEND_SPEED_KEY";
+    public static final String SEND_STEP_KEY = "SEND_STEP_KEY";
+    public static final String SEND_CALORIES_KEY = "SEND_CALORIES_KEY";
+
+
     public static final String ACTIVITY_NAME_KEY = "ACTIVITY_NAME_KEY";
     public static final String ACTIVITY_ID_KEY = "ACTIVITY_ID_KEY";
 

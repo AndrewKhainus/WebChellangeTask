@@ -4,12 +4,14 @@ import android.util.Log;
 
 public final class Logger {
 
+    private static final String TAG = "Logger";
+
     public static void e (Throwable _throwable) {
-        Log.e("logger", _throwable.getClass().getName() + ", cause - " + _throwable.getCause() + ", message - " + _throwable.getMessage());
+        Log.e(TAG, _throwable.getClass().getName() + ", cause - " + _throwable.getCause() + ", message - " + _throwable.getMessage());
     }
 
     public static void d (String _message) {
-        Log.d("logger", _message);
+        Log.d(TAG, _message);
     }
 
 }

@@ -2,12 +2,9 @@ package com.task.webchallengetask.ui.base;
 
 import android.content.Intent;
 import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.fitness.Fitness;
-import com.task.webchallengetask.App;
-import com.task.webchallengetask.global.utils.GoogleApiUtils;
+import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
 import com.task.webchallengetask.global.utils.RxUtils;
 
 import rx.Subscription;
