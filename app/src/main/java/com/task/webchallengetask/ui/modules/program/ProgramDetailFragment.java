@@ -37,6 +37,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     private TextView tvStartDate;
     private TextView tvEndDate;
     private EditText etTarget;
+    private TextView tvUnit;
     private Spinner spDifficult;
     private TextView tvActualResult;
     private Button btnAnalyze;
@@ -44,10 +45,10 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     private MenuItem menuSave;
 
 
-    public static ProgramDetailFragment newInstance(String _programName) {
+    public static ProgramDetailFragment newInstance(int _programId) {
 
         Bundle args = new Bundle();
-        args.putString(Constants.PROGRAM_NAME_KEY, _programName);
+        args.putInt(Constants.PROGRAM_ID_KEY, _programId);
         ProgramDetailFragment fragment = new ProgramDetailFragment();
         fragment.setArguments(args);
         return fragment;
@@ -78,7 +79,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         spDifficult = (Spinner) rootView.findViewById(R.id.spDifficult_FP);
         tvActualResult = (TextView) rootView.findViewById(R.id.tvActualResult_FP);
         btnAnalyze = (Button) rootView.findViewById(R.id.btnAnalyze_FP);
-
+        tvUnit = (TextView) rootView.findViewById(R.id.tvUnitTarget_FP);
     }
 
 
@@ -139,6 +140,14 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_save) {
+            getPresenter().onSaveClicked();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void setDiagram() {
 
     }
@@ -154,6 +163,11 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     @Override
     public void setTarget(String _text) {
         etTarget.setText(_text);
+    }
+
+    @Override
+    public void setUnit(String _text) {
+        tvUnit.setText(_text);
     }
 
     @Override
@@ -197,12 +211,22 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
 
     @Override
     public String getStartDate() {
-        return null;
+        return tvStartDate.getText().toString();
     }
 
     @Override
     public String getEndDate() {
-        return null;
+        return tvEndDate.getText().toString();
+    }
+
+    @Override
+    public String getTarget() {
+        return etTarget.getText().toString();
+    }
+
+    @Override
+    public Difficult getDifficult() {
+        return ((DifficultAdapter) spDifficult.getAdapter()).getDifficult(spDifficult.getSelectedItemPosition());
     }
 
 }

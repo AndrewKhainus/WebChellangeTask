@@ -29,4 +29,8 @@ public class DifficultAdapter extends ArrayAdapter<String> {
         return data.size();
     }
 
+    public Difficult getDifficult(int position) {
+        return data.get(position);
+    }
+
 }

@@ -133,8 +133,7 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
         try {
             if (progressDialog != null && progressDialog.isShowing())
                 progressDialog.dismiss();
-        }
-        catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             Logger.e(e);
         }
 
@@ -152,16 +151,11 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
 
         Fragment fragment = getSupportFragmentManager()
                 .findFragmentById(getFragmentContainer());
-        if (fragment != null)
-            fragmentTransaction.hide(fragment);
-
         if (_addToBackStack) {
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.add(getFragmentContainer(), _fragment, _fragment.getClass().getName());
-        } else {
-            fragmentTransaction.replace(getFragmentContainer(), _fragment, _fragment.getClass().getName());
         }
-        fragmentTransaction.show(_fragment);
+        fragmentTransaction.replace(getFragmentContainer(), _fragment, _fragment.getClass().getName());
+
         fragmentTransaction.commitAllowingStateLoss();
         setToolBarTitle(_fragment.getTitle());
     }

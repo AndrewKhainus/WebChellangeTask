@@ -52,7 +52,7 @@ public final class Constants {
 
     public static int FOREGROUND_NOTIFICATION_SERVICE_ID = 101;
 
-    public static final String PROGRAM_NAME_KEY = "PROGRAM_NAME_KEY";
+    public static final String PROGRAM_ID_KEY = "PROGRAM_ID_KEY";
 
     public enum PROGRAM_TYPES {
         LONG_DISTANCE,

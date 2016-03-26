@@ -1,7 +1,7 @@
 package com.task.webchallengetask.ui.modules.program.presenters;
 
-import com.google.android.gms.fitness.data.DataPoint;
-import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
+import android.util.Pair;
+
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.FitDataProvider;
 import com.task.webchallengetask.data.data_providers.PredictionDataProvider;
@@ -18,7 +18,6 @@ import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
 import com.task.webchallengetask.ui.custom.CalendarView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,10 +30,9 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     private ProgramDataProvider mProgramDataProvider = ProgramDataProvider.getInstance();
     private PredictionDataProvider mPredictionDataProvider = PredictionDataProvider.getInstance();
     private ActivityDataProvider mActivityDataProvider = ActivityDataProvider.getInstance();
-    private FitDataProvider mFitDataProvider = FitDataProvider.getInstance();
     private ProgramTable mProgramTable;
     private Program mProgram;
-    private List<Integer> mDataList = new ArrayList<>();
+    private List<Pair<Long, Float>> mDataList = new ArrayList<>();
 
     @Override
     public void onViewCreated() {
@@ -45,17 +43,13 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         Date weekAgo = TimeUtil.minusDayFromDate(new Date(), 7);
         getView().setStartDate(TimeUtil.timeToString(weekAgo.getTime()));
 
-        mProgramDataProvider.getProgram(getView().getFragmentArguments().getString(Constants.PROGRAM_NAME_KEY))
+        mProgramDataProvider.getProgram(getView().getFragmentArguments().getInt(Constants.PROGRAM_ID_KEY))
                 .subscribe(programTable -> {
-                    createDiagram(programTable);
                     mProgramTable = programTable;
+                    mProgram = defineProgram(mProgramTable);
                     fillProgram(mProgramTable);
                 }, Logger::e);
 
-    }
-
-    private void getData(DataPoint _dataPoint) {
-        GoogleApiUtils.describeDataPoint(_dataPoint, new SimpleDateFormat("dd.MM.yyyy"));
     }
 
     private Program defineProgram(ProgramTable _table) {
@@ -65,6 +59,15 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
             }
         }
         return null;
+    }
+
+    public void onSaveClicked() {
+        mProgramTable.target = Integer.valueOf(getView().getTarget());
+        mProgramTable.difficult = getView().getDifficult().getName();
+        mProgramTable.update();
+        getView().setSaveVisible(false);
+        getView().setDifficultEnabled(false);
+        getView().setTargetEnabled(false);
     }
 
 
@@ -80,7 +83,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         getView().setTitle(_programTable.getName());
         getView().setDifficult(getDifficultList(_programTable.getName()));
         getView().setTarget(String.valueOf(_programTable.getTarget()));
-
+        getView().setUnit(_programTable.getUnit());
         if (getDifficult(_programTable.getName(), _programTable.getDifficult()) instanceof DifficultCustom) {
             getView().setTargetEnabled(true);
         } else {
@@ -88,6 +91,36 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         }
 
 
+        final Date startDate = TimeUtil.parseDate(getView().getStartDate());
+        final Date endDate = TimeUtil.parseDate(getView().getEndDate());
+
+        switch (mProgram.getType()) {
+            case ACTIVE_LIFE:
+                mActivityDataProvider.getActualTime(startDate, endDate)
+                        .subscribe(floats -> {
+                            mDataList.clear();
+                            mDataList.addAll(floats);
+                            if (!floats.isEmpty())
+                                getView().setActualResults(String.valueOf(floats.get(floats.size() - 1)));
+                            fillDiagram();
+                        });
+                break;
+            case LONG_DISTANCE:
+                mActivityDataProvider.getDistance(startDate, endDate)
+                        .subscribe(floats -> {
+                            mDataList.clear();
+                            mDataList.addAll(floats);
+                            if (!floats.isEmpty())
+                                getView().setActualResults(String.valueOf(floats.get(floats.size() - 1)));
+
+                            fillDiagram();
+                        });
+                break;
+        }
+    }
+
+    private void fillDiagram() {
+        getView().setDiagram();
     }
 
     private List<Difficult> getDifficultList(String _name) {
@@ -110,34 +143,42 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     }
 
     public void onAnalyze() {
-
         int complited = 0;
         int uncomplited = 0;
 
-        for (int value : mDataList) {
-            if (value == 0) continue;
-            if (value >= mProgramTable.getTarget()) {
+        for (Pair<Long, Float> value : mDataList) {
+            float v = value.second;
+            if (v == 0) continue;
+            if (v >= Float.valueOf(getView().getTarget())) {
                 complited++;
             } else
                 uncomplited++;
+
         }
 
-        mPredictionDataProvider.analyzeWeeklyTrendResults(complited, uncomplited)
+        getView().showLoadingDialog();
+        addSubscription(mPredictionDataProvider.analyzeWeeklyTrendResults(complited, uncomplited)
                 .subscribe(s -> {
-                    String message = "";
-                    if (s.equals("Increase")) {
-                        message = "You could increase your difficult";
-                    }
-                    if (s.equals("Stay")) {
-                        message = "You should stay with current difficult";
-                    }
-                    if (s.equals("Reduce")) {
-                        message = "You should make a current difficult easier";
-                    }
-                    getView().setDifficultEnabled(true);
-                    getView().showInfoDialog("Recommendation", message, null);
-                    getView().setSaveVisible(false);
-                }, Logger::e, () -> getView().hideLoadingDialog());
+                            String message = "";
+                            if (s.equals("Increase")) {
+                                message = "You could increase your difficult";
+                            }
+                            if (s.equals("Stay")) {
+                                message = "You should stay with current difficult";
+                            }
+                            if (s.equals("Reduce")) {
+                                message = "You should make a current difficult easier";
+                            }
+                            getView().setDifficultEnabled(true);
+                            getView().showInfoDialog("Recommendation", message, null);
+                            getView().setSaveVisible(true);
+                            getView().hideLoadingDialog();
+                        }, throwable -> {
+                            Logger.e(throwable);
+                            getView().hideLoadingDialog();
+                        }
+
+                ));
     }
 
     public void onDifficultChanged(int _position) {
@@ -147,11 +188,6 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         } else {
             getView().setTarget(diffList.get(_position).getTarget());
         }
-    }
-
-
-    private void createDiagram(ProgramTable programs) {
-        getView().setDiagram();
     }
 
     public interface ProgramDetailView extends BaseFragmentView<ProgramDetailPresenter> {
@@ -164,6 +200,8 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         void setDifficult(List<Difficult> _data);
 
         void setTarget(String _text);
+
+        void setUnit(String _text);
 
         void setActualResults(String _text);
 
@@ -182,5 +220,9 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         String getStartDate();
 
         String getEndDate();
+
+        String getTarget();
+
+        Difficult getDifficult();
     }
 }
