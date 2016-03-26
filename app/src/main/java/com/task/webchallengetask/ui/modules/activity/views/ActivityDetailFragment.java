@@ -1,6 +1,7 @@
 package com.task.webchallengetask.ui.modules.activity.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -86,6 +87,9 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
                 return true;
             case R.id.menu_save:
                 getPresenter().onSaveClicked();
+                return true;
+            case R.id.menu_delete:
+                getPresenter().onDeleteClicked();
                 return true;
         }
         return super.onOptionsItemSelected(item);

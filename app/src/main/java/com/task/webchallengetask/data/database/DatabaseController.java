@@ -2,6 +2,7 @@ package com.task.webchallengetask.data.database;
 
 
 import com.raizlabs.android.dbflow.sql.language.ConditionGroup;
+import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel_Table;
@@ -52,6 +53,13 @@ public class DatabaseController {
         return new Select().from(ActionParametersModel.class)
                 .where(ActionParametersModel_Table.id.eq(_id))
                 .querySingle();
+    }
+
+    public boolean deleteActionParametersModel(int _id){
+        new Delete().from(ActionParametersModel.class)
+                .where(ActionParametersModel_Table.id.eq(_id)).query();
+
+        return true;
     }
 
     public Observable<List<ProgramTable>> getPrograms() {

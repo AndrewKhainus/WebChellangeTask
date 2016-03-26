@@ -27,6 +27,7 @@ public final class Constants {
     public static final int PROFILE_PIC_SIZE = 100; // dp
 
     public static final String MAIN_ACTION = "action.main";
+    public static final String SERVICE_RUNNING = "SERVICE_RUNNING";
 
     public static final String START_TIMER_ACTION = "START_TIMER_ACTION";
     public static final String PAUSE_TIMER_ACTION = "PAUSE_TIMER_ACTION";

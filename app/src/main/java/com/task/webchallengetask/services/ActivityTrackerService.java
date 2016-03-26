@@ -85,42 +85,44 @@ public class ActivityTrackerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (notificationManager == null)
             notificationManager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        currentActivity = intent.getStringExtra(Constants.ACTIVITY_NAME_KEY);
-        switch (intent.getAction()) {
-            case START_TIMER_ACTION:
-                if (mTimerTime == null) {
-                    mTimerTime = TimeUtil.getCalendarFromString("00:00:00");
-                }
-                mTimer = new Timer();
-                mTimer.schedule(new CounterRunnable(), 0, 1000);
-                startTime = Calendar.getInstance().getTimeInMillis();
-                startForeground(Constants.FOREGROUND_NOTIFICATION_SERVICE_ID,
-                        getNotification(TimeUtil.getStringFromCalendar(mTimerTime)).build());
-                isPause = false;
-                break;
-            case Constants.PAUSE_TIMER_ACTION:
-                if (mTimer != null) {
-                    mTimer.cancel();
-                    mTimer.purge();
-                }
-                isPause = true;
-                break;
-            case Constants.STOP_TIMER_ACTION:
-                if (mTimer != null) {
-                    mTimer.cancel();
-                    mTimer.purge();
-                }
-                isPause = false;
-                endTime = Calendar.getInstance().getTimeInMillis();
-                unregisterFitnessDataListener();
-                saveData();
-                mTimerTime = null;
-                notificationManager.cancel(Constants.FOREGROUND_NOTIFICATION_SERVICE_ID);
-                stopForeground(true);
-                stopSelf();
-                break;
+        if (intent != null) {
+            currentActivity = intent.getStringExtra(Constants.ACTIVITY_NAME_KEY);
+            switch (intent.getAction()) {
+                case START_TIMER_ACTION:
+                    if (mTimerTime == null) {
+                        mTimerTime = TimeUtil.getCalendarFromString("00:00:00");
+                    }
+                    mTimer = new Timer();
+                    mTimer.schedule(new CounterRunnable(), 0, 1000);
+                    startTime = Calendar.getInstance().getTimeInMillis();
+                    startForeground(Constants.FOREGROUND_NOTIFICATION_SERVICE_ID,
+                            getNotification(TimeUtil.getStringFromCalendar(mTimerTime)).build());
+                    isPause = false;
+                    break;
+                case Constants.PAUSE_TIMER_ACTION:
+                    if (mTimer != null) {
+                        mTimer.cancel();
+                        mTimer.purge();
+                    }
+                    isPause = true;
+                    break;
+                case Constants.STOP_TIMER_ACTION:
+                    if (mTimer != null) {
+                        mTimer.cancel();
+                        mTimer.purge();
+                    }
+                    isPause = false;
+                    endTime = Calendar.getInstance().getTimeInMillis();
+                    unregisterFitnessDataListener();
+                    saveData();
+                    mTimerTime = null;
+                    notificationManager.cancel(Constants.FOREGROUND_NOTIFICATION_SERVICE_ID);
+                    stopForeground(true);
+                    stopSelf();
+                    break;
+            }
         }
-        return Service.START_NOT_STICKY;
+        return Service.START_STICKY;
     }
 
     private void saveData() {
@@ -163,13 +165,13 @@ public class ActivityTrackerService extends Service {
     private void implStepListener() {
         mListenerStep = _dataPoint -> {
             if (!isPause) {
-            for (Field field : _dataPoint.getDataType().getFields()) {
-                Value val = _dataPoint.getValue(field);
-                step += val.asInt();
-                Logger.d("Detected DataPoint field: " + field.getName());
-                Logger.d("Detected DataPoint value: " + val);
-                sendBroadcast(IntentHelper.sendStepIntent(step));
-            }
+                for (Field field : _dataPoint.getDataType().getFields()) {
+                    Value val = _dataPoint.getValue(field);
+                    step += val.asInt();
+                    Logger.d("Detected DataPoint field: " + field.getName());
+                    Logger.d("Detected DataPoint value: " + val);
+                    sendBroadcast(IntentHelper.sendStepIntent(step));
+                }
             }
         };
     }
@@ -177,15 +179,15 @@ public class ActivityTrackerService extends Service {
     private void implDistanceListener() {
         mListenerDistance = _dataPoint -> {
             if (!isPause) {
-            for (Field field : _dataPoint.getDataType().getFields()) {
-                Value val = _dataPoint.getValue(field);
+                for (Field field : _dataPoint.getDataType().getFields()) {
+                    Value val = _dataPoint.getValue(field);
 
-                dist += val.asFloat() / 1000; // meters
-                Logger.d("Detected DataPoint field: " + field.getName());
-                Logger.d("Detected DataPoint value: " + val);
-                sendBroadcast(IntentHelper.sendDistanceIntent(dist));
-                sendBroadcast(IntentHelper.sendCaloriesIntent(calculationCalories()));
-            }
+                    dist += val.asFloat() / 1000; // meters
+                    Logger.d("Detected DataPoint field: " + field.getName());
+                    Logger.d("Detected DataPoint value: " + val);
+                    sendBroadcast(IntentHelper.sendDistanceIntent(dist));
+                    sendBroadcast(IntentHelper.sendCaloriesIntent(calculationCalories()));
+                }
             }
         };
     }
@@ -193,14 +195,14 @@ public class ActivityTrackerService extends Service {
     private void implSpeedListener() {
         mListenerSpeed = _dataPoint -> {
             if (isPause) {
-            for (Field field : _dataPoint.getDataType().getFields()) {
-                Value val = _dataPoint.getValue(field);
+                for (Field field : _dataPoint.getDataType().getFields()) {
+                    Value val = _dataPoint.getValue(field);
 
-                speed += val.asFloat();
-                Logger.d("Detected DataPoint field: " + field.getName());
-                Logger.d("Detected DataPoint value: " + val);
-                sendBroadcast(IntentHelper.sendSpeedIntent(speed));
-            }
+                    speed += val.asFloat();
+                    Logger.d("Detected DataPoint field: " + field.getName());
+                    Logger.d("Detected DataPoint value: " + val);
+                    sendBroadcast(IntentHelper.sendSpeedIntent(speed));
+                }
             }
         };
     }

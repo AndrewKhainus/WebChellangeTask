@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.task.webchallengetask.data.data_managers.SharedPrefManager;
-import com.task.webchallengetask.ui.modules.login.LoginActivity;
-import com.task.webchallengetask.ui.modules.main.MainActivity;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
 import com.task.webchallengetask.ui.base.BaseActivityView;
+import com.task.webchallengetask.ui.modules.login.LoginActivity;
+import com.task.webchallengetask.ui.modules.main.MainActivity;
 
 /**
  * Created by Sergbek on 22.03.2016.
@@ -26,5 +26,6 @@ public class CheckPresenter extends BaseActivityPresenter<CheckPresenter.CheckVi
         getView().finishActivity();
     }
 
-    public interface CheckView extends BaseActivityView<CheckPresenter> {}
+    public interface CheckView extends BaseActivityView<CheckPresenter> {
+    }
 }

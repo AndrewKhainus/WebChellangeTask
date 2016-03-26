@@ -12,7 +12,9 @@ import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.IntentHelper;
+import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
+import com.task.webchallengetask.services.ActivityTrackerService;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
 import com.task.webchallengetask.ui.base.BaseActivityView;
 
@@ -35,6 +37,10 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     @Override
     public void onViewCreated() {
         super.onViewCreated();
+
+//        isStarted = IntentHelper.isServiceRunning(App.getAppContext(), ActivityTrackerService.class);
+//        Logger.d(isPaused + "");
+
         activitiesList = Arrays.asList(App.getAppContext().getResources()
                 .getStringArray(R.array.activities_list));
         getView().setSpinnerData(activitiesList);
@@ -126,7 +132,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
             if (intent.getAction().equals(Constants.SEND_TIMER_UPDATE_ACTION)) {
                 long timer = intent.getLongExtra(Constants.SEND_TIMER_UPDATE_KEY, -1);
                 Log.e("w", timer + "");
-                if (timer != -1) {
+                if (timer != -1 && getView() != null) {
                     Date date = new Date(timer);
                     getView().setTimer(TimeUtil.getStringFromGregorianTime(date));
                 }

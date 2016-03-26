@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 
@@ -104,5 +105,14 @@ public final class TimeUtil {
     public static Calendar addSecondToCalendar(Calendar calendar) {
         calendar.add(Calendar.SECOND, 1);
         return calendar;
+    }
+
+    public static boolean isSameDay(long _firstTime, long _secondTime) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(_firstTime));
+        int firstDay = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar.setTime(new Date(_secondTime));
+        int secondDay = calendar.get(Calendar.DAY_OF_MONTH);
+        return firstDay == secondDay;
     }
 }

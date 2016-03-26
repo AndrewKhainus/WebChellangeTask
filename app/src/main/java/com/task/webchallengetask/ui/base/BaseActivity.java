@@ -137,7 +137,6 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
         catch (IllegalStateException e){
             Logger.e(e);
         }
-
     }
 
     @Override
@@ -150,18 +149,10 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     public void switchFragment(final BaseFragment _fragment, boolean _addToBackStack) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        Fragment fragment = getSupportFragmentManager()
-                .findFragmentById(getFragmentContainer());
-        if (fragment != null)
-            fragmentTransaction.hide(fragment);
-
         if (_addToBackStack) {
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.add(getFragmentContainer(), _fragment, _fragment.getClass().getName());
-        } else {
-            fragmentTransaction.replace(getFragmentContainer(), _fragment, _fragment.getClass().getName());
         }
-        fragmentTransaction.show(_fragment);
+        fragmentTransaction.replace(getFragmentContainer(), _fragment, _fragment.getClass().getName());
         fragmentTransaction.commitAllowingStateLoss();
         setToolBarTitle(_fragment.getTitle());
     }

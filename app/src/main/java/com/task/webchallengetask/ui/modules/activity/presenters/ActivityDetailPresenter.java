@@ -12,11 +12,12 @@ import com.task.webchallengetask.ui.base.BaseFragmentView;
  */
 public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetailPresenter.ActivityDetailView> {
 
-    ActionParametersModel actionParametersModel;
+    private ActionParametersModel actionParametersModel;
+    private int id;
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        final int id = getView().getFragmentArguments().getInt(Constants.ACTIVITY_ID_KEY);
+        id = getView().getFragmentArguments().getInt(Constants.ACTIVITY_ID_KEY);
 
         ActivityDataProvider.getInstance().getActivitie(id)
                 .subscribe(_model -> {
@@ -46,6 +47,12 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
         actionParametersModel.step = Integer.parseInt(getView().getStep());
         actionParametersModel.calories = Float.parseFloat(getView().getCalories());
         actionParametersModel.save();
+    }
+
+    public void onDeleteClicked() {
+        ActivityDataProvider.getInstance()
+                .deleteActivities(id)
+                .subscribe(t -> getView().onBackPressed());
     }
 
     public interface ActivityDetailView extends BaseFragmentView<ActivityDetailPresenter> {

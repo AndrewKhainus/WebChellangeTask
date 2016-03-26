@@ -9,14 +9,18 @@ import android.text.TextUtils;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.task.webchallengetask.App;
 import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
 import com.task.webchallengetask.data.data_managers.SharedPrefManager;
 import com.task.webchallengetask.data.data_providers.PredictionDataProvider;
 import com.task.webchallengetask.global.Constants;
+import com.task.webchallengetask.global.utils.IntentHelper;
 import com.task.webchallengetask.global.utils.Logger;
+import com.task.webchallengetask.services.ActivityTrackerService;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
 import com.task.webchallengetask.ui.base.BaseActivityView;
 import com.task.webchallengetask.ui.modules.activity.views.ActivityListFragment;
+import com.task.webchallengetask.ui.modules.activity.views.ActivityStartActivity;
 import com.task.webchallengetask.ui.modules.analytics.AnalyticsFragment;
 import com.task.webchallengetask.ui.modules.login.LoginActivity;
 import com.task.webchallengetask.ui.modules.program.ProgramsListFragment;
@@ -32,12 +36,17 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
     public void onViewCreated() {
         super.onViewCreated();
 
+        if (IntentHelper.isServiceRunning(App.getAppContext(), ActivityTrackerService.class)){
+            getView().startActivity(ActivityStartActivity.class);
+        }
+
         if (!GoogleApiUtils.getInstance().isNotEmptyClient()) {
             getView().showLoadingDialog();
             boolean isGooglePlus = TextUtils.equals(SharedPrefManager.getInstance().retrieveActiveSocial(),
                     Constants.SOCIAL_GOOGLE_PLUS);
             googleApiClient = setupGoogleApiClient(this, this, isGooglePlus);
         }
+
         getView().switchFragment(ActivityListFragment.newInstance(), false);
         getView().setHeaderTitle(SharedPrefManager.getInstance().retrieveUsername());
         getView().setHeaderSubTitle("Cool men");

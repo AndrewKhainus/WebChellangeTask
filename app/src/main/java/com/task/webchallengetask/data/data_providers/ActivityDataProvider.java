@@ -44,6 +44,10 @@ public class ActivityDataProvider extends BaseDataProvider {
         return newThread(Observable.just(mDbController.getActionParametersModel(_id)));
     }
 
+    public  Observable<Boolean> deleteActivities(int _id){
+       return newThread(Observable.just(mDbController.deleteActionParametersModel(_id)));
+    }
+
     public Observable<List<Float>> getDistance(long _startDate, long _endDate) {
         return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate))
         .flatMap(Observable::from))

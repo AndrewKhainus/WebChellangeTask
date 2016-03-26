@@ -9,38 +9,48 @@ import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import rx.Observable;
 
 public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPresenter.ActivityListView> {
 
+    private List<ActionParametersModel> actionParametersModels;
 
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        // TODO: put real activities
-//        ActionParametersModel model1 = new ActionParametersModel();
-//        model1.startTime = TimeUtil.minusDayFromDate(new Date(), 1).getTime();
-//        model1.endTime = new Date().getTime();
-//        model1.name = "running";
-//        List<ActionParametersModel> currentDayList1 = new ArrayList<>();
-//        currentDayList1.add(model1);
-//        getView().addActivities(currentDayList1);
-//
-//        ActionParametersModel model2 = new ActionParametersModel();
-//        model2.startTime = TimeUtil.minusDayFromDate(new Date(), 2).getTime();
-//        model2.endTime = new Date().getTime();
-//        model2.name = "walking";
-//        List<ActionParametersModel> currentDayList2 = new ArrayList<>();
-//        currentDayList2.add(model2);
-//        getView().addActivities(currentDayList2);
+        actionParametersModels= new ArrayList<>();
 
         ActivityDataProvider.getInstance()
                 .getActivities()
-                .subscribe(t -> getView().addActivities(t));
+                .doOnNext(this::sortList)
+                .subscribe();
 
+    }
+
+
+    private void sortList(List<ActionParametersModel> _modelList){
+        int size = _modelList.size();
+        long longTime = 0;
+        for (int i = 0; i < size; i++) {
+
+            if (i == 0){
+                longTime = _modelList.get(0).getStartTime();
+                actionParametersModels.add(_modelList.get(0));
+                if (i == _modelList.size() - 1) getView().addActivities(actionParametersModels);
+                continue;
+            }
+            if  (TimeUtil.isSameDay(longTime, _modelList.get(i).getStartTime())){
+                actionParametersModels.add(_modelList.get(i));
+                if (i == _modelList.size() - 1) getView().addActivities(actionParametersModels);
+            }
+            else {
+                getView().addActivities(actionParametersModels);
+                longTime = actionParametersModels.get(i).startTime;
+                actionParametersModels.clear();
+            }
+
+
+        }
     }
 
     public void onFABClicked() {
