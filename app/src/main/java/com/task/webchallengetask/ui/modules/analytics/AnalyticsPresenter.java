@@ -8,6 +8,8 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
+import com.task.webchallengetask.App;
+import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.global.Constants;
@@ -56,22 +58,22 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         switch (_dataType.first){
             case ACTIVITY_TIME:
                 ActivityDataProvider.getInstance().getActualTime(start,end).subscribe((floats) -> {
-                    setDiagramData(floats, "Time");
+                    setDiagramData(floats, App.getAppContext().getString(R.string.c_time));
                 });
                 break;
             case STEP:
                 ActivityDataProvider.getInstance().getSteps(start,end).subscribe((floats) -> {
-                    setDiagramData(floats, "Steps");
+                    setDiagramData(floats, App.getAppContext().getString(R.string.c_step));
                 });
                 break;
             case DISTANCE:
                 ActivityDataProvider.getInstance().getDistance(start,end).subscribe((floats) -> {
-                    setDiagramData(floats, "Meters");
+                    setDiagramData(floats, App.getAppContext().getString(R.string.c_meters));
                 });
                 break;
             case CALORIES:
                 ActivityDataProvider.getInstance().getCalories(start,end).subscribe((floats) -> {
-                    setDiagramData(floats, "Calories");
+                    setDiagramData(floats, App.getAppContext().getString(R.string.c_calories));
                 });
                 break;
         }
@@ -82,7 +84,7 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         BarData mDiagram = new BarData();
         String[] dates = new String[floats.size()];
         for (int i = 0; i < floats.size(); i++){
-          dates[i] = TimeUtil.timeToString(floats.get(i).first);
+          dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
             _entry.add(new BarEntry(floats.get(i).second, i));
         }
         CombinedData data = new CombinedData(dates);

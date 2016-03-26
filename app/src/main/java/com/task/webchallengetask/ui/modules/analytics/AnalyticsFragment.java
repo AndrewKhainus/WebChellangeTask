@@ -63,7 +63,7 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
         spDataType = (Spinner) rootView.findViewById(R.id.spDataType_FA);
         tvStartDate = (TextView) rootView.findViewById(R.id.tvStartDate_FA);
         tvEndDate = (TextView) rootView.findViewById(R.id.tvEndDate_FA);
-        lDiagramContainer = (FrameLayout) rootView.findViewById(R.id.diagram_container_FA);
+//        lDiagramContainer = (FrameLayout) rootView.findViewById(R.id.diagram_container_FA);
         mChart = (CombinedChart) rootView.findViewById(R.id.chart_FA);
     }
 

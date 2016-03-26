@@ -123,7 +123,7 @@ public class ActivityDataProvider extends BaseDataProvider {
                     for (float value : aFloat) {
                         totalDistance += value;
                     }
-                    return new Pair<Long, Float>(_date, totalDistance);
+                    return new Pair<>(_date, totalDistance);
                 });
     }
 
@@ -137,7 +137,7 @@ public class ActivityDataProvider extends BaseDataProvider {
                     for (float value : integers) {
                         totalDistance += value;
                     }
-                    return new Pair<Long, Float>(_date, totalDistance);
+                    return new Pair<>(_date, totalDistance);
                 });
 
     }
@@ -152,7 +152,7 @@ public class ActivityDataProvider extends BaseDataProvider {
                     for (float value : aFloat) {
                         totalActualTime += value;
                     }
-                    return new Pair<Long, Float>(_date, totalActualTime);
+                    return new Pair<>(_date, totalActualTime);
                 });
 
 
@@ -184,7 +184,7 @@ public class ActivityDataProvider extends BaseDataProvider {
                     for (float value : aFloat) {
                         totalCalories += value;
                     }
-                    return new Pair<Long, Float>(_date, totalCalories);
+                    return new Pair<>(_date, totalCalories);
                 });
 
 
