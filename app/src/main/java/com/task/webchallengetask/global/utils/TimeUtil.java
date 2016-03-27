@@ -29,7 +29,7 @@ public final class TimeUtil {
 
 
     public static String timeToString(long _time) {
-        return dateFormat.format(new Date(_time));
+        return timeFormat.format(new Date(_time));
     }
 
     public static String timeToStringDDMM(long _time) {

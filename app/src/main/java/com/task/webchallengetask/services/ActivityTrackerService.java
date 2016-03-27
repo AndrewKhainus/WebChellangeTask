@@ -135,6 +135,7 @@ public class ActivityTrackerService extends Service {
         actionParametersModel.step = step;
         actionParametersModel.startTime = startTime;
         actionParametersModel.endTime = endTime;
+        actionParametersModel.date = TimeUtil.getCurrentDay();
         actionParametersModel.save();
     }
 

@@ -49,6 +49,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
 
         getView().switchFragment(ActivityListFragment.newInstance(), false);
         getView().setHeaderTitle(SharedPrefManager.getInstance().retrieveUsername());
+        getView().setAvatar(SharedPrefManager.getInstance().retrieveUrlPhoto());
 
         PredictionDataProvider.getInstance().connectAndTrain()
                 .subscribe(aBoolean -> {}, Logger::e);
@@ -157,6 +158,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
 
         void startSenderIntent(IntentSender _intentSender, int _const) throws IntentSender.SendIntentException;
 
+        void setAvatar(String _path);
 
     }
 

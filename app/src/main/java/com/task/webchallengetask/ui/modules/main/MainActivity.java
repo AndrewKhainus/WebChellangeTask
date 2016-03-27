@@ -77,14 +77,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
             showProfileDialog();
         }
 
-        loadPhoto();
-
-    }
-
-    private void loadPhoto() {
-        Picasso.with(App.getAppContext())
-                .load(SharedPrefManager.getInstance().retrieveUrlPhoto())
-                .into(ivNavAvatar);
     }
 
     private void showProfileDialog() {
@@ -154,11 +146,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
         new Handler().post(mDrawerLayout::closeDrawers);
     }
 
-//    @Override
-//    public void setHeaderAvatar(Bitmap _bitmap) {
-//        ivNavAvatar.setImageBitmap(_bitmap);
-//    }
-
     @Override
     public void setHeaderTitle(String _title) {
         tvNavTitle.setText(_title);
@@ -169,6 +156,15 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
             throws IntentSender.SendIntentException {
         this.startIntentSenderForResult(_intentSender,
                 _const, null, 0, 0, 0);
+    }
+
+    @Override
+    public void setAvatar(String _path) {
+        if (!TextUtils.isEmpty(_path)) {
+            Picasso.with(App.getAppContext())
+                    .load(_path)
+                    .into(ivNavAvatar);
+        }
     }
 
     public interface DrawerCallBack {

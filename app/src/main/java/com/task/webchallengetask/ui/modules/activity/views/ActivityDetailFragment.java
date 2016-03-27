@@ -24,7 +24,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     private MenuItem menuEdit;
     private MenuItem menuSave;
     private TextView tvTitle;
-    private TextView tvStartTime;
+    private TextView tvDate;
     private EditText etActivityTime;
     private EditText etStep;
     private EditText etDistance;
@@ -57,7 +57,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     @Override
     public void findUI(View rootView) {
         tvTitle = (TextView) rootView.findViewById(R.id.tvTitle_FAD);
-        tvStartTime = (TextView) rootView.findViewById(R.id.tvStartTime_FAD);
+        tvDate = (TextView) rootView.findViewById(R.id.tvDate_FAD);
         etActivityTime = (EditText) rootView.findViewById(R.id.etActivityTime_FAD);
         etDistance = (EditText) rootView.findViewById(R.id.etDistance_FAD);
         etStep = (EditText) rootView.findViewById(R.id.etStep_FAD);
@@ -66,7 +66,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
 
     @Override
     public void setupUI() {
-        tvStartTime.setOnClickListener(v -> getPresenter().onTimeClicked());
+        tvDate.setOnClickListener(v -> getPresenter().onTimeClicked());
     }
 
     @Override
@@ -108,7 +108,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     public void openStartDateCalendar(CalendarView.Callback _callBack) {
         CalendarView calendarView = new CalendarView(getFragmentManager(), "");
         calendarView.setCallback(_callBack);
-        calendarView.show(TimeUtil.stringToDate(tvStartTime.getText().toString()));
+        calendarView.show(TimeUtil.stringToDate(tvDate.getText().toString()));
     }
 
     @Override
@@ -117,8 +117,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     }
 
     @Override
-    public void setStartTime(String _text) {
-        tvStartTime.setText(_text);
+    public void setDate(String _text) {
+        tvDate.setText(_text);
     }
 
     @Override
@@ -127,8 +127,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
         etDistance.setEnabled(_isEditable);
         etStep.setEnabled(_isEditable);
         etCalories.setEnabled(_isEditable);
-        tvStartTime.setFocusable(_isEditable);
-        tvStartTime.setEnabled(_isEditable);
+        tvDate.setFocusable(_isEditable);
+        tvDate.setEnabled(_isEditable);
     }
 
     @Override
@@ -169,5 +169,10 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     @Override
     public String getCalories() {
         return etCalories.getText().toString();
+    }
+
+    @Override
+    public String getDate() {
+        return tvDate.getText().toString();
     }
 }
