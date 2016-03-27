@@ -22,7 +22,6 @@ import com.task.webchallengetask.global.programs.ProgramManager;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.programs.difficults.DifficultCustom;
 import com.task.webchallengetask.global.utils.Logger;
-import com.task.webchallengetask.global.utils.MathUtils;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
@@ -164,7 +163,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         LineData targetData = new LineData();
         BarData mDiagram = new BarData();
         String[] dates = new String[floats.size()];
-        float target = 0;
+        float target = round(Float.valueOf(getView().getTarget()), 1);
         if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE){
             target = MathUtils.round(Float.valueOf(getView().getTarget()) / 60, 1);
         } else {
@@ -183,7 +182,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         CombinedData data = new CombinedData(dates);
 
         BarDataSet set = new BarDataSet(_entry, "result, " + _units);
-        LineDataSet setLine = new LineDataSet(_entry2, "target " + _units);
+        LineDataSet setLine = new LineDataSet(_entry2, "target, " + _units);
         setLine.setColor(Color.rgb(240, 238, 70));
         setLine.setLineWidth(2.5f);
         setLine.setCircleColor(Color.rgb(240, 238, 70));
