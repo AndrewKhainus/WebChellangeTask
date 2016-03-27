@@ -28,7 +28,6 @@ import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
 import com.task.webchallengetask.ui.custom.CalendarView;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -162,13 +161,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         LineData targetData = new LineData();
         BarData mDiagram = new BarData();
         String[] dates = new String[floats.size()];
-        float target = 0;
-        if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE){
-            target = MathUtils.round(Float.valueOf(getView().getTarget()) / 60, 1);
-        } else {
-            target = MathUtils.round(Float.valueOf(getView().getTarget()), 1);
-        }
-
+        float target = MathUtils.round(Float.valueOf(getView().getTarget()), 1);
         for (int i = 0; i < floats.size(); i++) {
             _entry2.add(new Entry(target, i));
             dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
@@ -181,6 +174,11 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         CombinedData data = new CombinedData(dates);
 
         BarDataSet set = new BarDataSet(_entry, "result, " + _units);
+        set.setColor(Color.rgb(60, 220, 78));
+        set.setValueTextColor(Color.rgb(60, 220, 78));
+        set.setValueTextSize(10f);
+        mDiagram.addDataSet(set);
+
         LineDataSet setLine = new LineDataSet(_entry2, "target, " + _units);
         setLine.setColor(Color.rgb(240, 238, 70));
         setLine.setLineWidth(2.5f);
@@ -193,11 +191,6 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         setLine.setValueTextColor(Color.rgb(240, 238, 70));
         setLine.setAxisDependency(YAxis.AxisDependency.LEFT);
         targetData.addDataSet(setLine);
-
-        set.setColor(Color.rgb(60, 220, 78));
-        set.setValueTextColor(Color.rgb(60, 220, 78));
-        set.setValueTextSize(10f);
-        mDiagram.addDataSet(set);
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         getView().setDiagram(mDiagram, data, targetData);
