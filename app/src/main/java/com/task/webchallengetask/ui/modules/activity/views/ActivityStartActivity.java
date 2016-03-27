@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -84,14 +83,13 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
             }
         });
 
-
         RxUtils.click(btnStartPause, o -> getPresenter().onBtnStartPauseClicked());
         RxUtils.click(btnStop, o -> getPresenter().onBtnStopClicked());
     }
 
     @Override
     public void setSpinnerData(List<String> _data) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, _data);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, _data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spChooseActivity.setAdapter(adapter);
     }

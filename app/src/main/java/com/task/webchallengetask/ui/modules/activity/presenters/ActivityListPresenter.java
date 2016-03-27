@@ -1,7 +1,10 @@
 package com.task.webchallengetask.ui.modules.activity.presenters;
 
+import android.content.Intent;
+
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
+import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.modules.activity.views.ActivityStartActivity;
 import com.task.webchallengetask.ui.modules.activity.views.ActivityDetailFragment;
@@ -26,7 +29,7 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
         ActivityDataProvider.getInstance()
                 .getActivities()
                 .doOnNext(this::sortList)
-                .exists(t -> t.size() == 0)
+                .exists(t ->t != null && t.size() == 0)
                 .doOnNext(_boolean -> {
                     if (_boolean) getView().showHolder();
                     else getView().hideHolder();
@@ -51,7 +54,7 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
             }
             else {
                 getView().addActivities(actionParametersModels);
-                longTime = actionParametersModels.get(i).startTime;
+                longTime = _modelList.get(i).startTime;
                 actionParametersModels.clear();
                 if (i == _modelList.size() - 1) getView().addActivities(Collections.singletonList(_modelList.get(i)));
             }
@@ -59,7 +62,12 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
     }
 
     public void onFABClicked() {
-        getView().startActivity(ActivityStartActivity.class);
+        getView().startActivityForResult(ActivityStartActivity.class, Constants.RC_ACTIVITY_START_ACTIVITY);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
     }
 
