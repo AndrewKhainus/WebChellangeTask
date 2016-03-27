@@ -169,13 +169,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         LineData targetData = new LineData();
         BarData mDiagram = new BarData();
         String[] dates = new String[floats.size()];
-        float target = 0;
-        if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE){
-            target = round(Float.valueOf(getView().getTarget()) / 60, 1);
-        } else {
-            target = round(Float.valueOf(getView().getTarget()), 1);
-        }
-
+        float target = round(Float.valueOf(getView().getTarget()), 1);
         for (int i = 0; i < floats.size(); i++) {
             _entry2.add(new Entry(target, i));
             dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
@@ -187,7 +181,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         CombinedData data = new CombinedData(dates);
 
         BarDataSet set = new BarDataSet(_entry, "result, " + _units);
-        LineDataSet setLine = new LineDataSet(_entry2, "target " + _units);
+        LineDataSet setLine = new LineDataSet(_entry2, "target, " + _units);
         setLine.setColor(Color.rgb(240, 238, 70));
         setLine.setLineWidth(2.5f);
         setLine.setCircleColor(Color.rgb(240, 238, 70));
