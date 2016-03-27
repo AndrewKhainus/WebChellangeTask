@@ -21,12 +21,12 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        actionParametersModels= new ArrayList<>();
+        actionParametersModels = new ArrayList<>();
 
         ActivityDataProvider.getInstance()
                 .getActivities()
                 .doOnNext(this::fillList)
-                .exists(t ->t != null && t.size() == 0)
+                .exists(t -> t != null && t.size() == 0)
                 .doOnNext(_boolean -> {
                     if (_boolean) getView().showHolder();
                     else getView().hideHolder();
@@ -35,7 +35,7 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
 
     }
 
-    private void fillList(List<ActionParametersModel> _modelList){
+    private void fillList(List<ActionParametersModel> _modelList) {
         if (!_modelList.isEmpty()) {
 
             long previousDay = _modelList.get(0).getStartTime();
@@ -45,12 +45,12 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
 
             for (int i = 1; i < _modelList.size(); i++) {
                 long currentDay = _modelList.get(i).getStartTime();
-                if (TimeUtil.compareDay(previousDay, currentDay) != 0 ) {
+                if (TimeUtil.compareDay(previousDay, currentDay) != 0) {
                     getView().addActivities(currentList);
                     currentList.clear();
-                } else {
-                    currentList.add(_modelList.get(i));
                 }
+                currentList.add(_modelList.get(i));
+
                 previousDay = currentDay;
             }
 
@@ -74,7 +74,9 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
 
     public interface ActivityListView extends BaseFragmentView<ActivityListPresenter> {
         void addActivities(List<ActionParametersModel> _data);
+
         void showHolder();
+
         void hideHolder();
     }
 
