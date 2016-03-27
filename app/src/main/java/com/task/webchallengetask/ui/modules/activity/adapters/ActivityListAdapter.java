@@ -58,7 +58,7 @@ public class ActivityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             float duration = MathUtils.round(mData.get(position).getActivityActualTime(), 2);
 
             if (duration > 60) {
-                ((ActivityItemHolder) holder).tvSubTitle.setText((duration / 60) + " min");
+                ((ActivityItemHolder) holder).tvSubTitle.setText(MathUtils.round((duration / 60), 2) + " min");
             } else {
                 ((ActivityItemHolder) holder).tvSubTitle.setText(duration + " sec");
             }
