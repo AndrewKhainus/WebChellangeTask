@@ -235,14 +235,14 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     public void openStartDateCalendar(CalendarView.Callback _callBack) {
         CalendarView calendarView = new CalendarView(getFragmentManager(), "");
         calendarView.setCallback(_callBack);
-        calendarView.show(TimeUtil.parseDate(tvStartDate.getText().toString()));
+        calendarView.show(TimeUtil.stringToDate(tvStartDate.getText().toString()));
     }
 
     @Override
     public void openEndDateCalendar(CalendarView.Callback _callBack) {
         CalendarView calendarView = new CalendarView(getFragmentManager(), "");
         calendarView.setCallback(_callBack);
-        calendarView.show(TimeUtil.parseDate(tvEndDate.getText().toString()));
+        calendarView.show(TimeUtil.stringToDate(tvEndDate.getText().toString()));
     }
 
     @Override

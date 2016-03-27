@@ -43,7 +43,7 @@ public final class TimeUtil {
         return "";
     }
 
-    public static Date parseDate(String _date) {
+    public static Date stringToDate(String _date) {
         try {
             return dateFormat.parse(_date);
         } catch (ParseException e) {
@@ -115,6 +115,16 @@ public final class TimeUtil {
         return calendar;
     }
 
+    public static int compareDay(long _firstTime, long _secondTime) {
+        Calendar firstCal = Calendar.getInstance();
+        Calendar secondCal = Calendar.getInstance();
+        firstCal.setTimeInMillis(_firstTime);
+        secondCal.setTimeInMillis(_secondTime);
+        clearTime(firstCal);
+        clearTime(secondCal);
+        return firstCal.compareTo(secondCal);
+    }
+
     public static boolean isSameDay(long _firstTime, long _secondTime) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(new Date(_firstTime));
@@ -122,5 +132,12 @@ public final class TimeUtil {
         calendar.setTime(new Date(_secondTime));
         int secondDay = calendar.get(Calendar.DAY_OF_MONTH);
         return firstDay == secondDay;
+    }
+
+    private static void clearTime(Calendar _calendar) {
+        _calendar.set(Calendar.HOUR_OF_DAY, 0);
+        _calendar.set(Calendar.MINUTE, 0);
+        _calendar.set(Calendar.SECOND, 0);
+        _calendar.set(Calendar.MILLISECOND, 0);
     }
 }

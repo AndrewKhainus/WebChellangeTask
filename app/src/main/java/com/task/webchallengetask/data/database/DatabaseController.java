@@ -35,7 +35,7 @@ public class DatabaseController {
     public List<ActionParametersModel> getActionParametersModel(long _startDate, long _endDate){
         ConditionGroup conditionGroup = ConditionGroup.clause();
         conditionGroup.and(ActionParametersModel_Table.startTime.greaterThanOrEq(_startDate));
-        conditionGroup.and(ActionParametersModel_Table.endTime.lessThanOrEq(_endDate));
+        conditionGroup.and(ActionParametersModel_Table.startTime.lessThan(_endDate));
 
         return new Select().from(ActionParametersModel.class)
                 .where(conditionGroup)
@@ -58,7 +58,8 @@ public class DatabaseController {
 
     public boolean deleteActionParametersModel(int _id){
         new Delete().from(ActionParametersModel.class)
-                .where(ActionParametersModel_Table.id.eq(_id)).query();
+                .where(ActionParametersModel_Table.id.eq(_id))
+                .query();
 
         return true;
     }

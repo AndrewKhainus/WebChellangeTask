@@ -11,7 +11,6 @@ import com.github.mikephil.charting.data.CombinedData;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
-import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.custom.CalendarView;
@@ -49,8 +48,8 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
    }
 
     public void getDiagram(Pair<Constants.DATA_TYPES, String> _dataType){
-        Date start = TimeUtil.parseDate(getView().getStartDate());
-        Date end = TimeUtil.parseDate(getView().getEndDate());
+        Date start = TimeUtil.stringToDate(getView().getStartDate());
+        Date end = TimeUtil.stringToDate(getView().getEndDate());
         switch (_dataType.first){
             case ACTIVITY_TIME:
                 mActivitiesProvider.getActualTime(start,end).subscribe((floats) -> {

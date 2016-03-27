@@ -76,7 +76,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     public void onStartDateClicked() {
         getView().openStartDateCalendar(_date -> {
             getView().setStartDate(TimeUtil.dateToString(_date));
-            Date endDate = TimeUtil.parseDate(getView().getEndDate());
+            Date endDate = TimeUtil.stringToDate(getView().getEndDate());
             mProgramDataProvider.loadData(mProgramType, _date, endDate)
                     .subscribe(this::fillDiagram, Logger::e);
 
@@ -86,7 +86,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     public void onEndDateClicked() {
         getView().openEndDateCalendar(_date -> {
             getView().setEndDate(TimeUtil.dateToString(_date));
-            Date startDate = TimeUtil.parseDate(getView().getStartDate());
+            Date startDate = TimeUtil.stringToDate(getView().getStartDate());
             mProgramDataProvider.loadData(mProgramType, startDate, _date)
                     .subscribe(this::fillDiagram, Logger::e);
         });

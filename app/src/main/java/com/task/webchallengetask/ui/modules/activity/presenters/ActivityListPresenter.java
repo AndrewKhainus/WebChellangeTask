@@ -8,10 +8,9 @@ import com.task.webchallengetask.ui.modules.activity.views.ActivityDetailFragmen
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPresenter.ActivityListView> {
@@ -25,31 +24,31 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
 
         ActivityDataProvider.getInstance()
                 .getActivities()
-                .doOnNext(this::sortList)
+                .doOnNext(this::fillList)
                 .subscribe();
 
     }
 
-    private void sortList(List<ActionParametersModel> _modelList){
-        long longTime = 0;
-        int size = _modelList.size();
-        for (int i = 0; i < size; i++) {
-            if (i == 0){
-                longTime = _modelList.get(0).getStartTime();
-                actionParametersModels.add(_modelList.get(0));
-                if (i == _modelList.size() - 1) getView().addActivities(actionParametersModels);
-                continue;
+    private void fillList(List<ActionParametersModel> _modelList){
+        if (!_modelList.isEmpty()) {
+
+            long previousDay = _modelList.get(0).getStartTime();
+            ActionParametersModel previousModel = _modelList.get(0);
+            List<ActionParametersModel> currentList = new ArrayList<>();
+            currentList.add(previousModel);
+
+            for (int i = 1; i < _modelList.size(); i++) {
+                long currentDay = _modelList.get(i).getStartTime();
+                if (TimeUtil.compareDay(previousDay, currentDay) != 0 ) {
+                    getView().addActivities(currentList);
+                    currentList.clear();
+                }  else {
+                    currentList.add(_modelList.get(i));
+                }
+                previousDay = currentDay;
             }
-            if  (TimeUtil.isSameDay(longTime, _modelList.get(i).getStartTime())){
-                actionParametersModels.add(_modelList.get(i));
-                if (i == _modelList.size() - 1) getView().addActivities(actionParametersModels);
-            }
-            else {
-                getView().addActivities(actionParametersModels);
-                longTime = actionParametersModels.get(i).startTime;
-                actionParametersModels.clear();
-                if (i == _modelList.size() - 1) getView().addActivities(Collections.singletonList(_modelList.get(i)));
-            }
+
+            getView().addActivities(currentList);
         }
     }
 
