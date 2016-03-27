@@ -25,8 +25,15 @@ public class ProgramsListPresenter extends BaseFragmentPresenter<ProgramsListPre
     }
 
     public void getPrograms() {
-        ProgramDataProvider.getInstance().getPrograms()
-                .subscribe(this::showPrograms, Logger::e);
+        ProgramDataProvider.getInstance()
+                .getPrograms()
+                .doOnNext(this::showPrograms)
+                .exists(t -> t != null && t.size() == 0)
+                .doOnNext(_boolean -> {
+                    if (_boolean) getView().showHolder();
+                    else getView().hideHolder();
+                })
+                .subscribe();
     }
 
     public void showPrograms(List<ProgramTable> _data) {
@@ -45,6 +52,11 @@ public class ProgramsListPresenter extends BaseFragmentPresenter<ProgramsListPre
 
     public interface ProgramListView extends BaseFragmentView<ProgramsListPresenter> {
         void showAddProgramDialog(DialogListener _listener);
+
         void showPrograms(List<ProgramTable> _data);
+
+        void showHolder();
+
+        void hideHolder();
     }
 }

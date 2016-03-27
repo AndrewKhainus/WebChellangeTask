@@ -12,6 +12,7 @@ import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.ui.modules.activity.adapters.ActivityListAdapter;
 import com.task.webchallengetask.ui.modules.activity.presenters.ActivityListPresenter;
 import com.task.webchallengetask.ui.base.BaseFragment;
+import com.task.webchallengetask.ui.custom.DividerItemDecoration;
 
 import java.util.List;
 
@@ -64,6 +65,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListPresenter>
         rvActivities.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rvActivities.setLayoutManager(mLayoutManager);
+        rvActivities.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
         rvActivities.setAdapter(mAdapter);
         mAdapter.onItemClickListener(model -> getPresenter().onActivityClicked(model));
     }

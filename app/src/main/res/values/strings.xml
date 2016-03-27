@@ -92,6 +92,7 @@
     <string name="step">Step:</string>
     <string name="cal">cal</string>
     <string name="there_are_no_activities_at_this_moment">There are no activities at this moment</string>
+    <string name="there_are_no_programs_at_this_moment">There are no programs at this moment</string>
     <string name="start_date">Start date:</string>
     <string name="end_date">End date:</string>
     <string name="current_target">Current target:</string>
@@ -99,6 +100,7 @@
     <string name="analyze_your_achievements">Analyze your achievements</string>
     <string name="activities">Activities</string>
     <string name="log_out">Log out</string>
+    <string name="invalid_orientation">invalid orientation</string>
 
 
 </resources>
