@@ -26,6 +26,11 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
         ActivityDataProvider.getInstance()
                 .getActivities()
                 .doOnNext(this::sortList)
+                .exists(t -> t.size() == 0)
+                .doOnNext(_boolean -> {
+                    if (_boolean) getView().showHolder();
+                    else getView().hideHolder();
+                })
                 .subscribe();
 
     }
@@ -55,6 +60,7 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
 
     public void onFABClicked() {
         getView().startActivity(ActivityStartActivity.class);
+
     }
 
     public void onActivityClicked(ActionParametersModel _model) {
@@ -63,6 +69,8 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
 
     public interface ActivityListView extends BaseFragmentView<ActivityListPresenter> {
         void addActivities(List<ActionParametersModel> _data);
+        void showHolder();
+        void hideHolder();
     }
 
 }
