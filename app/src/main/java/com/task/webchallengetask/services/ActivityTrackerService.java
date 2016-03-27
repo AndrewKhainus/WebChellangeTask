@@ -56,6 +56,7 @@ import static com.task.webchallengetask.global.Constants.START_TIMER_ACTION;
  */
 public class ActivityTrackerService extends Service {
 
+//    private static final int KOEFF = ;
     private Calendar mTimerTime;
     private NotificationCompat.Builder mBuilder;
     private NotificationManager notificationManager;
@@ -74,7 +75,6 @@ public class ActivityTrackerService extends Service {
     private ActionParametersModel actionParametersModel;
     private long endTime;
     private int step;
-    private float speed;
     private float dist;
     private int weight = SharedPrefManager.getInstance().retrieveWeight();
     private List<Float> speeds = new ArrayList<>();
@@ -118,7 +118,7 @@ public class ActivityTrackerService extends Service {
                     }
                     isPause = false;
                     endTime = Calendar.getInstance().getTimeInMillis();
-                    saveCustomCloriesType();
+                    saveCustomCaloriesType();
                     unregisterFitnessDataListener();
                     unSubscribeRecord();
                     saveData();
@@ -311,7 +311,7 @@ public class ActivityTrackerService extends Service {
                 });
     }
 
-    private void saveCustomCloriesType() {
+    private void saveCustomCaloriesType() {
         PendingResult<DataTypeResult> pendingResult = Fitness.ConfigApi.createCustomDataType(googleApiClient,
                 new DataTypeCreateRequest.Builder()
                         .setName("com.task.webchallengetask.calories")
@@ -339,7 +339,7 @@ public class ActivityTrackerService extends Service {
     }
 
     strictfp private float calculationCalories() {
-        return weight * dist;
+        return weight * dist; //* KOEFF;
     }
 
     private void checkRecording() {
