@@ -17,6 +17,7 @@ import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,13 +75,19 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         }
     }
 
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
+
     public void setDiagramData(List<android.util.Pair<Long, Float>> floats, String _units){
         ArrayList<BarEntry> _entry = new ArrayList<>();
         BarData mDiagram = new BarData();
         String[] dates = new String[floats.size()];
         for (int i = 0; i < floats.size(); i++){
           dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
-            _entry.add(new BarEntry(floats.get(i).second, i));
+            _entry.add(new BarEntry(round(floats.get(i).second, 1), i));
         }
         CombinedData data = new CombinedData(dates);
         BarDataSet set = new BarDataSet(_entry, _units);
