@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
-//apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
     signingConfigs {
@@ -33,7 +33,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            minifyEnabled false
             signingConfig signingConfigs.config
         }
     }
@@ -68,7 +67,7 @@ configurations {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.0'
     compile 'com.google.apis:google-api-services-prediction:v1.6-rev54-1.21.0'
     compile 'com.google.apis:google-api-services-storage:v1-rev54-1.21.0'
     compile "com.google.android.gms:play-services-fitness:${play_services_version}"
@@ -76,7 +75,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:${support_version}"
     compile "com.android.support:design:${support_version}"
     compile 'com.squareup.picasso:picasso:2.5.2'
-//    compile 'com.facebook.android:facebook-android-sdk:4.5.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.5.0'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.1'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
