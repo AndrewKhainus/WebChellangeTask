@@ -73,6 +73,32 @@
     <string name="hour">hour</string>
     <string name="from">From:</string>
     <string name="to">To:</string>
+    <string name="duration">Duration:</string>
+    <string name="_00_00">00:00</string>
+    <string name="distance">Distance:</string>
+    <string name="km">km</string>
+    <string name="speed">Speed:</string>
+    <string name="km_h">km/h</string>
+    <string name="steps">Steps:</string>
+    <string name="calories">Calories:</string>
+    <string name="start">START</string>
+    <string name="stop">STOP</string>
+    <string name="choose_available_program">Choose available program</string>
+    <string name="program">Program:</string>
+    <string name="difficult_clean">Difficult</string>
+    <string name="target">Target:</string>
+    <string name="activity_time">Activity time:</string>
+    <string name="min">min</string>
+    <string name="step">Step:</string>
+    <string name="cal">cal</string>
+    <string name="there_are_no_activities_at_this_moment">There are no activities at this moment</string>
+    <string name="start_date">Start date:</string>
+    <string name="end_date">End date:</string>
+    <string name="current_target">Current target:</string>
+    <string name="current_result">Current result:</string>
+    <string name="analyze_your_achievements">Analyze your achievements</string>
+    <string name="activities">Activities</string>
+    <string name="log_out">Log out</string>
 
 
 </resources>

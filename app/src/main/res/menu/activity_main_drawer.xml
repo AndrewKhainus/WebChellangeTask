@@ -4,23 +4,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_activities"
-            android:title="Activities" />
+            android:title="@string/activities" />
 
         <item
             android:id="@+id/nav_analytics"
-            android:title="Analytics" />
+            android:title="@string/analytics" />
 
         <item
             android:id="@+id/nav_programs"
-            android:title="Programs" />
+            android:title="@string/programs" />
 
         <item
             android:id="@+id/nav_settings"
-            android:title="Settings" />
+            android:title="@string/settings" />
 
         <item
             android:id="@+id/nav_logout"
-            android:title="Log out" />
+            android:title="@string/log_out" />
     </group>
 
 </menu>

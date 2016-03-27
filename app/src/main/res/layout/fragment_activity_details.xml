@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:text="Activity time:" />
+            android:text="@string/activity_time" />
 
         <EditText
             android:id="@+id/etActivityTime_FAD"
@@ -50,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="min" />
+            android:text="@string/min" />
 
     </LinearLayout>
 
@@ -64,7 +64,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:text="Distance:" />
+            android:text="@string/distance" />
 
         <EditText
             android:id="@+id/etDistance_FAD"
@@ -79,7 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="min" />
+            android:text="@string/min" />
 
     </LinearLayout>
 
@@ -93,7 +93,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:text="Step:" />
+            android:text="@string/step" />
 
         <EditText
             android:id="@+id/etStep_FAD"
@@ -122,7 +122,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:text="Calories:" />
+            android:text="@string/calories" />
 
         <EditText
             android:id="@+id/etCalories_FAD"
@@ -137,7 +137,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="cal" />
+            android:text="@string/cal" />
 
     </LinearLayout>
 

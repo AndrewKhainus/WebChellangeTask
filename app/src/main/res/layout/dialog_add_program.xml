@@ -19,13 +19,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:text="Choose available program" />
+            android:text="@string/choose_available_program" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:text="Program" />
+            android:text="@string/program" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spProgram_DAP"
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:text="Difficult" />
+            android:text="@string/difficult" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spDifficult_DAP"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_weight="1"
-                android:text="Target:" />
+                android:text="@string/target" />
 
             <EditText
                 android:id="@+id/tvTarget_DAP"
@@ -91,7 +91,7 @@
                 android:id="@+id/tvDescription_DAP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="description text" />
+                android:text="" />
         </LinearLayout>
     </LinearLayout>
 

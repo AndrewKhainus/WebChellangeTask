@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="00:00"
+            android:text="@string/_00_00"
             android:textSize="24sp" />
 
         <LinearLayout
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:text="Distance:" />
+                android:text="@string/distance" />
 
             <TextView
                 android:id="@+id/tvDistance_ASA"
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
-                android:text="km" />
+                android:text="@string/km" />
 
         </LinearLayout>
 
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:text="Speed:" />
+                android:text="@string/speed" />
 
             <TextView
                 android:id="@+id/tvSpeed_ASA"
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
-                android:text="km/h" />
+                android:text="@string/km_h" />
 
 
         </LinearLayout>
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:text="Steps:" />
+                android:text="@string/steps" />
 
             <TextView
                 android:id="@+id/tvSteps_ASA"
@@ -127,7 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:text="Calories:" />
+                android:text="@string/calories" />
 
             <TextView
                 android:id="@+id/tvCalories_ASA"
@@ -155,7 +155,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:src="@drawable/ic_play"
-                android:text="START" />
+                android:text="@string/start" />
 
             <ImageView
                 android:id="@+id/btnStop_ASA"
@@ -167,7 +167,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:src="@drawable/ic_stop"
-                android:text="STOP"/>
+                android:text="@string/stop"/>
 
         </LinearLayout>
 
