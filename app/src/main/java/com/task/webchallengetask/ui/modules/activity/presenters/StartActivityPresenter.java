@@ -27,6 +27,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import rx.android.schedulers.AndroidSchedulers;
+
 /**
  * Created by andri on 22.03.2016.
  */
@@ -46,7 +48,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-
+        getView().showCompleteProgramNotification("asdfasdf", "Asdfasdf");
         activitiesList = Arrays.asList(App.getAppContext().getResources()
                 .getStringArray(R.array.activities_list));
         getView().setSpinnerData(activitiesList);
@@ -180,9 +182,10 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         for (ProgramTable programTable : mPrograms) {
             Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
             Date today = new Date(TimeUtil.getCurrentDay());
-            Date nextDay = TimeUtil.addDayToDate(today, 1);
+            Date nextDay = TimeUtil.addEndOfDay(today);
 
             mProgramDataProvider.loadData(type, today, nextDay)
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(pairs -> {
                         if (pairs.get(0).second >= programTable.getTarget()) {
                             String target = programTable.getTarget() + " " + programTable.getUnit();

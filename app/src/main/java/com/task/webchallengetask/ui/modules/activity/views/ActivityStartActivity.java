@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.modules.activity.views;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.IntentSender;
 import android.graphics.BitmapFactory;
@@ -177,14 +178,18 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
     @Override
     public void showCompleteProgramNotification(String _programName, String _target) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-//                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setContentTitle("Congratulation!")
                 .setContentText("Your have finished today program: " + _programName)
                 .setSubText("Target:" + _target);
 
+        Notification notification = builder.build();
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notification.defaults |= Notification.DEFAULT_VIBRATE;
+        notification.defaults |= Notification.DEFAULT_SOUND;
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(1, builder.build());
+        notificationManager.notify(_programName.hashCode(), notification);
     }
 
 }
