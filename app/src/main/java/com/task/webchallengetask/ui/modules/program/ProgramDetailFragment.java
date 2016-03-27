@@ -183,7 +183,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         _date.setData(_value);
-//        _date.setData(_targetData);
+        _date.setData(_targetData);
         mChart.setData(_date);
         mChart.invalidate();
     }
