@@ -22,7 +22,7 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
         super.onViewCreated();
         id = getView().getFragmentArguments().getInt(Constants.ACTIVITY_ID_KEY);
 
-        ActivityDataProvider.getInstance().getActivitie(id)
+        ActivityDataProvider.getInstance().getActivityById(id)
                 .subscribe(_model -> {
                     actionParametersModel = _model;
                     getView().setAllFieldsEditable(false);

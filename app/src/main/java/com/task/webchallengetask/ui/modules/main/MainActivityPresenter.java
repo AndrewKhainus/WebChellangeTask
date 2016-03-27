@@ -6,7 +6,7 @@ import android.content.IntentSender;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.facebook.login.LoginManager;
+//import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.task.webchallengetask.App;
@@ -106,11 +106,13 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
 
     private void revokeAccess() {
         switch (SharedPrefManager.getInstance().retrieveActiveSocial()) {
+/*
             case Constants.SOCIAL_FACEBOOK:
                 LoginManager.getInstance().logOut();
                 if (GoogleApiUtils.getInstance().isNotEmptyClient())
                     GoogleApiUtils.getInstance().disableFit();
                 break;
+*/
             case Constants.SOCIAL_GOOGLE_PLUS:
                 if (GoogleApiUtils.getInstance().isNotEmptyClient() &&
                         GoogleApiUtils.getInstance().buildGoogleApiClientWithGooglePlus().isConnected())

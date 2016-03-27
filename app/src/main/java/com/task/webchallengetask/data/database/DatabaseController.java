@@ -9,6 +9,7 @@ import com.task.webchallengetask.data.database.tables.ActionParametersModel_Tabl
 import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.data.database.tables.ProgramTable_Table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;

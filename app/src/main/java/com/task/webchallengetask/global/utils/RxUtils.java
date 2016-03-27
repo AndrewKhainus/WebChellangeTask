@@ -5,6 +5,7 @@ import android.view.View;
 import com.jakewharton.rxbinding.view.RxView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -43,5 +44,18 @@ public final class RxUtils {
             }
         });
     }
+
+    public static Observable<Date> createDateList(Date _startDate, Date _endDate) {
+        List<Date> dateList = new ArrayList<>();
+        Date currentDate = _startDate;
+        do {
+            dateList.add(currentDate);
+            currentDate = TimeUtil.addDayToDate(currentDate, 1);
+        } while (currentDate.before(_endDate) || currentDate.equals(_endDate));
+
+
+        return Observable.from(dateList);
+    }
+
 
 }

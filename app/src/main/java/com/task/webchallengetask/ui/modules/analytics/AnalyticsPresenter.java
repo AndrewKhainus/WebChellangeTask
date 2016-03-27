@@ -24,7 +24,6 @@ import java.util.List;
 
 public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter.AnalyticsView> {
 
-    private ProgramDataProvider dataProvider = ProgramDataProvider.getInstance();
     private ActivityDataProvider mActivitiesProvider = ActivityDataProvider.getInstance();
     public static final Pair<Constants.DATA_TYPES, String> activityDataType = new Pair<>(Constants.DATA_TYPES.ACTIVITY_TIME, "Activity time");
     public static final Pair<Constants.DATA_TYPES, String> stepDataType = new Pair<>(Constants.DATA_TYPES.STEP, "Steps");
@@ -44,8 +43,11 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
 //        dataTypesList.add(allDataType);
         getView().setDataTypes(dataTypesList);
 
+        Date currentDay = new Date(TimeUtil.getCurrentDay());
+        Date weekAgo = TimeUtil.minusDayFromDate(currentDay, 7);
+
         getView().setEndDate(TimeUtil.timeToString(TimeUtil.getCurrentDay()));
-        Date weekAgo = TimeUtil.minusDayFromDate(new Date(), 7);
+
         getView().setStartDate(TimeUtil.timeToString(weekAgo.getTime()));
 
 //        getDiagram(activityDataType);

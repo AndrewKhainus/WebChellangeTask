@@ -19,8 +19,14 @@ public final class TimeUtil {
 
     public static long getCurrentDay() {
         Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
         return c.getTimeInMillis();
     }
+
+
 
     public static String timeToString(long _time) {
         return dateFormat.format(new Date(_time));
@@ -93,8 +99,7 @@ public final class TimeUtil {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DATE, _days);
-        date.setTime(c.getTime().getTime());
-        return date;
+        return new Date(c.getTime().getTime());
     }
 
 
@@ -102,8 +107,7 @@ public final class TimeUtil {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DATE, -_days);
-        date.setTime(c.getTime().getTime());
-        return date;
+        return new Date(c.getTime().getTime());
     }
 
     public static Calendar addSecondToCalendar(Calendar calendar) {
