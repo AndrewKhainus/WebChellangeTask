@@ -17,6 +17,7 @@ import com.task.webchallengetask.data.data_providers.PredictionDataProvider;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.IntentHelper;
 import com.task.webchallengetask.global.utils.Logger;
+import com.task.webchallengetask.global.utils.NetworkUtils;
 import com.task.webchallengetask.services.ActivityTrackerService;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
 import com.task.webchallengetask.ui.base.BaseActivityView;
@@ -41,7 +42,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
             getView().startActivity(ActivityStartActivity.class);
         }
 
-        if (!GoogleApiUtils.getInstance().isNotEmptyClient()) {
+        if (NetworkUtils.isConnectedNetwork(App.getAppContext()) && !GoogleApiUtils.getInstance().isNotEmptyClient()) {
             getView().showLoadingDialog();
             boolean isGooglePlus = TextUtils.equals(SharedPrefManager.getInstance().retrieveActiveSocial(),
                     Constants.SOCIAL_GOOGLE_PLUS);

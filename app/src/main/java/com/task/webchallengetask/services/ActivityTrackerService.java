@@ -1,7 +1,6 @@
 package com.task.webchallengetask.services;
 
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -49,7 +48,6 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import static com.task.webchallengetask.global.Constants.START_TIMER_ACTION;
-
 
 
 public class ActivityTrackerService extends Service {
@@ -133,7 +131,7 @@ public class ActivityTrackerService extends Service {
     }
 
     private float getCoeffToThisActivity() {
-        switch (currentActivity){
+        switch (currentActivity) {
             case Constants.KIND_ACTIVITY_BICYCLING:
                 return 0.95f;
             case Constants.KIND_ACTIVITY_ICE_SKATING:
@@ -148,7 +146,8 @@ public class ActivityTrackerService extends Service {
                 return 0.9f;
             case Constants.KIND_ACTIVITY_WALKING:
                 return 0.8f;
-            default: return 1f;
+            default:
+                return 1f;
         }
     }
 
@@ -221,7 +220,6 @@ public class ActivityTrackerService extends Service {
                     Logger.d("Detected DataPoint value: " + val);
 
 
-
                     sendBroadcast(IntentHelper.sendDistanceIntent(dist));
                     sendBroadcast(IntentHelper.sendCaloriesIntent(calculationCalories()));
                 }
@@ -232,7 +230,7 @@ public class ActivityTrackerService extends Service {
     private float getAverageSpeed() {
         int size = speeds.size();
         float sum = 0;
-        for (int i =0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             sum += speeds.get(i);
         }
         return sum / size;
@@ -331,30 +329,32 @@ public class ActivityTrackerService extends Service {
     }
 
     private void saveCustomCaloriesType() {
-        PendingResult<DataTypeResult> pendingResult = Fitness.ConfigApi.createCustomDataType(googleApiClient,
-                new DataTypeCreateRequest.Builder()
-                        .setName("com.task.webchallengetask.calories")
-                        .addField("calories", Field.FORMAT_FLOAT)
-                        .build());
+        if (GoogleApiUtils.getInstance().isNotEmptyClient() && GoogleApiUtils.getInstance().buildGoogleApiClient().isConnecting()) {
+            PendingResult<DataTypeResult> pendingResult = Fitness.ConfigApi.createCustomDataType(googleApiClient,
+                    new DataTypeCreateRequest.Builder()
+                            .setName("com.task.webchallengetask.calories")
+                            .addField("calories", Field.FORMAT_FLOAT)
+                            .build());
 
-        pendingResult.setResultCallback(_result -> {
-            DataType caloriesType = _result.getDataType();
+            pendingResult.setResultCallback(_result -> {
+                DataType caloriesType = _result.getDataType();
 
-            DataSource climbDataSource = new DataSource.Builder()
-                    .setAppPackageName(this.getPackageName())
-                    .setDataType(caloriesType)
-                    .setName("com.task.webchallengetask")
-                    .setType(DataSource.TYPE_RAW)
-                    .build();
+                DataSource climbDataSource = new DataSource.Builder()
+                        .setAppPackageName(this.getPackageName())
+                        .setDataType(caloriesType)
+                        .setName("com.task.webchallengetask")
+                        .setType(DataSource.TYPE_RAW)
+                        .build();
 
-            DataSet climbDataSet = DataSet.create(climbDataSource);
+                DataSet climbDataSet = DataSet.create(climbDataSource);
 
-            DataPoint caloriesPoint = DataPoint.create(climbDataSource);
-            caloriesPoint.getValue(caloriesType.getFields().get(0)).setFloat(calculationCalories());
-            caloriesPoint.setTimestamp(1, TimeUnit.SECONDS);
+                DataPoint caloriesPoint = DataPoint.create(climbDataSource);
+                caloriesPoint.getValue(caloriesType.getFields().get(0)).setFloat(calculationCalories());
+                caloriesPoint.setTimestamp(1, TimeUnit.SECONDS);
 
-            climbDataSet.add(caloriesPoint);
-        });
+                climbDataSet.add(caloriesPoint);
+            });
+        }
     }
 
     strictfp private float calculationCalories() {
