@@ -1,6 +1,6 @@
 package com.task.webchallengetask.ui.modules.login;
 
-/*import android.app.Activity;
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -24,19 +24,14 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.BuildConfig;
+import com.task.webchallengetask.data.data_managers.SharedPrefManager;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.exceptions.PicassoExeption;
-import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
-import com.task.webchallengetask.data.data_managers.SharedPrefManager;
-import com.task.webchallengetask.ui.modules.main.MainActivity;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
-import com.task.webchallengetask.ui.base.BaseActivityView;*/
+import com.task.webchallengetask.ui.base.BaseActivityView;
+import com.task.webchallengetask.ui.modules.main.MainActivity;
 
 import rx.Observable;
-
-public class LoginPresenter {
-    /*
-
 
 public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginView> implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -51,6 +46,13 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
     @Override
     public void onViewCreated() {
         super.onViewCreated();
+        if (!SharedPrefManager.getInstance().isNotificationStateExist()) {
+            SharedPrefManager.getInstance().storeNotificationState(true);
+        }
+        if (SharedPrefManager.getInstance().retrieveTimeSynchronization() == 0){
+            SharedPrefManager.getInstance().storeTimeSynchronization(Constants.TIME_SYNC);
+        }
+
         if (BuildConfig.DEBUG) {
             FacebookSdk.setIsDebugEnabled(true);
             FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
@@ -213,6 +215,6 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
 
         void setCallbackManager(CallbackManager _callbackManager);
     }
-*/
+
 }
 

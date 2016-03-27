@@ -89,6 +89,7 @@
     <string name="target">Target:</string>
     <string name="activity_time">Activity time:</string>
     <string name="min">min</string>
+    <string name="meters">m</string>
     <string name="step">Step:</string>
     <string name="cal">cal</string>
     <string name="there_are_no_activities_at_this_moment">There are no activities at this moment</string>
@@ -101,6 +102,8 @@
     <string name="activities">Activities</string>
     <string name="log_out">Log out</string>
     <string name="invalid_orientation">invalid orientation</string>
+    <string name="notification">Notification</string>
+    <string name="holder_program">There are no program at this moment</string>
 
 
 </resources>

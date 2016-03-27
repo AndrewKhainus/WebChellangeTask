@@ -12,6 +12,7 @@ public final class SharedPrefConst {
     public final static String SHARED_PREF_AGE = "SharedPreferenceAge";
     public final static String SHARED_PREF_TIME_SYNCHRONIZATION = "SharedPreferenceTimeSynchronizationError";
     public final static String SHARED_PREF_WEIGHT = "SharedPreferenceWeight";
+    public final static String SHARED_PREF_NOTIFICATION_STATE = "SharedPreferenceNotificationState";
     public final static String SHARED_PREF_HEIGHT = "SharedPreferenceHeight";
 
 }

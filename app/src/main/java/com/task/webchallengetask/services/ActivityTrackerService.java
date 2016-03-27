@@ -14,36 +14,39 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessStatusCodes;
+import com.google.android.gms.fitness.data.DataPoint;
+import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataSource;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.data.Subscription;
 import com.google.android.gms.fitness.data.Value;
 import com.google.android.gms.fitness.request.DataSourcesRequest;
+import com.google.android.gms.fitness.request.DataTypeCreateRequest;
 import com.google.android.gms.fitness.request.OnDataPointListener;
 import com.google.android.gms.fitness.request.SensorRequest;
+import com.google.android.gms.fitness.result.DataTypeResult;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
 import com.task.webchallengetask.data.data_managers.SharedPrefManager;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.global.Constants;
-
 import com.task.webchallengetask.global.utils.IntentHelper;
-
 import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.modules.activity.views.ActivityStartActivity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-
 
 import static com.task.webchallengetask.global.Constants.START_TIMER_ACTION;
 
@@ -67,13 +70,14 @@ public class ActivityTrackerService extends Service {
 
     private HashMap<OnDataPointListener, DataSource> listenerDataTypeHashMap;
 
-    private ActionParametersModel actionParametersModel;
     private long startTime;
+    private ActionParametersModel actionParametersModel;
     private long endTime;
     private int step;
     private float speed;
     private float dist;
     private int weight = SharedPrefManager.getInstance().retrieveWeight();
+    private List<Float> speeds = new ArrayList<>();
 
     public ActivityTrackerService() {
         super();
@@ -114,7 +118,9 @@ public class ActivityTrackerService extends Service {
                     }
                     isPause = false;
                     endTime = Calendar.getInstance().getTimeInMillis();
+                    saveCustomCloriesType();
                     unregisterFitnessDataListener();
+                    unSubscribeRecord();
                     saveData();
                     mTimerTime = null;
                     notificationManager.cancel(Constants.FOREGROUND_NOTIFICATION_SERVICE_ID);
@@ -131,7 +137,7 @@ public class ActivityTrackerService extends Service {
         actionParametersModel.name = currentActivity;
         actionParametersModel.calories = calculationCalories();
         actionParametersModel.distance = dist;
-        actionParametersModel.speed = speed;
+        actionParametersModel.speed = getAverageSpeed();
         actionParametersModel.step = step;
         actionParametersModel.startTime = startTime;
         actionParametersModel.endTime = endTime;
@@ -194,6 +200,9 @@ public class ActivityTrackerService extends Service {
                     actionParametersModel.update();
                     Logger.d("Detected DataPoint field: " + field.getName());
                     Logger.d("Detected DataPoint value: " + val);
+
+
+
                     sendBroadcast(IntentHelper.sendDistanceIntent(dist));
                     sendBroadcast(IntentHelper.sendCaloriesIntent(calculationCalories()));
                 }
@@ -201,13 +210,23 @@ public class ActivityTrackerService extends Service {
         };
     }
 
+    private float getAverageSpeed() {
+        int size = speeds.size();
+        float sum = 0;
+        for (int i =0; i < size; i++) {
+            sum += speeds.get(i);
+        }
+        return sum / size;
+    }
+
     private void implSpeedListener() {
         mListenerSpeed = _dataPoint -> {
             if (isPause) {
                 for (Field field : _dataPoint.getDataType().getFields()) {
                     Value val = _dataPoint.getValue(field);
-                    speed += val.asFloat();
-                    actionParametersModel.speed = speed;
+                    speeds.add(val.asFloat());
+
+                    actionParametersModel.speed = getAverageSpeed();
                     actionParametersModel.activityActualTime = TimeUtil.getTimeInSeconds(mTimerTime.getTimeInMillis());
                     actionParametersModel.update();
                     Logger.d("Detected DataPoint field: " + field.getName());
@@ -238,6 +257,19 @@ public class ActivityTrackerService extends Service {
                             Logger.d("Listener was removed!");
                         } else {
                             Logger.d("Listener was not removed.");
+                        }
+                    });
+        }
+    }
+
+    private void unSubscribeRecord() {
+        for (Map.Entry<OnDataPointListener, DataSource> data : listenerDataTypeHashMap.entrySet()) {
+            Fitness.RecordingApi.unsubscribe(googleApiClient, data.getValue())
+                    .setResultCallback(status -> {
+                        if (status.isSuccess()) {
+                            Logger.d("Successfully unsubscribed for data type: " + data.getValue());
+                        } else {
+                            Logger.d("Failed to unsubscribe for data type: " + data.getValue());
                         }
                     });
         }
@@ -277,6 +309,33 @@ public class ActivityTrackerService extends Service {
                     subscribeDataType();
                     checkRecording();
                 });
+    }
+
+    private void saveCustomCloriesType() {
+        PendingResult<DataTypeResult> pendingResult = Fitness.ConfigApi.createCustomDataType(googleApiClient,
+                new DataTypeCreateRequest.Builder()
+                        .setName("com.task.webchallengetask.calories")
+                        .addField("calories", Field.FORMAT_FLOAT)
+                        .build());
+
+        pendingResult.setResultCallback(_result -> {
+            DataType caloriesType = _result.getDataType();
+
+            DataSource climbDataSource = new DataSource.Builder()
+                    .setAppPackageName(this.getPackageName())
+                    .setDataType(caloriesType)
+                    .setName("com.task.webchallengetask")
+                    .setType(DataSource.TYPE_RAW)
+                    .build();
+
+            DataSet climbDataSet = DataSet.create(climbDataSource);
+
+            DataPoint caloriesPoint = DataPoint.create(climbDataSource);
+            caloriesPoint.getValue(caloriesType.getFields().get(0)).setFloat(calculationCalories());
+            caloriesPoint.setTimestamp(1, TimeUnit.SECONDS);
+
+            climbDataSet.add(caloriesPoint);
+        });
     }
 
     strictfp private float calculationCalories() {

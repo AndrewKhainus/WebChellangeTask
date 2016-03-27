@@ -161,4 +161,34 @@
             android:text="@string/hour" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvTitleNotification_FS"
+        style="@style/MainTheme.Title.Normal.Bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:text="@string/notification" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <TextView
+            style="@style/MainTheme.SubTitle.Normal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="Enable notification" />
+
+        <CheckBox
+            android:id="@+id/cbNotification_FS"
+            style="@style/Base.Widget.AppCompat.CompoundButton.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"/>
+
+    </LinearLayout>
+
 </LinearLayout>

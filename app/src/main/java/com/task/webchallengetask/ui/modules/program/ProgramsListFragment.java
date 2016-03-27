@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.global.utils.RxUtils;
-import com.task.webchallengetask.ui.custom.DividerItemDecoration;
 import com.task.webchallengetask.ui.modules.program.adapters.ProgramListAdapter;
 import com.task.webchallengetask.ui.modules.program.presenters.ProgramsListPresenter;
 import com.task.webchallengetask.ui.base.BaseFragment;

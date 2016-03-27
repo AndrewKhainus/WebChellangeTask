@@ -86,7 +86,7 @@ public class ActivityDataProvider extends BaseDataProvider {
     }
 
     private Observable<Pair<Long, Float>> getDaySteps(Date _date) {
-        Date nextDay = TimeUtil.addEndOfDay(_date, 1);
+        Date nextDay = TimeUtil.addEndOfDay(_date);
         return Observable
                 .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
                 .map(models -> {
@@ -101,7 +101,7 @@ public class ActivityDataProvider extends BaseDataProvider {
     }
 
     private Observable<Pair<Long, Float>> getDayActivityTime(Date _date) {
-        Date nextDay = TimeUtil.addEndOfDay(_date, 1);
+        Date nextDay = TimeUtil.addEndOfDay(_date);
         return Observable
                 .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
                 .map(models -> {
@@ -116,7 +116,7 @@ public class ActivityDataProvider extends BaseDataProvider {
     }
 
     private Observable<Pair<Long, Float>> getDaySpeed(Date _date) {
-        Date nextDay = TimeUtil.addEndOfDay(_date, 1);
+        Date nextDay = TimeUtil.addEndOfDay(_date);
         return Observable
                 .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
                 .map(models -> {
@@ -131,7 +131,7 @@ public class ActivityDataProvider extends BaseDataProvider {
     }
 
     private Observable<Pair<Long, Float>> getDayCalories(Date _date) {
-        Date nextDay = TimeUtil.addEndOfDay(_date, 1);
+        Date nextDay = TimeUtil.addEndOfDay(_date);
         return Observable
                 .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
                 .map(models -> {
@@ -146,7 +146,7 @@ public class ActivityDataProvider extends BaseDataProvider {
     }
 
     private Observable<Pair<Long, Float>> getDayDistance(Date _date) {
-        Date nextDay = TimeUtil.addEndOfDay(_date, 1);
+        Date nextDay = TimeUtil.addEndOfDay(_date);
         return Observable
                 .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
                 .map(models -> {

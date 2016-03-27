@@ -1,6 +1,11 @@
 package com.task.webchallengetask.ui.modules.activity.views;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -181,5 +186,23 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     @Override
     public String getDate() {
         return tvDate.getText().toString();
+    }
+
+    @Override
+    public void showCompleteProgramNotification(String _programName, String _target) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .setContentTitle("Congratulation!")
+                .setContentText("Your have finished today program: " + _programName)
+                .setSubText("Target:" + _target);
+
+        Notification notification = builder.build();
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notification.defaults |= Notification.DEFAULT_VIBRATE;
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(_programName.hashCode(), builder.build());
+
     }
 }

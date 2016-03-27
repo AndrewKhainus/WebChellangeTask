@@ -118,7 +118,7 @@ public final class TimeUtil {
         return new Date(c.getTime().getTime());
     }
 
-    public static Date addEndOfDay(Date date, int _days) {
+    public static Date addEndOfDay(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.set(Calendar.HOUR_OF_DAY, 23);
@@ -126,7 +126,6 @@ public final class TimeUtil {
         c.set(Calendar.SECOND, 59);
         return new Date(c.getTime().getTime());
     }
-
 
     public static Date minusDayFromDate(Date date, int _days) {
         Calendar c = Calendar.getInstance();

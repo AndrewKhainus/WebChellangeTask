@@ -37,7 +37,7 @@
         app:backgroundTint="?attr/colorAccent"
         app:elevation="8dp"
         app:layout_anchorGravity="bottom|end"
-        app:pressedTranslationZ="12dp" />
+        app:pressedTranslationZ="12dp"/>
 
 
 </FrameLayout>

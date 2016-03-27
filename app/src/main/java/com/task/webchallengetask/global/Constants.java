@@ -13,6 +13,7 @@ public final class Constants {
     public static final String SERVICE_ACCT_EMAIL = "1061853864883-compute@developer.gserviceaccount.com";
     public static final String SERVICE_ACCT_KEYFILE = "key.p12";
 
+    public static final int TIME_SYNC = 5;
 
     public static final int RC_SIGN_IN_GOOGLE_PLUS = 0;
     public static final int RC_SIGN_IN_FACEBOOK = 64206;

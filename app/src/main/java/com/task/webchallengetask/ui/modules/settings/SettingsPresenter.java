@@ -15,7 +15,6 @@ public class SettingsPresenter extends BaseFragmentPresenter<SettingsPresenter.S
 
     private List<String> genderTypes;
 
-
     @Override
     public void onViewCreated() {
         super.onViewCreated();
@@ -28,6 +27,7 @@ public class SettingsPresenter extends BaseFragmentPresenter<SettingsPresenter.S
         getView().setHeight(String.valueOf(SharedPrefManager.getInstance().retrieveHeight()));
         getView().setWeight(String.valueOf(SharedPrefManager.getInstance().retrieveWeight()));
         getView().setTimeSynchronization(String.valueOf(SharedPrefManager.getInstance().retrieveTimeSynchronization()));
+        getView().setNotificationState(SharedPrefManager.getInstance().retrieveNotificationState());
     }
 
     public void onSaveClicked() {
@@ -38,6 +38,7 @@ public class SettingsPresenter extends BaseFragmentPresenter<SettingsPresenter.S
             SharedPrefManager.getInstance().storeGender(genderTypes.get(getView().getGender()));
             SharedPrefManager.getInstance().storeAge(getView().getAge());
             SharedPrefManager.getInstance().storeTimeSynchronization(getView().getTimeSynchronization());
+            SharedPrefManager.getInstance().storeNotificationState(getView().getNotificationState());
         }
     }
 
@@ -94,6 +95,10 @@ public class SettingsPresenter extends BaseFragmentPresenter<SettingsPresenter.S
         void showTimeSynchronizationError();
 
         void hideKeyboard();
+
+        void setNotificationState(boolean b);
+
+        boolean getNotificationState();
     }
 
 }
