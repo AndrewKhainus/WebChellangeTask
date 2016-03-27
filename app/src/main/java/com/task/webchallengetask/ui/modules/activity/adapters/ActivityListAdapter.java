@@ -13,6 +13,7 @@ import com.task.webchallengetask.global.utils.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by klim on 24.03.16.
@@ -51,15 +52,18 @@ public class ActivityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             ((ActivityItemHolder) holder).tvTitle.setText(mData.get(position).getName());
 
-            float durationInSecond = (mData.get(position).getEndTime() / 1000) -
-                    (mData.get(position).getStartTime() / 1000 );
-            String units = " min";
-            int minutes = (int)durationInSecond % 60;
-//            int seconds = durationInSecond
+            long duration = mData.get(position).getEndTime() - mData.get(position).getStartTime();
+            int seconds = (int) (duration / 1000) % 60;
+            int minutes = (int) ((duration / (1000 * 60)) % 60);
+            int hours = (int) ((duration / (1000 * 60 * 60)) % 24);
 
-            String duration = String.valueOf((mData.get(position).getEndTime() -
-                    mData.get(position).getStartTime()) / 1000 / 60) + " min";
-            ((ActivityItemHolder) holder).tvSubTitle.setText(duration);
+            minutes += hours * 60 + minutes;
+            if (minutes > 0) {
+                ((ActivityItemHolder) holder).tvSubTitle.setText(minutes + " min");
+            } else {
+                ((ActivityItemHolder) holder).tvSubTitle.setText(seconds + " sec");
+            }
+
             ((ActivityItemHolder) holder).tvStartDate.setText(TimeUtil.timeToString(mData.get(position).getStartTime()));
             ((ActivityItemHolder) holder).tvEndDate.setText(TimeUtil.timeToString(mData.get(position).getEndTime()));
         }
@@ -89,7 +93,8 @@ public class ActivityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onClick(View v) {
-            if (mExternalListener != null) mExternalListener.onClick(mData.get(getAdapterPosition()));
+            if (mExternalListener != null)
+                mExternalListener.onClick(mData.get(getAdapterPosition()));
         }
 
         public void setExternalListener(OnItemClickListener _listener) {
