@@ -188,19 +188,27 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     private void checkNewData() {
         if (SharedPrefManager.getInstance().retrieveNotificationState()) {
             for (ProgramTable programTable : mPrograms) {
-                Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
+                String previousResult = "";
+                Date previousResultDate = null;
+                if (SharedPrefManager.getInstance().contains(programTable.getName())) {
+                    previousResult = SharedPrefManager.getInstance().retrieveString(programTable.getName());
+                    previousResultDate = TimeUtil.stringToDate(previousResult);
+                }
                 Date today = new Date(TimeUtil.getCurrentDay());
                 Date nextDay = TimeUtil.addEndOfDay(today);
 
-                mProgramDataProvider.loadData(type, today, nextDay)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(pairs -> {
-                            if (pairs.get(0).second >= programTable.getTarget()) {
-                                String target = programTable.getTarget() + " " + programTable.getUnit();
-                                getView().showCompleteProgramNotification(programTable.getName(), target);
-                            }
-                        }, Logger::e);
+                if (previousResultDate == null || TimeUtil.compareDay(previousResultDate.getTime(), today.getTime()) != 0) {
+                    Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
+                    mProgramDataProvider.loadData(type, today, nextDay)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(pairs -> {
+                                if (pairs.get(0).second >= programTable.getTarget()) {
+                                    String target = programTable.getTarget() + " " + programTable.getUnit();
+                                    getView().showCompleteProgramNotification(programTable.getName(), target);
+                                }
+                            }, Logger::e);
 
+                }
             }
         }
     }
