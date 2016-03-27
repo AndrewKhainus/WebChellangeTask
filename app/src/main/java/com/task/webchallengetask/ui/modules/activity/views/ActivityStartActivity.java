@@ -1,6 +1,7 @@
 package com.task.webchallengetask.ui.modules.activity.views;
 
 import android.content.IntentSender;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.ui.base.BaseActivity;
@@ -66,9 +68,9 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
 
     @Override
     public void setupUI() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(R.string.start_activity);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getDelegate().setSupportActionBar(mToolbar);
+        getDelegate().getSupportActionBar().setTitle(R.string.start_activity);
+        getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         spChooseActivity.setPrompt("Choose activity");
         spChooseActivity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

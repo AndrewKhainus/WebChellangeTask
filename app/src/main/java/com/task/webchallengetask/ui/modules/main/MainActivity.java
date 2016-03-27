@@ -15,9 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_managers.SharedPrefManager;
+import com.task.webchallengetask.global.utils.image.CircleTransform;
 import com.task.webchallengetask.ui.base.BaseActivity;
 import com.task.webchallengetask.ui.dialogs.ProfileDialog;
 
@@ -76,6 +78,8 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
         if (TextUtils.isEmpty(SharedPrefManager.getInstance().retrieveGender())) {
             showProfileDialog();
         }
+
+        loadPhoto();
 
     }
 
@@ -162,7 +166,10 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
     public void setAvatar(String _path) {
         if (!TextUtils.isEmpty(_path)) {
             Picasso.with(App.getAppContext())
-                    .load(_path)
+                    .load(SharedPrefManager.getInstance().retrieveUrlPhoto())
+//                .error(R.drawable.bg_logo)
+//                .placeholder(R.drawable.cell_bg)
+                    .transform(new CircleTransform())
                     .into(ivNavAvatar);
         }
     }
@@ -170,6 +177,4 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
     public interface DrawerCallBack {
         void onClosed();
     }
-
-
 }

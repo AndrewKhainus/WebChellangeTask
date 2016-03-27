@@ -16,6 +16,8 @@
     <string name="text_btn_okay">OKAY</string>
     <string name="text_btn_cancel">CANCEL</string>
     <string name="text_btn_close">CLOSE</string>
+    <string name="text_btn_edit">EDIT</string>
+    <string name="text_btn_delete">DELETE</string>
     <string name="text_btn_save">SAVE</string>
 
     <string name="yes">Yes</string>
