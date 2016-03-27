@@ -26,6 +26,7 @@
             android:layout_weight="1"
             android:layout_marginBottom="10dp"
             android:enabled="false"/>
+<!--
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/btnFacebookLogin_AL"
@@ -35,6 +36,7 @@
             android:layout_height="wrap_content"
             facebook:com_facebook_login_text="Sign up with facebook"
             facebook:com_facebook_logout_text="Sign up with facebook"/>
+-->
 
     </LinearLayout>
 

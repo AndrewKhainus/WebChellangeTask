@@ -83,15 +83,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
 
     }
 
-    private void loadPhoto() {
-        Picasso.with(App.getAppContext())
-                .load(SharedPrefManager.getInstance().retrieveUrlPhoto())
-//                .error(R.drawable.bg_logo)
-//                .placeholder(R.drawable.cell_bg)
-                .transform(new CircleTransform())
-                .into(ivNavAvatar);
-    }
-
     private void showProfileDialog() {
         ProfileDialog dialog = new ProfileDialog();
         dialog.show(getSupportFragmentManager(), "");
@@ -124,6 +115,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
         }
         return true;
     }
+
 
     @Override
     public boolean isDrawerOpen() {
@@ -158,11 +150,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
         new Handler().post(mDrawerLayout::closeDrawers);
     }
 
-//    @Override
-//    public void setHeaderAvatar(Bitmap _bitmap) {
-//        ivNavAvatar.setImageBitmap(_bitmap);
-//    }
-
     @Override
     public void setHeaderTitle(String _title) {
         tvNavTitle.setText(_title);
@@ -175,9 +162,19 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
                 _const, null, 0, 0, 0);
     }
 
+    @Override
+    public void setAvatar(String _path) {
+        if (!TextUtils.isEmpty(_path)) {
+            Picasso.with(App.getAppContext())
+                    .load(SharedPrefManager.getInstance().retrieveUrlPhoto())
+//                .error(R.drawable.bg_logo)
+//                .placeholder(R.drawable.cell_bg)
+                    .transform(new CircleTransform())
+                    .into(ivNavAvatar);
+        }
+    }
+
     public interface DrawerCallBack {
         void onClosed();
     }
-
-
 }

@@ -11,7 +11,6 @@ import com.github.mikephil.charting.data.CombinedData;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
-import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.custom.CalendarView;
@@ -24,13 +23,11 @@ import java.util.List;
 
 public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter.AnalyticsView> {
 
-    private ProgramDataProvider dataProvider = ProgramDataProvider.getInstance();
     private ActivityDataProvider mActivitiesProvider = ActivityDataProvider.getInstance();
     public static final Pair<Constants.DATA_TYPES, String> activityDataType = new Pair<>(Constants.DATA_TYPES.ACTIVITY_TIME, "Activity time");
     public static final Pair<Constants.DATA_TYPES, String> stepDataType = new Pair<>(Constants.DATA_TYPES.STEP, "Steps");
     public static final Pair<Constants.DATA_TYPES, String> distanceDataType = new Pair<>(Constants.DATA_TYPES.DISTANCE, "Distance");
     public static final Pair<Constants.DATA_TYPES, String> caloriesDataType = new Pair<>(Constants.DATA_TYPES.CALORIES, "Calories");
-//    public static final Pair<Constants.DATA_TYPES, String> allDataType = new Pair(Constants.DATA_TYPES.All, "All");
 
     @Override
     public void onViewCreated() {
@@ -41,38 +38,36 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         dataTypesList.add(stepDataType);
         dataTypesList.add(distanceDataType);
         dataTypesList.add(caloriesDataType);
-//        dataTypesList.add(allDataType);
         getView().setDataTypes(dataTypesList);
 
+        Date currentDay = new Date(TimeUtil.getCurrentDay());
+        Date weekAgo = TimeUtil.minusDayFromDate(currentDay, 7);
+
         getView().setEndDate(TimeUtil.timeToString(TimeUtil.getCurrentDay()));
-        Date weekAgo = TimeUtil.minusDayFromDate(new Date(), 7);
         getView().setStartDate(TimeUtil.timeToString(weekAgo.getTime()));
-
-//        getDiagram(activityDataType);
-
    }
 
     public void getDiagram(Pair<Constants.DATA_TYPES, String> _dataType){
-        Date start = TimeUtil.parseDate(getView().getStartDate());
-        Date end = TimeUtil.parseDate(getView().getEndDate());
+        Date start = TimeUtil.stringToDate(getView().getStartDate());
+        Date end = TimeUtil.stringToDate(getView().getEndDate());
         switch (_dataType.first){
             case ACTIVITY_TIME:
-                ActivityDataProvider.getInstance().getActualTime(start,end).subscribe((floats) -> {
+                mActivitiesProvider.getActualTime(start,end).subscribe((floats) -> {
                     setDiagramData(floats, App.getAppContext().getString(R.string.c_time));
                 });
                 break;
             case STEP:
-                ActivityDataProvider.getInstance().getSteps(start,end).subscribe((floats) -> {
+                mActivitiesProvider.getSteps(start,end).subscribe((floats) -> {
                     setDiagramData(floats, App.getAppContext().getString(R.string.c_step));
                 });
                 break;
             case DISTANCE:
-                ActivityDataProvider.getInstance().getDistance(start,end).subscribe((floats) -> {
+                mActivitiesProvider.getDistance(start,end).subscribe((floats) -> {
                     setDiagramData(floats, App.getAppContext().getString(R.string.c_meters));
                 });
                 break;
             case CALORIES:
-                ActivityDataProvider.getInstance().getCalories(start,end).subscribe((floats) -> {
+                mActivitiesProvider.getCalories(start,end).subscribe((floats) -> {
                     setDiagramData(floats, App.getAppContext().getString(R.string.c_calories));
                 });
                 break;
@@ -113,8 +108,7 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
     }
 
 
-    public void onDataTypeChoosed(Pair<Constants.DATA_TYPES, String> _dataType) {
-        // TODO: change diagram
+    public void onDataTypeChosen(Pair<Constants.DATA_TYPES, String> _dataType) {
         getDiagram(_dataType);
     }
 

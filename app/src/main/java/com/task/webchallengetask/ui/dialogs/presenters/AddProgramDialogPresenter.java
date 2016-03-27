@@ -4,10 +4,9 @@ import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.global.programs.Program;
-import com.task.webchallengetask.global.programs.ProgramFactory;
+import com.task.webchallengetask.global.programs.ProgramManager;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.programs.difficults.DifficultCustom;
-import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseDialogView;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class AddProgramDialogPresenter extends BaseDialogPresenter<AddProgramDia
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        programs = ProgramFactory.getPrograms();
+        programs = ProgramManager.getPrograms();
         getView().setPrograms(programs);
     }
 

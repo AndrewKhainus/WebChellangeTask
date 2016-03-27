@@ -3,30 +3,30 @@ package com.task.webchallengetask.ui.modules.activity.presenters;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.global.Constants;
+import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
 import com.task.webchallengetask.ui.custom.CalendarView;
+
+import java.util.Date;
 
 /**
  * Created by klim on 25.03.16.
  */
 public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetailPresenter.ActivityDetailView> {
 
-    private ActionParametersModel actionParametersModel;
     private int id;
-    private long startTime;
 
     @Override
     public void onViewCreated() {
         super.onViewCreated();
         id = getView().getFragmentArguments().getInt(Constants.ACTIVITY_ID_KEY);
 
-        ActivityDataProvider.getInstance().getActivitie(id)
+        ActivityDataProvider.getInstance().getActivityById(id)
                 .subscribe(_model -> {
-                    actionParametersModel = _model;
                     getView().setAllFieldsEditable(false);
-                    getView().setStartTime(TimeUtil.timeToString(_model.getStartTime()));
+                    getView().setDate(TimeUtil.dateToString(new Date(_model.getDate())));
                     getView().setActivityTime(String.valueOf(_model.getActivityActualTime()));
                     getView().setDistance(String.valueOf(_model.getDistance()));
                     getView().setStep(String.valueOf(_model.getStep()));
@@ -44,12 +44,16 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
         getView().setSaveVisible(false);
         getView().setEditVisible(true);
         getView().setAllFieldsEditable(false);
-        actionParametersModel.startTime = startTime;
-        actionParametersModel.distance = Float.parseFloat(getView().getDistance());
-        actionParametersModel.activityActualTime = Float.parseFloat(getView().getActivityTime());
-        actionParametersModel.step = Integer.parseInt(getView().getStep());
-        actionParametersModel.calories = Float.parseFloat(getView().getCalories());
-        actionParametersModel.save();
+        ActivityDataProvider.getInstance().getActivityById(id)
+                .subscribe(model -> {
+                    model.date = TimeUtil.stringToDate(getView().getDate()).getTime();
+                    model.distance = Float.parseFloat(getView().getDistance());
+                    model.activityActualTime = Float.parseFloat(getView().getActivityTime());
+                    model.step = Integer.parseInt(getView().getStep());
+                    model.calories = Float.parseFloat(getView().getCalories());
+                    model.save();
+
+                }, Logger::e);
     }
 
     public void onDeleteClicked() {
@@ -59,10 +63,7 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
     }
 
     public void onTimeClicked() {
-        getView().openStartDateCalendar(_date -> {
-            startTime = _date.getTime();
-            getView().setStartTime(TimeUtil.dateToString(_date));
-        });
+        getView().openStartDateCalendar(_date -> getView().setDate(TimeUtil.dateToString(_date)));
     }
 
     public interface ActivityDetailView extends BaseFragmentView<ActivityDetailPresenter> {
@@ -74,7 +75,7 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
 
         void setTitle(String _text);
 
-        void setStartTime(String _text);
+        void setDate(String _text);
 
         void setAllFieldsEditable(boolean _isEditable);
 
@@ -93,5 +94,7 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
         String getStep();
 
         String getCalories();
+
+        String getDate();
     }
 }

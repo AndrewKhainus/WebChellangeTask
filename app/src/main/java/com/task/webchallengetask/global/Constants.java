@@ -1,9 +1,5 @@
 package com.task.webchallengetask.global;
 
-import android.support.v4.util.Pair;
-
-import java.util.HashMap;
-
 public final class Constants {
 
     public static final String PREDICTION_END_POINT = "https://www.googleapis.com";
@@ -20,6 +16,8 @@ public final class Constants {
 
     public static final int RC_SIGN_IN_GOOGLE_PLUS = 0;
     public static final int RC_SIGN_IN_FACEBOOK = 64206;
+
+    public static final int RC_ACTIVITY_START_ACTIVITY = 3789;
 
     public static final String SOCIAL_GOOGLE_PLUS = "google plus";
     public static final String SOCIAL_FACEBOOK = "facebook";

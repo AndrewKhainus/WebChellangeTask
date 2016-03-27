@@ -4,6 +4,8 @@ import android.util.Pair;
 
 import com.task.webchallengetask.data.database.DatabaseController;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
+import com.task.webchallengetask.global.utils.Logger;
+import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.global.utils.TimeUtil;
 
 import java.util.ArrayList;
@@ -37,160 +39,123 @@ public class ActivityDataProvider extends BaseDataProvider {
         return localInstance;
     }
 
-    public Observable<List<ActionParametersModel>> getActivities(long _startDate, long _endDate) {
-        return newThread(Observable.just(mDbController.getActionParametersModel(_startDate, _endDate)));
-    }
-
-    public  Observable<List<ActionParametersModel>> getActivities(){
+    public Observable<List<ActionParametersModel>> getActivities() {
         return newThread(Observable.just(mDbController.getAllActionParametersModel()));
     }
 
-    public  Observable<ActionParametersModel> getActivitie(int _id){
+    public Observable<ActionParametersModel> getActivityById(int _id) {
         return newThread(Observable.just(mDbController.getActionParametersModel(_id)));
     }
 
-    public  Observable<Boolean> deleteActivities(int _id){
+    public Observable<Boolean> deleteActivities(int _id) {
         return newThread(Observable.just(mDbController.deleteActionParametersModel(_id)));
     }
 
     public Observable<List<Pair<Long, Float>>> getDistance(Date _startDate, Date _endDate) {
-
-        List<Date> dateList = new ArrayList<>();
-        Date currentDate = _startDate;
-        do {
-            dateList.add(currentDate);
-            currentDate = TimeUtil.addDayToDate(currentDate, 1);
-        } while (currentDate.before(_endDate) || currentDate.equals(_endDate));
-
-
-        return newThread(Observable.from(dateList)
-                .flatMap(date -> getDistance(date.getTime())
-                .toList()));
+        return newThread(RxUtils.createDateList(_startDate, _endDate)
+                .flatMap(this::getDayDistance)
+                .toList());
     }
 
     public Observable<List<Pair<Long, Float>>> getSteps(Date _startDate, Date _endDate) {
-
-        List<Date> dateList = new ArrayList<>();
-        Date currentDate = _startDate;
-        do {
-            dateList.add(currentDate);
-            currentDate = TimeUtil.addDayToDate(currentDate, 1);
-        } while (currentDate.before(_endDate) || currentDate.equals(_endDate));
-
-
-        return newThread(Observable.from(dateList)
-                .flatMap(date -> getSteps(date.getTime())
-                        .toList()));
+        return newThread(RxUtils.createDateList(_startDate, _endDate)
+                .flatMap(this::getDaySteps)
+                .toList());
     }
 
     public Observable<List<Pair<Long, Float>>> getActualTime(Date _startDate, Date _endDate) {
+        return newThread(RxUtils.createDateList(_startDate, _endDate)
+                .flatMap(this::getDayActivityTime)
+                .toList());
 
-        List<Date> dateList = new ArrayList<>();
-        Date currentDate = _startDate;
-        do {
-            dateList.add(currentDate);
-            currentDate = TimeUtil.addDayToDate(currentDate, 1);
-        } while (currentDate.before(_endDate) || currentDate.equals(_endDate));
-
-
-        return newThread(Observable.from(dateList)
-                .flatMap(date -> getActualTime(date.getTime())
-                        .toList()));
     }
+
+    public Observable<List<Pair<Long, Float>>> getSpeed(Date _startDate, Date _endDate) {
+        return newThread(RxUtils.createDateList(_startDate, _endDate)
+                .flatMap(this::getDaySpeed)
+                .toList());
+
+    }
+
 
     public Observable<List<Pair<Long, Float>>> getCalories(Date _startDate, Date _endDate) {
-
-        List<Date> dateList = new ArrayList<>();
-        Date currentDate = _startDate;
-        do {
-            dateList.add(currentDate);
-            currentDate = TimeUtil.addDayToDate(currentDate, 1);
-        } while (currentDate.before(_endDate) || currentDate.equals(_endDate));
-
-
-        return newThread(Observable.from(dateList)
-                .flatMap(date -> getCalories(date.getTime())
-                        .toList()));
-    }
-
-
-
-
-    public Observable<Pair<Long, Float>> getDistance(long _date) {
-
-        return newThread(Observable.just(mDbController.getActionParametersModel(_date, _date))
-                .flatMap(Observable::from))
-                .map(ActionParametersModel::getDistance)
-                .toList()
-                .map(aFloat -> {
-                    float totalDistance = 0;
-                    for (float value : aFloat) {
-                        totalDistance += value;
-                    }
-                    return new Pair<>(_date, totalDistance);
-                });
-    }
-
-    public Observable<Pair<Long, Float>> getSteps(long _date) {
-        return newThread(Observable.just(mDbController.getActionParametersModel(_date, _date))
-                .flatMap(Observable::from))
-                .map(ActionParametersModel::getStep)
-                .toList()
-                .map(integers -> {
-                    float totalDistance = 0;
-                    for (float value : integers) {
-                        totalDistance += value;
-                    }
-                    return new Pair<>(_date, totalDistance);
-                });
+        return newThread(RxUtils.createDateList(_startDate, _endDate)
+                .flatMap(this::getDayCalories)
+                .toList());
 
     }
 
-    public Observable<Pair<Long, Float>> getActualTime(long _date) {
-        return newThread(Observable.just(mDbController.getActionParametersModel(_date, _date))
-                .flatMap(Observable::from))
-                .map(ActionParametersModel::getActivityActualTime)
-                .toList()
-                .map(aFloat -> {
-                    float totalActualTime = 0;
-                    for (float value : aFloat) {
-                        totalActualTime += value;
-                    }
-                    return new Pair<>(_date, totalActualTime);
-                });
-
-
-    }
-
-    public Observable<Float> getSpeed(long _date) {
-        return newThread(Observable.just(mDbController.getActionParametersModel(_date, _date))
-                .flatMap(Observable::from))
-                .map(ActionParametersModel::getActivityActualTime)
-                .toList()
-                .map(aFloat -> {
-                    float totalSteps = 0;
-                    for (float value : aFloat) {
-                        totalSteps += value;
-                    }
-                    return totalSteps;
-                });
-
-
-    }
-
-    public Observable<Pair<Long, Float>> getCalories(long _date) {
-        return newThread(Observable.just(mDbController.getActionParametersModel(_date, _date))
-                .flatMap(Observable::from))
-                .map(ActionParametersModel::getActivityActualTime)
-                .toList()
-                .map(aFloat -> {
+    private Observable<Pair<Long, Float>> getDaySteps(Date _date) {
+        Date nextDay = TimeUtil.addDayToDate(_date, 1);
+        return Observable
+                .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
+                .map(models -> {
                     float totalCalories = 0;
-                    for (float value : aFloat) {
-                        totalCalories += value;
+                    for (ActionParametersModel model : models) {
+                        totalCalories += model.getStep();
                     }
-                    return new Pair<>(_date, totalCalories);
+                    return new Pair<>(_date.getTime(), totalCalories);
                 });
 
+
+    }
+
+    private Observable<Pair<Long, Float>> getDayActivityTime(Date _date) {
+        Date nextDay = TimeUtil.addDayToDate(_date, 1);
+        return Observable
+                .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
+                .map(models -> {
+                    float totalCalories = 0;
+                    for (ActionParametersModel model : models) {
+                        totalCalories += model.getActivityActualTime();
+                    }
+                    return new Pair<>(_date.getTime(), totalCalories);
+                });
+
+
+    }
+
+    private Observable<Pair<Long, Float>> getDaySpeed(Date _date) {
+        Date nextDay = TimeUtil.addDayToDate(_date, 1);
+        return Observable
+                .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
+                .map(models -> {
+                    float totalCalories = 0;
+                    for (ActionParametersModel model : models) {
+                        totalCalories += model.getSpeed();
+                    }
+                    return new Pair<>(_date.getTime(), totalCalories);
+                });
+
+
+    }
+
+    private Observable<Pair<Long, Float>> getDayCalories(Date _date) {
+        Date nextDay = TimeUtil.addDayToDate(_date, 1);
+        return Observable
+                .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
+                .map(models -> {
+                    float totalCalories = 0;
+                    for (ActionParametersModel model : models) {
+                        totalCalories += model.getCalories();
+                    }
+                    return new Pair<>(_date.getTime(), totalCalories);
+                });
+
+
+    }
+
+    private Observable<Pair<Long, Float>> getDayDistance(Date _date) {
+        Date nextDay = TimeUtil.addDayToDate(_date, 1);
+        return Observable
+                .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
+                .map(models -> {
+                    float totalDistance = 0;
+                    for (ActionParametersModel model : models) {
+                        totalDistance += model.getDistance();
+                    }
+                    return new Pair<>(_date.getTime(), totalDistance);
+                });
 
     }
 

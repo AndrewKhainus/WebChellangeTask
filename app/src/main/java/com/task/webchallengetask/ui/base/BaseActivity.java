@@ -180,6 +180,12 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     }
 
     @Override
+    public void startActivityForResult(Class _activityClass, int _requestCode) {
+        Intent intent = new Intent(this, _activityClass);
+        startActivityForResult(intent, _requestCode);
+    }
+
+    @Override
     public void finishActivity() {
         finish();
     }

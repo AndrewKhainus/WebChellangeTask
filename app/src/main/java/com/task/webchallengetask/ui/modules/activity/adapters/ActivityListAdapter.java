@@ -47,10 +47,18 @@ public class ActivityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HeaderHolder) {
-            ((HeaderHolder) holder).tvTitle.setText(TimeUtil.timeToString(mData.get(position).getStartTime()));
+            ((HeaderHolder) holder).tvTitle.setText(TimeUtil.timeToString(mData.get(position).getDate()));
         } else {
             ((ActivityItemHolder) holder).tvTitle.setText(mData.get(position).getName());
-            String duration = TimeUtil.timeToString(mData.get(position).getEndTime() - mData.get(position).getStartTime());
+
+            float durationInSecond = (mData.get(position).getEndTime() / 1000) -
+                    (mData.get(position).getStartTime() / 1000 );
+            String units = " min";
+            int minutes = (int)durationInSecond % 60;
+//            int seconds = durationInSecond
+
+            String duration = String.valueOf((mData.get(position).getEndTime() -
+                    mData.get(position).getStartTime()) / 1000 / 60) + " min";
             ((ActivityItemHolder) holder).tvSubTitle.setText(duration);
             ((ActivityItemHolder) holder).tvStartDate.setText(TimeUtil.timeToString(mData.get(position).getStartTime()));
             ((ActivityItemHolder) holder).tvEndDate.setText(TimeUtil.timeToString(mData.get(position).getEndTime()));
@@ -115,7 +123,7 @@ public class ActivityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (!_data.isEmpty()) {
             ActionParametersModel header = new ActionParametersModel();
             header.name = "header";
-            header.startTime = _data.get(0).startTime;
+            header.date = _data.get(0).date;
             int curSize = getItemCount();
             mData.add(header);
             mData.addAll(_data);

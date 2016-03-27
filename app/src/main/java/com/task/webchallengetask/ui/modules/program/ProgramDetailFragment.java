@@ -2,6 +2,7 @@ package com.task.webchallengetask.ui.modules.program;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -118,7 +119,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                getPresenter().onTargetChanged();
             }
         });
 
@@ -209,6 +210,18 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     }
 
     @Override
+    public String getActualResults() {
+        return tvActualResult.getText().toString();
+    }
+
+    @Override
+    public void setActualResultCompleted(boolean _isCompleted) {
+        int resColor = _isCompleted ? R.color.color_green_700 : R.color.color_red_700;
+        tvActualResult.setTextColor(ContextCompat.getColor(getContext(), resColor));
+        tvUnitActual.setTextColor(ContextCompat.getColor(getContext(), resColor));
+    }
+
+    @Override
     public void setTargetEnabled(boolean _isEnabled) {
         etTarget.setEnabled(_isEnabled);
     }
@@ -222,14 +235,14 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     public void openStartDateCalendar(CalendarView.Callback _callBack) {
         CalendarView calendarView = new CalendarView(getFragmentManager(), "");
         calendarView.setCallback(_callBack);
-        calendarView.show(TimeUtil.parseDate(tvStartDate.getText().toString()));
+        calendarView.show(TimeUtil.stringToDate(tvStartDate.getText().toString()));
     }
 
     @Override
     public void openEndDateCalendar(CalendarView.Callback _callBack) {
         CalendarView calendarView = new CalendarView(getFragmentManager(), "");
         calendarView.setCallback(_callBack);
-        calendarView.show(TimeUtil.parseDate(tvEndDate.getText().toString()));
+        calendarView.show(TimeUtil.stringToDate(tvEndDate.getText().toString()));
     }
 
     @Override

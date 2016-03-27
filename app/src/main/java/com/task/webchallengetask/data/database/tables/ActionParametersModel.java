@@ -27,6 +27,13 @@ public class ActionParametersModel extends BaseModel {
     public long endTime;
 
     @Column
+    public long date;
+
+    public long getDate() {
+        return date;
+    }
+
+    @Column
     public float activityActualTime;
 
     @Column

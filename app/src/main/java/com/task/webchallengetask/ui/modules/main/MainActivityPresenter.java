@@ -6,7 +6,7 @@ import android.content.IntentSender;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.facebook.login.LoginManager;
+//import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.task.webchallengetask.App;
@@ -36,7 +36,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
     public void onViewCreated() {
         super.onViewCreated();
 
-        if (IntentHelper.isServiceRunning(App.getAppContext(), ActivityTrackerService.class)){
+        if (IntentHelper.isServiceRunning(App.getAppContext(), ActivityTrackerService.class)) {
             getView().startActivity(ActivityStartActivity.class);
         }
 
@@ -49,9 +49,11 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
 
         getView().switchFragment(ActivityListFragment.newInstance(), false);
         getView().setHeaderTitle(SharedPrefManager.getInstance().retrieveUsername());
+        getView().setAvatar(SharedPrefManager.getInstance().retrieveUrlPhoto());
 
         PredictionDataProvider.getInstance().connectAndTrain()
-                .subscribe(aBoolean -> {}, Logger::e);
+                .subscribe(aBoolean -> {
+                }, Logger::e);
     }
 
     private void resolveSignInError() {
@@ -65,6 +67,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
             }
         }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -106,11 +109,13 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
 
     private void revokeAccess() {
         switch (SharedPrefManager.getInstance().retrieveActiveSocial()) {
+/*
             case Constants.SOCIAL_FACEBOOK:
                 LoginManager.getInstance().logOut();
                 if (GoogleApiUtils.getInstance().isNotEmptyClient())
                     GoogleApiUtils.getInstance().disableFit();
                 break;
+*/
             case Constants.SOCIAL_GOOGLE_PLUS:
                 if (GoogleApiUtils.getInstance().isNotEmptyClient() &&
                         GoogleApiUtils.getInstance().buildGoogleApiClientWithGooglePlus().isConnected())
@@ -123,8 +128,15 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (!googleApiClient.isConnecting()) {
-            googleApiClient.connect();
+        switch (requestCode) {
+            case Constants.RC_SIGN_IN_GOOGLE_PLUS:
+                if (!googleApiClient.isConnecting()) {
+                    googleApiClient.connect();
+                }
+                break;
+            case Constants.RC_ACTIVITY_START_ACTIVITY:
+                getView().switchFragment(ActivityListFragment.newInstance(), false);
+                break;
         }
     }
 
@@ -155,6 +167,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
 
         void startSenderIntent(IntentSender _intentSender, int _const) throws IntentSender.SendIntentException;
 
+        void setAvatar(String _path);
 
     }
 

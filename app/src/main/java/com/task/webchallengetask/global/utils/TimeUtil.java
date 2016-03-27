@@ -19,11 +19,17 @@ public final class TimeUtil {
 
     public static long getCurrentDay() {
         Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
         return c.getTimeInMillis();
     }
 
+
+
     public static String timeToString(long _time) {
-        return dateFormat.format(new Date(_time));
+        return timeFormat.format(new Date(_time));
     }
 
     public static String timeToStringDDMM(long _time) {
@@ -37,7 +43,7 @@ public final class TimeUtil {
         return "";
     }
 
-    public static Date parseDate(String _date) {
+    public static Date stringToDate(String _date) {
         try {
             return dateFormat.parse(_date);
         } catch (ParseException e) {
@@ -93,8 +99,7 @@ public final class TimeUtil {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DATE, _days);
-        date.setTime(c.getTime().getTime());
-        return date;
+        return new Date(c.getTime().getTime());
     }
 
 
@@ -102,8 +107,7 @@ public final class TimeUtil {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DATE, -_days);
-        date.setTime(c.getTime().getTime());
-        return date;
+        return new Date(c.getTime().getTime());
     }
 
     public static Calendar addSecondToCalendar(Calendar calendar) {
@@ -111,12 +115,38 @@ public final class TimeUtil {
         return calendar;
     }
 
+    public static int compareDay(long _firstTime, long _secondTime) {
+        Calendar firstCal = Calendar.getInstance();
+        Calendar secondCal = Calendar.getInstance();
+        firstCal.setTimeInMillis(_firstTime);
+        secondCal.setTimeInMillis(_secondTime);
+        clearTime(firstCal);
+        clearTime(secondCal);
+        return firstCal.compareTo(secondCal);
+    }
+
     public static boolean isSameDay(long _firstTime, long _secondTime) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(new Date(_firstTime));
-        int firstDay = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        long timeFirst = calendar.getTimeInMillis() / 1000L;
         calendar.setTime(new Date(_secondTime));
-        int secondDay = calendar.get(Calendar.DAY_OF_MONTH);
-        return firstDay == secondDay;
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        long timeSecond = calendar.getTimeInMillis() / 1000L;
+
+        return timeFirst == timeSecond;
+    }
+
+    private static void clearTime(Calendar _calendar) {
+        _calendar.set(Calendar.HOUR_OF_DAY, 0);
+        _calendar.set(Calendar.MINUTE, 0);
+        _calendar.set(Calendar.SECOND, 0);
+        _calendar.set(Calendar.MILLISECOND, 0);
     }
 }

@@ -38,20 +38,11 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     public void onViewCreated() {
         super.onViewCreated();
 
-//        isStarted = IntentHelper.isServiceRunning(App.getAppContext(), ActivityTrackerService.class);
-//        Logger.d(isPaused + "");
-
         activitiesList = Arrays.asList(App.getAppContext().getResources()
                 .getStringArray(R.array.activities_list));
         getView().setSpinnerData(activitiesList);
         mTimerReceiver = new TimerReceiver();
         activityTrackerReceiver = new ActivityTrackerReceiver();
-    }
-
-    public void testClicked() {
-        GoogleApiUtils.getInstance().getHistory().subscribe(t -> {
-            String s = "";
-        });
     }
 
     @Override
@@ -131,7 +122,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Constants.SEND_TIMER_UPDATE_ACTION)) {
                 long timer = intent.getLongExtra(Constants.SEND_TIMER_UPDATE_KEY, -1);
-                Log.e("w", timer + "");
                 if (timer != -1 && getView() != null) {
                     Date date = new Date(timer);
                     getView().setTimer(TimeUtil.getStringFromGregorianTime(date));

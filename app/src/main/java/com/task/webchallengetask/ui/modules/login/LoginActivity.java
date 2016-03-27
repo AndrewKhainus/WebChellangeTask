@@ -1,4 +1,5 @@
 package com.task.webchallengetask.ui.modules.login;
+/*
 
 import android.content.IntentSender;
 import android.view.View;
@@ -10,8 +11,9 @@ import com.google.android.gms.common.SignInButton;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.ui.base.BaseActivity;
+*/
 
-public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginPresenter.LoginView {
+public class LoginActivity { /*extends BaseActivity<LoginPresenter> implements LoginPresenter.LoginView {
 
     private SignInButton btnSignIn;
     private LoginButton loginButton;
@@ -73,4 +75,5 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        getPresenter().onActivityResult(requestCode, resultCode, data);
 //    }
+*/
 }

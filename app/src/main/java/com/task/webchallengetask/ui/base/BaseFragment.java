@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.task.webchallengetask.App;
+
 
 public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Fragment
         implements BaseFragmentView<P> {
@@ -81,7 +83,11 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
         super.onDestroyView();
     }
 
-
+    @Override
+    public void startActivityForResult(Class _activityClass, int _requestCode) {
+        Intent intent = new Intent(getActivity(), _activityClass);
+        getActivity().startActivityForResult(intent, _requestCode);
+    }
 
     @Override
     public void showLoadingDialog() {

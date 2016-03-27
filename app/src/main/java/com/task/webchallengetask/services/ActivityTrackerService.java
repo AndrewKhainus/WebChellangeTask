@@ -37,6 +37,7 @@ import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.modules.activity.views.ActivityStartActivity;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -134,6 +135,7 @@ public class ActivityTrackerService extends Service {
         actionParametersModel.step = step;
         actionParametersModel.startTime = startTime;
         actionParametersModel.endTime = endTime;
+        actionParametersModel.date = TimeUtil.getCurrentDay();
         actionParametersModel.save();
     }
 
