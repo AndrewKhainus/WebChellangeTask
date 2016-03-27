@@ -56,7 +56,6 @@ import static com.task.webchallengetask.global.Constants.START_TIMER_ACTION;
  */
 public class ActivityTrackerService extends Service {
 
-//    private static final int KOEFF = ;
     private Calendar mTimerTime;
     private NotificationCompat.Builder mBuilder;
     private NotificationManager notificationManager;
@@ -68,6 +67,8 @@ public class ActivityTrackerService extends Service {
     private OnDataPointListener mListenerDistance;
     private OnDataPointListener mListenerSpeed;
     private OnDataPointListener mListenerStep;
+
+    private float coefficientCalories;
 
     private HashMap<OnDataPointListener, DataSource> listenerDataTypeHashMap;
 
@@ -91,7 +92,8 @@ public class ActivityTrackerService extends Service {
         if (notificationManager == null)
             notificationManager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
         if (intent != null) {
-            currentActivity = intent.getStringExtra(Constants.ACTIVITY_NAME_KEY);
+            currentActivity = intent.getStringExtra(Constants.ACTIVITY_NAME_KEY).intern();
+            coefficientCalories = getCoeffToThisActivity();
             switch (intent.getAction()) {
                 case START_TIMER_ACTION:
                     if (mTimerTime == null) {
@@ -130,6 +132,26 @@ public class ActivityTrackerService extends Service {
             }
         }
         return Service.START_STICKY;
+    }
+
+    private float getCoeffToThisActivity() {
+        switch (currentActivity){
+            case Constants.KIND_ACTIVITY_BICYCLING:
+                return 0.95f;
+            case Constants.KIND_ACTIVITY_ICE_SKATING:
+                return 0.8f;
+            case Constants.KIND_ACTIVITY_ROWING:
+                return 0.95f;
+            case Constants.KIND_ACTIVITY_RUNNING:
+                return 1f;
+            case Constants.KIND_ACTIVITY_TENNIS:
+                return 0.95f;
+            case Constants.KIND_ACTIVITY_SNOWBOARDING:
+                return 0.9f;
+            case Constants.KIND_ACTIVITY_WALKING:
+                return 0.8f;
+            default: return 1f;
+        }
     }
 
     private void saveData() {
@@ -339,7 +361,7 @@ public class ActivityTrackerService extends Service {
     }
 
     strictfp private float calculationCalories() {
-        return weight * dist; //* KOEFF;
+        return weight * dist * coefficientCalories;
     }
 
     private void checkRecording() {
@@ -391,8 +413,7 @@ public class ActivityTrackerService extends Service {
         notificationIntent.setAction(Intent.ACTION_MAIN);
         notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
+
         if (mBuilder == null) {
             mBuilder = new NotificationCompat.Builder(this)
                     .setContentTitle(currentActivity)
@@ -400,7 +421,6 @@ public class ActivityTrackerService extends Service {
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setLargeIcon(
                             Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), 128, 128, false))
-                    .setContentIntent(pendingIntent)
                     .setOngoing(true);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 mBuilder.setColor(ContextCompat.getColor(this, R.color.red_color));
