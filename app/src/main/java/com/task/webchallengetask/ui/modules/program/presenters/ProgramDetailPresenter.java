@@ -28,7 +28,6 @@ import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
 import com.task.webchallengetask.ui.custom.CalendarView;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -162,13 +161,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         LineData targetData = new LineData();
         BarData mDiagram = new BarData();
         String[] dates = new String[floats.size()];
-        float target;
-        if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE) {
-            target = MathUtils.round(Float.valueOf(getView().getTarget()) / 60, 1);
-        } else {
-            target = MathUtils.round(Float.valueOf(getView().getTarget()), 1);
-        }
-
+        float target = MathUtils.round(Float.valueOf(getView().getTarget()), 1);
         for (int i = 0; i < floats.size(); i++) {
             _entry2.add(new Entry(target, i));
             dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
