@@ -173,13 +173,13 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         }
         CombinedData data = new CombinedData(dates);
 
-        BarDataSet set = new BarDataSet(_entry, "result, " + _units);
+        BarDataSet set = new BarDataSet(_entry, "Result, " + _units);
         set.setColor(Color.rgb(60, 220, 78));
         set.setValueTextColor(Color.rgb(60, 220, 78));
         set.setValueTextSize(10f);
         mDiagram.addDataSet(set);
 
-        LineDataSet setLine = new LineDataSet(_entry2, "target, " + _units);
+        LineDataSet setLine = new LineDataSet(_entry2, "Target, " + _units);
         setLine.setColor(Color.rgb(240, 238, 70));
         setLine.setLineWidth(2.5f);
         setLine.setCircleColor(Color.rgb(240, 238, 70));
