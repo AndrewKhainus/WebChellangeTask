@@ -73,11 +73,11 @@ public class ActivityTrackerService extends Service {
     private HashMap<OnDataPointListener, DataSource> listenerDataTypeHashMap;
 
     private long startTime;
-    private ActionParametersModel actionParametersModel;
     private long endTime;
     private int step;
     private float dist;
     private int weight = SharedPrefManager.getInstance().retrieveWeight();
+    private ActionParametersModel actionParametersModel = new ActionParametersModel();
     private List<Float> speeds = new ArrayList<>();
 
     public ActivityTrackerService() {
@@ -155,7 +155,6 @@ public class ActivityTrackerService extends Service {
     }
 
     private void saveData() {
-        actionParametersModel = new ActionParametersModel();
         actionParametersModel.name = currentActivity;
         actionParametersModel.calories = calculationCalories();
         actionParametersModel.distance = dist;
