@@ -59,8 +59,8 @@
         <item>Custom target</item>
     </string-array>
 
-    <string name="distance_description">this is a description for distance program </string>
-    <string name="activity_description">this is a description of thr program for people, who want to be active </string>
+    <string name="distance_description">This program is intended to those who want to improve their skills long distance running</string>
+    <string name="activity_description">This program is intended to those who want to spend more time playing sports</string>
     <string name="c_meters">Meters</string>
     <string name="c_step">Steps</string>
     <string name="c_time">Minutes</string>
