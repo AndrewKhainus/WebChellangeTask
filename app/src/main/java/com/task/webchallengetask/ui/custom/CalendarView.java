@@ -14,9 +14,7 @@ import java.util.Date;
 
 import hirondelle.date4j.DateTime;
 
-/**
- * Created by Sergbek on 08.12.2015.
- */
+
 public final class CalendarView extends CaldroidListener {
 
     private Callback mCallback;

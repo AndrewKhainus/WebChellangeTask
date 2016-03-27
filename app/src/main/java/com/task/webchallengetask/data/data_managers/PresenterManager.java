@@ -20,7 +20,7 @@ public final class PresenterManager {
 
     PresenterManager() {
         currentId = new AtomicLong();
-        presenters = new LruCache<>( maxMemory / 4);
+        presenters = new LruCache<>(maxMemory / 4);
     }
 
     public static PresenterManager getInstance() {

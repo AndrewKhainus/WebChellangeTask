@@ -1,8 +1,6 @@
 package com.task.webchallengetask.global.programs.difficults;
 
-/**
- * Created by klim on 23.03.16.
- */
+
 public class Difficult {
     String name;
     float target;

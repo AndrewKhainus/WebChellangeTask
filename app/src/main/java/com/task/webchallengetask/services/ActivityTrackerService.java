@@ -51,9 +51,7 @@ import java.util.concurrent.TimeUnit;
 import static com.task.webchallengetask.global.Constants.START_TIMER_ACTION;
 
 
-/**
- * Created by andri on 22.03.2016.
- */
+
 public class ActivityTrackerService extends Service {
 
     private Calendar mTimerTime;

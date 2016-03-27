@@ -2,15 +2,9 @@ package com.task.webchallengetask.data.data_providers;
 
 import android.util.Pair;
 
-import com.task.webchallengetask.App;
-import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.database.DatabaseController;
-import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.global.Constants;
-import com.task.webchallengetask.global.programs.Program;
-import com.task.webchallengetask.global.utils.RxUtils;
-import com.task.webchallengetask.global.utils.TimeUtil;
 
 import java.util.Date;
 import java.util.List;

@@ -33,9 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by klim on 24.03.16.
- */
+
 public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailPresenter.ProgramDetailView> {
 
     private ProgramDataProvider mProgramDataProvider = ProgramDataProvider.getInstance();

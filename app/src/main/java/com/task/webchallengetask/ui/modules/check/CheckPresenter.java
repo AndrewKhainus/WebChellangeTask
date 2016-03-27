@@ -10,9 +10,7 @@ import com.task.webchallengetask.ui.base.BaseActivityView;
 import com.task.webchallengetask.ui.modules.login.LoginActivity;
 import com.task.webchallengetask.ui.modules.main.MainActivity;
 
-/**
- * Created by Sergbek on 22.03.2016.
- */
+
 public class CheckPresenter extends BaseActivityPresenter<CheckPresenter.CheckView> {
 
     @Override

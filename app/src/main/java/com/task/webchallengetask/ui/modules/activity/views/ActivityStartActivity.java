@@ -21,9 +21,7 @@ import com.task.webchallengetask.ui.modules.activity.presenters.StartActivityPre
 
 import java.util.List;
 
-/**
- * Created by andri on 22.03.2016.
- */
+
 public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
         implements StartActivityPresenter.StartActivityView {
 

@@ -1,8 +1,6 @@
 package com.task.webchallengetask.global;
 
-/**
- * Created by Sergbek on 20.03.2016.
- */
+
 public final class SharedPrefConst {
 
     public final static String SHARED_PREF_USERNAME = "SharedPreferenceUsername";

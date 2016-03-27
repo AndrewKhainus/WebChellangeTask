@@ -17,9 +17,7 @@ import com.task.webchallengetask.global.programs.difficults.DifficultRunnerProfe
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by klim on 23.03.16.
- */
+
 public class ProgramManager {
 
     private static Program createLongDistance() {

@@ -3,7 +3,6 @@ package com.task.webchallengetask.data.data_managers;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.data.Bucket;
@@ -12,12 +11,9 @@ import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.request.DataReadRequest;
-import com.google.android.gms.fitness.request.DataTypeCreateRequest;
-import com.google.android.gms.fitness.result.DataTypeResult;
 import com.google.android.gms.plus.Plus;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.global.utils.Logger;
-import com.task.webchallengetask.services.ActivityTrackerService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -28,9 +24,6 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 
-/**
- * Created by Sergbek on 24.03.2016.
- */
 public final class GoogleApiUtils {
 
     private static GoogleApiUtils instance;
@@ -115,11 +108,9 @@ public final class GoogleApiUtils {
                     .readData(googleApiClient, requestHistory(startTime, endTime))
                     .setResultCallback(_dataReadResult -> {
                         if (_dataReadResult.getBuckets().size() > 0) {
-//                            Logger.d("DataSet.size(): " + _dataReadResult.getBuckets().size());
                             for (Bucket bucket : _dataReadResult.getBuckets()) {
                                 List<DataSet> dataSets = bucket.getDataSets();
                                 for (DataSet dataSet : dataSets) {
-//                                    Logger.d("dataSet.dataType: " + dataSet.getDataType().getName());
 
                                     for (DataPoint dp : dataSet.getDataPoints()) {
                                         describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));
@@ -128,9 +119,7 @@ public final class GoogleApiUtils {
                                 }
                             }
                         } else if (_dataReadResult.getDataSets().size() > 0) {
-//                            Logger.d("dataSet.size(): " + _dataReadResult.getDataSets().size());
                             for (DataSet dataSet : _dataReadResult.getDataSets()) {
-//                                Logger.d("dataType: " + dataSet.getDataType().getName());
 
                                 for (DataPoint dp : dataSet.getDataPoints()) {
                                     describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));
@@ -157,11 +146,9 @@ public final class GoogleApiUtils {
                     .readData(googleApiClient, requestHistory(startTime, endTime))
                     .setResultCallback(_dataReadResult -> {
                         if (_dataReadResult.getBuckets().size() > 0) {
-//                            Logger.d("DataSet.size(): " + _dataReadResult.getBuckets().size());
                             for (Bucket bucket : _dataReadResult.getBuckets()) {
                                 List<DataSet> dataSets = bucket.getDataSets();
                                 for (DataSet dataSet : dataSets) {
-//                                    Logger.d("dataSet.dataType: " + dataSet.getDataType().getName());
 
                                     for (DataPoint dp : dataSet.getDataPoints()) {
                                         describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));
@@ -170,9 +157,7 @@ public final class GoogleApiUtils {
                                 }
                             }
                         } else if (_dataReadResult.getDataSets().size() > 0) {
-//                            Logger.d("dataSet.size(): " + _dataReadResult.getDataSets().size());
                             for (DataSet dataSet : _dataReadResult.getDataSets()) {
-//                                Logger.d("dataType: " + dataSet.getDataType().getName());
 
                                 for (DataPoint dp : dataSet.getDataPoints()) {
                                     describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));
@@ -194,11 +179,9 @@ public final class GoogleApiUtils {
                     .readData(googleApiClient, requestHistory(_start, _end))
                     .setResultCallback(_dataReadResult -> {
                         if (_dataReadResult.getBuckets().size() > 0) {
-//                            Logger.d("DataSet.size(): " + _dataReadResult.getBuckets().size());
                             for (Bucket bucket : _dataReadResult.getBuckets()) {
                                 List<DataSet> dataSets = bucket.getDataSets();
                                 for (DataSet dataSet : dataSets) {
-//                                    Logger.d("dataSet.dataType: " + dataSet.getDataType().getName());
 
                                     for (DataPoint dp : dataSet.getDataPoints()) {
                                         describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));
@@ -207,9 +190,7 @@ public final class GoogleApiUtils {
                                 }
                             }
                         } else if (_dataReadResult.getDataSets().size() > 0) {
-//                            Logger.d("dataSet.size(): " + _dataReadResult.getDataSets().size());
                             for (DataSet dataSet : _dataReadResult.getDataSets()) {
-//                                Logger.d("dataType: " + dataSet.getDataType().getName());
 
                                 for (DataPoint dp : dataSet.getDataPoints()) {
                                     describeDataPoint(dp, new SimpleDateFormat("dd.MM.yyyy"));

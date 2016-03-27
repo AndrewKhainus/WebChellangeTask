@@ -3,9 +3,7 @@ package com.task.webchallengetask.ui.base;
 import android.os.Bundle;
 import android.view.View;
 
-/**
- * Created by klim on 23.03.16.
- */
+
 public interface BaseActivityView<P extends BaseActivityPresenter> extends BaseView<P> {
 
     void showInfoDialog(String _title, String _message, View.OnClickListener _listener);

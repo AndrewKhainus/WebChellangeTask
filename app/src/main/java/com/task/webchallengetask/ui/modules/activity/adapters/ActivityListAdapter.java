@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
+import com.task.webchallengetask.global.utils.MathUtils;
 import com.task.webchallengetask.global.utils.TimeUtil;
 
 import java.util.ArrayList;
@@ -17,9 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by klim on 24.03.16.
- */
+
 public class ActivityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     protected List<ActionParametersModel> mData = new ArrayList<>();
@@ -56,7 +55,7 @@ public class ActivityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else {
             ((ActivityItemHolder) holder).tvTitle.setText(mData.get(position).getName());
 
-            float duration = mData.get(position).getActivityActualTime();
+            float duration = MathUtils.round(mData.get(position).getActivityActualTime(), 2);
 
             if (duration > 60) {
                 ((ActivityItemHolder) holder).tvSubTitle.setText((duration / 60) + " min");

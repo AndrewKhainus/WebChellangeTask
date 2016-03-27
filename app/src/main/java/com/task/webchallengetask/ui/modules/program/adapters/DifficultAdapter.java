@@ -7,9 +7,7 @@ import com.task.webchallengetask.global.programs.difficults.Difficult;
 
 import java.util.List;
 
-/**
- * Created by klim on 23.03.16.
- */
+
 public class DifficultAdapter extends ArrayAdapter<String> {
 
     private List<Difficult> data;

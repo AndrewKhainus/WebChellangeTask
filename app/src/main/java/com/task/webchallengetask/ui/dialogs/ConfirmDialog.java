@@ -1,6 +1,5 @@
 package com.task.webchallengetask.ui.dialogs;
 
-import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;

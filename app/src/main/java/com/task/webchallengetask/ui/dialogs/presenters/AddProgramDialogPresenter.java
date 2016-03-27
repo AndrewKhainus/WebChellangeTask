@@ -12,9 +12,7 @@ import com.task.webchallengetask.ui.base.BaseDialogView;
 
 import java.util.List;
 
-/**
- * Created by klim on 23.03.16.
- */
+
 public class AddProgramDialogPresenter extends BaseDialogPresenter<AddProgramDialogPresenter.AddProgramView> {
 
     private List<Program> programs;

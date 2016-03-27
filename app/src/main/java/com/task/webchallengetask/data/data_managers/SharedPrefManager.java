@@ -6,14 +6,12 @@ import android.preference.PreferenceManager;
 import android.support.annotation.CheckResult;
 
 import com.task.webchallengetask.App;
-import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.SharedPrefConst;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 public final class SharedPrefManager {
 

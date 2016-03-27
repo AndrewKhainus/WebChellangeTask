@@ -8,9 +8,7 @@ import com.task.webchallengetask.data.database.DatabaseController;
 
 import rx.Observable;
 
-/**
- * Created by klim on 26.03.16.
- */
+
 public class FitDataProvider extends BaseDataProvider {
 
     private static volatile FitDataProvider instance;

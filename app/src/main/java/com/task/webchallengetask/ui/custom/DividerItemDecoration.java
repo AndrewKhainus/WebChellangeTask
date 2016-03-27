@@ -12,9 +12,7 @@ import android.view.View;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 
-/**
- * Created by root on 27.03.16.
- */
+
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{

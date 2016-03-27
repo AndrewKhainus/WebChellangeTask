@@ -9,9 +9,7 @@ import com.task.webchallengetask.ui.base.BasePresenter;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-/**
- * Created by klim on 23.03.16.
- */
+
 public abstract class BaseDialogPresenter<V extends BaseDialogView> implements BasePresenter<V> {
     private V mView;
     private CompositeSubscription mSubscriptions = new CompositeSubscription();

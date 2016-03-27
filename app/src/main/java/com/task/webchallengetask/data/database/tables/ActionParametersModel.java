@@ -6,9 +6,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.task.webchallengetask.data.database.FitDatabase;
 
-/**
- * Created by Sergbek on 24.03.2016.
- */
+
 
 @Table(database = FitDatabase.class)
 public class ActionParametersModel extends BaseModel {

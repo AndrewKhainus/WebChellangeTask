@@ -12,9 +12,7 @@ import com.task.webchallengetask.data.database.tables.ProgramTable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by klim on 24.03.16.
- */
+
 public class ProgramListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     protected List<ProgramTable> mData;

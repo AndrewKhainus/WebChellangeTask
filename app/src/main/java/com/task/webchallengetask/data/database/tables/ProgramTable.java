@@ -6,9 +6,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.task.webchallengetask.data.database.FitDatabase;
 
-/**
- * Created by klim on 23.03.16.
- */
+
 
 @Table(database = FitDatabase.class)
 public class ProgramTable extends BaseModel {

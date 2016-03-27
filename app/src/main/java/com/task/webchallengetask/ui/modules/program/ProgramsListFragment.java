@@ -19,9 +19,7 @@ import com.task.webchallengetask.ui.dialogs.DialogListener;
 
 import java.util.List;
 
-/**
- * Created by klim on 23.03.16.
- */
+
 public class ProgramsListFragment extends BaseFragment<ProgramsListPresenter>
         implements ProgramsListPresenter.ProgramListView {
 

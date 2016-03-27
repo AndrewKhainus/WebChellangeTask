@@ -34,9 +34,7 @@ import rx.schedulers.Schedulers;
 
 import rx.android.schedulers.AndroidSchedulers;
 
-/**
- * Created by andri on 22.03.2016.
- */
+
 public class StartActivityPresenter extends BaseActivityPresenter<StartActivityPresenter.StartActivityView> {
 
     private boolean isStarted;
