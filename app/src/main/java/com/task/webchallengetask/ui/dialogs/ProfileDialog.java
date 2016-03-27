@@ -43,13 +43,6 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
     public void setupUI() {
         setCancelable(false);
         RxUtils.click(btnSave, o -> getPresenter().onSaveClicked());
-
-        RxTextView.textChangeEvents(etWeight)
-                .subscribe(t -> etWeight.setError(null));
-        RxTextView.textChangeEvents(etHeight)
-                .subscribe(t -> etHeight.setError(null));
-        RxTextView.textChangeEvents(etAge)
-                .subscribe(t -> etAge.setError(null));
     }
 
     @Override
@@ -77,7 +70,7 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
     public int getHeight() {
         int value = 0;
         try {
-            value = Integer.valueOf(etHeight.getText().toString());
+            value = Integer.parseInt(etHeight.getText().toString());
         } catch (NumberFormatException e) {
 
         }
@@ -89,7 +82,7 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
     public int getWeight() {
         int value = 0;
         try {
-            value = Integer.valueOf(etWeight.getText().toString());
+            value = Integer.parseInt(etWeight.getText().toString());
         } catch (NumberFormatException e) {
 
         }
@@ -100,7 +93,7 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
     public int getAge() {
         int value = 0;
         try {
-            value = Integer.valueOf(etAge.getText().toString());
+            value = Integer.parseInt(etAge.getText().toString());
         } catch (NumberFormatException e) {
 
         }

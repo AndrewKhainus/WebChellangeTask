@@ -149,8 +149,6 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     public void switchFragment(final BaseFragment _fragment, boolean _addToBackStack) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        Fragment fragment = getSupportFragmentManager()
-                .findFragmentById(getFragmentContainer());
         if (_addToBackStack) {
             fragmentTransaction.addToBackStack(null);
         }

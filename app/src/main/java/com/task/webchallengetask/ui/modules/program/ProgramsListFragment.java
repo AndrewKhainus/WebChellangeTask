@@ -30,7 +30,6 @@ public class ProgramsListFragment extends BaseFragment<ProgramsListPresenter>
     public static ProgramsListFragment newInstance() {
 
         Bundle args = new Bundle();
-
         ProgramsListFragment fragment = new ProgramsListFragment();
         fragment.setArguments(args);
         return fragment;

@@ -51,7 +51,7 @@ public final class SharedPrefManager {
     }
 
     private int retrieveInt(String _s) {
-        return sharedPreferences.getInt(_s, -1);
+        return sharedPreferences.getInt(_s, 0);
     }
 
     public void storeUsername(String _username){
@@ -106,6 +106,16 @@ public final class SharedPrefManager {
 
     public void storeAge(int _age){
         saveInt(SharedPrefConst.SHARED_PREF_AGE, _age);
+    }
+
+
+    @CheckResult
+    public int retrieveTimeSynchronization(){
+        return retrieveInt(SharedPrefConst.SHARED_PREF_TIME_SYNCHRONIZATION);
+    }
+
+    public void storeTimeSynchronization(int _key){
+        saveInt(SharedPrefConst.SHARED_PREF_TIME_SYNCHRONIZATION, _key);
     }
 
     @CheckResult

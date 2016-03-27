@@ -69,7 +69,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     }
 
     public void onSaveClicked() {
-        mProgramTable.target = Integer.valueOf(getView().getTarget());
+        mProgramTable.target = Integer.parseInt(getView().getTarget());
         mProgramTable.difficult = getView().getDifficult().getName();
         mProgramTable.update();
         getView().setSaveVisible(false);

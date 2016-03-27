@@ -27,12 +27,10 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
 
     }
 
-
     private void sortList(List<ActionParametersModel> _modelList){
-        int size = _modelList.size();
         long longTime = 0;
+        int size = _modelList.size();
         for (int i = 0; i < size; i++) {
-
             if (i == 0){
                 longTime = _modelList.get(0).getStartTime();
                 actionParametersModels.add(_modelList.get(0));
@@ -48,8 +46,6 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
                 longTime = actionParametersModels.get(i).startTime;
                 actionParametersModels.clear();
             }
-
-
         }
     }
 

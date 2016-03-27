@@ -62,7 +62,7 @@ public class AddProgramDialogPresenter extends BaseDialogPresenter<AddProgramDia
             ProgramTable programTable = new ProgramTable();
             programTable.name = program.getName();
             programTable.difficult = difficult.getName();
-            programTable.target = Integer.valueOf(getView().getTarget());
+            programTable.target = Integer.parseInt(getView().getTarget());
 //            programTable.actualResult = "0";
             programTable.unit = getView().getUnit();
 //            programTable.date = TimeUtil.getCurrentDay();
