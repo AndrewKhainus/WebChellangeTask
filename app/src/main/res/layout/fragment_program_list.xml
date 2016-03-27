@@ -12,6 +12,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvPrograms_FPL"
+            android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -36,6 +37,7 @@
         android:layout_margin="16dp"
         app:backgroundTint="?attr/colorAccent"
         app:elevation="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_anchorGravity="bottom|end"
         app:pressedTranslationZ="12dp"/>
 

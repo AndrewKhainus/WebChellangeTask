@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.modules.program;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -42,6 +44,8 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     private TextView tvTitle;
     private TextView tvStartDate;
     private TextView tvEndDate;
+    private LinearLayout llStartDate;
+    private LinearLayout llEndDate;
     private EditText etTarget;
     private TextView tvUnitTarget;
     private TextView tvUnitActual;
@@ -81,6 +85,8 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         tvTitle = (TextView) rootView.findViewById(R.id.tvTitle_FP);
         tvStartDate  = (TextView) rootView.findViewById(R.id.tvStartDate_FP);
         tvEndDate  = (TextView) rootView.findViewById(R.id.tvEndDate_FP);
+        llStartDate  = (LinearLayout) rootView.findViewById(R.id.llStartDate_FP);
+        llEndDate  = (LinearLayout) rootView.findViewById(R.id.llEndDate_FP);
         etTarget  = (EditText) rootView.findViewById(R.id.etTarget_FP);
         spDifficult = (Spinner) rootView.findViewById(R.id.spDifficult_FP);
         tvActualResult = (TextView) rootView.findViewById(R.id.tvActualResult_FP);
@@ -125,8 +131,8 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         });
 
         RxUtils.click(btnAnalyze, o -> getPresenter().onAnalyze());
-        RxUtils.click(tvStartDate, o -> getPresenter().onStartDateClicked());
-        RxUtils.click(tvEndDate, o -> getPresenter().onEndDateClicked());
+        RxUtils.click(llStartDate, o -> getPresenter().onStartDateClicked());
+        RxUtils.click(llEndDate, o -> getPresenter().onEndDateClicked());
     }
 
     @Override
@@ -168,17 +174,17 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
-        rightAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        rightAxis.setAxisMinValue(0f);
 
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setDrawGridLines(false);
-        leftAxis.setAxisMinValue(0f); // this replaces setStartAtZero(true)
+        leftAxis.setAxisMinValue(0f);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         _date.setData(_value);
+        _date.setData(_targetData);
         mChart.setData(_date);
-//        mChart.setData(_targetData);
         mChart.invalidate();
     }
 
@@ -195,6 +201,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         spDifficult.setSelection(_position);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void setTarget(float _text) {
         etTarget.setText(String.format("%.0f", _text));
@@ -206,6 +213,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         tvUnitActual.setText(_text);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void setActualResults(float _text) {
         tvActualResult.setText(String.format("%.0f", _text));

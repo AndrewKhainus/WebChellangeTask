@@ -8,7 +8,9 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_providers.PredictionDataProvider;
@@ -25,6 +27,7 @@ import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
 import com.task.webchallengetask.ui.custom.CalendarView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -154,21 +157,49 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         getView().setActualResultCompleted(actualResults >= target);
     }
 
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
+
     public void setDiagramData(List<android.util.Pair<Long, Float>> floats, String _units) {
         ArrayList<BarEntry> _entry = new ArrayList<>();
+        ArrayList<Entry> _entry2 = new ArrayList<>();
+        LineData targetData = new LineData();
         BarData mDiagram = new BarData();
         String[] dates = new String[floats.size()];
-        for (int i = 0; i < floats.size(); i++) {
-            dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
+        float target = 0;
+        if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE){
+            target = round(Float.valueOf(getView().getTarget()) / 60, 1);
+        } else {
+            target = round(Float.valueOf(getView().getTarget()), 1);
+        }
 
+        for (int i = 0; i < floats.size(); i++) {
+            _entry2.add(new Entry(target, i));
+            dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
             if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE) {
-                _entry.add(new BarEntry(floats.get(i).second / 60, i));
+                _entry.add(new BarEntry(round(floats.get(i).second / 60, 1), i));
             } else
-                _entry.add(new BarEntry(floats.get(i).second, i));
+                _entry.add(new BarEntry(round(floats.get(i).second, 1), i));
         }
         CombinedData data = new CombinedData(dates);
-        LineData targetData = new LineData(dates);
-        BarDataSet set = new BarDataSet(_entry, _units);
+
+        BarDataSet set = new BarDataSet(_entry, "result, " + _units);
+        LineDataSet setLine = new LineDataSet(_entry2, "target " + _units);
+        setLine.setColor(Color.rgb(240, 238, 70));
+        setLine.setLineWidth(2.5f);
+        setLine.setCircleColor(Color.rgb(240, 238, 70));
+        setLine.setCircleRadius(5f);
+        setLine.setFillColor(Color.rgb(240, 238, 70));
+        setLine.setDrawCubic(true);
+        setLine.setDrawValues(true);
+        setLine.setValueTextSize(10f);
+        setLine.setValueTextColor(Color.rgb(240, 238, 70));
+        setLine.setAxisDependency(YAxis.AxisDependency.LEFT);
+        targetData.addDataSet(setLine);
+
         set.setColor(Color.rgb(60, 220, 78));
         set.setValueTextColor(Color.rgb(60, 220, 78));
         set.setValueTextSize(10f);
