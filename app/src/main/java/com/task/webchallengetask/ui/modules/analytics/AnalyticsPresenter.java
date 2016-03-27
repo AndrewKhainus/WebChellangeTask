@@ -12,6 +12,7 @@ import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.global.Constants;
+import com.task.webchallengetask.global.utils.MathUtils;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
@@ -75,12 +76,6 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         }
     }
 
-    public static float round(float d, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-        return bd.floatValue();
-    }
-
     public void setDiagramData(List<android.util.Pair<Long, Float>> floats, String _units, Constants.DATA_TYPES first){
         ArrayList<BarEntry> _entry = new ArrayList<>();
         BarData mDiagram = new BarData();
@@ -88,9 +83,9 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         for (int i = 0; i < floats.size(); i++){
           dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
             if (first == Constants.DATA_TYPES.ACTIVITY_TIME) {
-                _entry.add(new BarEntry(round(floats.get(i).second / 60, 1), i));
+                _entry.add(new BarEntry(MathUtils.round(floats.get(i).second / 60, 1), i));
             } else {
-                _entry.add(new BarEntry(round(floats.get(i).second, 1), i));
+                _entry.add(new BarEntry(MathUtils.round(floats.get(i).second, 1), i));
             }
         }
         CombinedData data = new CombinedData(dates);

@@ -22,6 +22,7 @@ import com.task.webchallengetask.global.programs.ProgramManager;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.programs.difficults.DifficultCustom;
 import com.task.webchallengetask.global.utils.Logger;
+import com.task.webchallengetask.global.utils.MathUtils;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
@@ -157,26 +158,26 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         getView().setActualResultCompleted(actualResults >= target);
     }
 
-    public static float round(float d, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-        return bd.floatValue();
-    }
-
     public void setDiagramData(List<android.util.Pair<Long, Float>> floats, String _units) {
         ArrayList<BarEntry> _entry = new ArrayList<>();
         ArrayList<Entry> _entry2 = new ArrayList<>();
         LineData targetData = new LineData();
         BarData mDiagram = new BarData();
         String[] dates = new String[floats.size()];
-        float target = round(Float.valueOf(getView().getTarget()), 1);
+        float target = 0;
+        if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE){
+            target = MathUtils.round(Float.valueOf(getView().getTarget()) / 60, 1);
+        } else {
+            target = MathUtils.round(Float.valueOf(getView().getTarget()), 1);
+        }
+
         for (int i = 0; i < floats.size(); i++) {
             _entry2.add(new Entry(target, i));
             dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
             if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE) {
-                _entry.add(new BarEntry(round(floats.get(i).second / 60, 1), i));
+                _entry.add(new BarEntry(MathUtils.round(floats.get(i).second / 60, 1), i));
             } else {
-                _entry.add(new BarEntry(round(floats.get(i).second, 1), i));
+                _entry.add(new BarEntry(MathUtils.round(floats.get(i).second, 1), i));
             }
         }
         CombinedData data = new CombinedData(dates);
