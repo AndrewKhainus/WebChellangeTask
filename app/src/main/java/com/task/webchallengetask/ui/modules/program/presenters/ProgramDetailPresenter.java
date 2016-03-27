@@ -171,9 +171,9 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         String[] dates = new String[floats.size()];
         float target = 0;
         if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE){
-            target = round(mProgramTable.getTarget() / 60, 1);
+            target = round(Float.valueOf(getView().getTarget()) / 60, 1);
         } else {
-            target = round(mProgramTable.getTarget(), 1);
+            target = round(Float.valueOf(getView().getTarget()), 1);
         }
 
         for (int i = 0; i < floats.size(); i++) {
