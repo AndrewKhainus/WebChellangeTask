@@ -181,8 +181,9 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
             dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
             if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE) {
                 _entry.add(new BarEntry(round(floats.get(i).second / 60, 1), i));
-            } else
+            } else {
                 _entry.add(new BarEntry(round(floats.get(i).second, 1), i));
+            }
         }
         CombinedData data = new CombinedData(dates);
 
