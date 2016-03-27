@@ -24,6 +24,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="10dp"
         android:baselineAligned="false">
@@ -31,6 +32,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:layout_weight="1">
 
             <TextView
@@ -40,17 +42,33 @@
                 android:layout_weight="1"
                 android:text="@string/start_date" />
 
-            <TextView
-                android:id="@+id/tvStartDate_FP"
-                style="@style/MainTheme.Description.Normal"
+            <LinearLayout
+                android:id="@+id/llStartDate_FP"
+                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:src="@drawable/ic_calendar" />
+
+                <TextView
+                    android:id="@+id/tvStartDate_FP"
+                    style="@style/MainTheme.Description.Normal"
+                    android:layout_width="wrap_content"
+                    android:paddingRight="4dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
             android:layout_weight="1">
 
             <TextView
@@ -60,11 +78,27 @@
                 android:layout_weight="1"
                 android:text="@string/end_date" />
 
-            <TextView
-                style="@style/MainTheme.Description.Normal"
-                android:id="@+id/tvEndDate_FP"
+            <LinearLayout
+                android:id="@+id/llEndDate_FP"
+                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:src="@drawable/ic_calendar" />
+
+
+                <TextView
+                    style="@style/MainTheme.Description.Normal"
+                    android:id="@+id/tvEndDate_FP"
+                    android:paddingRight="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
@@ -138,6 +172,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:layout_marginLeft="4dp"
             android:id="@+id/tvUnitActual_FP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
