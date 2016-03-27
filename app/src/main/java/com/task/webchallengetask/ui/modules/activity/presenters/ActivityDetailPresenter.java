@@ -1,8 +1,11 @@
 package com.task.webchallengetask.ui.modules.activity.presenters;
 
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
+import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
+import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.global.Constants;
+import com.task.webchallengetask.global.programs.ProgramManager;
 import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
@@ -10,6 +13,7 @@ import com.task.webchallengetask.ui.base.BaseFragmentView;
 import com.task.webchallengetask.ui.custom.CalendarView;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by klim on 25.03.16.
@@ -17,17 +21,30 @@ import java.util.Date;
 public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetailPresenter.ActivityDetailView> {
 
     private int id;
+    private ProgramDataProvider mProgramDataProvider = ProgramDataProvider.getInstance();
+    private ActivityDataProvider mActivityDataProvider = ActivityDataProvider.getInstance();
+    private List<ProgramTable> mPrograms;
 
     @Override
     public void onViewCreated() {
         super.onViewCreated();
         id = getView().getFragmentArguments().getInt(Constants.ACTIVITY_ID_KEY);
 
-        ActivityDataProvider.getInstance().getActivityById(id)
+        if (mPrograms == null) {
+            mProgramDataProvider.getPrograms()
+                    .subscribe(programTables -> {
+                        if (!programTables.isEmpty()) {
+                            mPrograms = programTables;
+                        }
+                    });
+        }
+
+        mActivityDataProvider.getActivityById(id)
                 .subscribe(_model -> {
                     getView().setAllFieldsEditable(false);
                     getView().setDate(TimeUtil.dateToString(new Date(_model.getDate())));
                     float actualTime = _model.getActivityActualTime();
+                    getView().setTitle(_model.getName());
                     getView().setActivityTime(actualTime / 60); // from seconds
                     getView().setActivityTimeUint("min");
                     getView().setDistance(_model.getDistance());
@@ -46,7 +63,7 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
         getView().setSaveVisible(false);
         getView().setEditVisible(true);
         getView().setAllFieldsEditable(false);
-        ActivityDataProvider.getInstance().getActivityById(id)
+        mActivityDataProvider.getActivityById(id)
                 .subscribe(model -> {
                     model.date = TimeUtil.stringToDate(getView().getDate()).getTime();
                     model.distance = Float.parseFloat(getView().getDistance());
@@ -55,7 +72,7 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
                     model.step = Integer.parseInt(getView().getStep());
                     model.calories = Float.parseFloat(getView().getCalories());
                     model.save();
-
+                    checkNewData();
                 }, Logger::e);
     }
 
@@ -64,6 +81,24 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
                 .deleteActivities(id)
                 .subscribe(t -> getView().onBackPressed());
     }
+
+    private void checkNewData() {
+        for (ProgramTable programTable : mPrograms) {
+            Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
+            Date today = new Date(TimeUtil.getCurrentDay());
+            Date nextDay = TimeUtil.addEndOfDay(today);
+
+            mProgramDataProvider.loadData(type, today, nextDay)
+                    .subscribe(pairs -> {
+                        if (pairs.get(0).second >= programTable.getTarget()) {
+                            String target = programTable.getTarget() + " " + programTable.getUnit();
+                            getView().showCompleteProgramNotification(programTable.getName(), target);
+                        }
+                    }, Logger::e);
+
+        }
+    }
+
 
     public void onTimeClicked() {
         getView().openStartDateCalendar(_date -> getView().setDate(TimeUtil.dateToString(_date)));
@@ -101,5 +136,7 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
         String getCalories();
 
         String getDate();
+
+        void showCompleteProgramNotification(String _programName, String _difficult);
     }
 }
