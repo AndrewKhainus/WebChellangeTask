@@ -22,6 +22,7 @@ import com.task.webchallengetask.global.programs.ProgramManager;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.programs.difficults.DifficultCustom;
 import com.task.webchallengetask.global.utils.Logger;
+import com.task.webchallengetask.global.utils.MathUtils;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
@@ -163,7 +164,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         LineData targetData = new LineData();
         BarData mDiagram = new BarData();
         String[] dates = new String[floats.size()];
-        float target = round(Float.valueOf(getView().getTarget()), 1);
+        float target = 0;
         if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE){
             target = MathUtils.round(Float.valueOf(getView().getTarget()) / 60, 1);
         } else {
