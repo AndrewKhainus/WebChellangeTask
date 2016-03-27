@@ -112,7 +112,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         getView().setDifficult(getDifficultPosition(_programTable.getName(), _programTable.getDifficult()));
 
         if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE) {
-            int targetInMinute = _programTable.getTarget() / 60;
+            float targetInMinute = _programTable.getTarget() / 60;
             getView().setTarget(targetInMinute);
             setResults(mDataList.get(mDataList.size() - 1).second / 60);
 

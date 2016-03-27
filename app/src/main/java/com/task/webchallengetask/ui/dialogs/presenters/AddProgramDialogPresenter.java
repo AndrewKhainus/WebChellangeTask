@@ -3,6 +3,7 @@ package com.task.webchallengetask.ui.dialogs.presenters;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
+import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.programs.Program;
 import com.task.webchallengetask.global.programs.ProgramManager;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
@@ -61,9 +62,12 @@ public class AddProgramDialogPresenter extends BaseDialogPresenter<AddProgramDia
             ProgramTable programTable = new ProgramTable();
             programTable.name = program.getName();
             programTable.difficult = difficult.getName();
-
-            int targetInMinute = Integer.parseInt(getView().getTarget());
-            programTable.target = targetInMinute * 60;
+            if (program.getType() == Constants.PROGRAM_TYPES.ACTIVE_LIFE) {
+                float targetInMinute = Float.valueOf(getView().getTarget());
+                programTable.target = targetInMinute * 60;
+            } else {
+                programTable.target = Float.valueOf(getView().getTarget());
+            }
             programTable.unit = getView().getUnit();
             programTable.save();
             getView().dismissDialog();
