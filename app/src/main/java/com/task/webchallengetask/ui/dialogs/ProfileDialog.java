@@ -43,6 +43,13 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
     public void setupUI() {
         setCancelable(false);
         RxUtils.click(btnSave, o -> getPresenter().onSaveClicked());
+
+        RxTextView.textChangeEvents(etWeight)
+                .subscribe(t -> etWeight.setError(null));
+        RxTextView.textChangeEvents(etHeight)
+                .subscribe(t -> etHeight.setError(null));
+        RxTextView.textChangeEvents(etAge)
+                .subscribe(t -> etAge.setError(null));
     }
 
     @Override

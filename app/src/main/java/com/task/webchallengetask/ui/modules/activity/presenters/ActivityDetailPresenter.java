@@ -6,6 +6,7 @@ import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
+import com.task.webchallengetask.ui.custom.CalendarView;
 
 /**
  * Created by klim on 25.03.16.
@@ -14,6 +15,8 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
 
     private ActionParametersModel actionParametersModel;
     private int id;
+    private long startTime;
+
     @Override
     public void onViewCreated() {
         super.onViewCreated();
@@ -24,7 +27,6 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
                     actionParametersModel = _model;
                     getView().setAllFieldsEditable(false);
                     getView().setStartTime(TimeUtil.timeToString(_model.getStartTime()));
-                    getView().setEndTime(TimeUtil.timeToString(_model.getEndTime()));
                     getView().setActivityTime(String.valueOf(_model.getActivityActualTime()));
                     getView().setDistance(String.valueOf(_model.getDistance()));
                     getView().setStep(String.valueOf(_model.getStep()));
@@ -42,6 +44,7 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
         getView().setSaveVisible(false);
         getView().setEditVisible(true);
         getView().setAllFieldsEditable(false);
+        actionParametersModel.startTime = startTime;
         actionParametersModel.distance = Float.parseFloat(getView().getDistance());
         actionParametersModel.activityActualTime = Float.parseFloat(getView().getActivityTime());
         actionParametersModel.step = Integer.parseInt(getView().getStep());
@@ -55,20 +58,40 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
                 .subscribe(t -> getView().onBackPressed());
     }
 
+    public void onTimeClicked() {
+        getView().openStartDateCalendar(_date -> {
+            startTime = _date.getTime();
+            getView().setStartTime(TimeUtil.dateToString(_date));
+        });
+    }
+
     public interface ActivityDetailView extends BaseFragmentView<ActivityDetailPresenter> {
         void setEditVisible(boolean _isVisible);
+
         void setSaveVisible(boolean _isVisible);
+
+        void openStartDateCalendar(CalendarView.Callback _callBack);
+
         void setTitle(String _text);
+
         void setStartTime(String _text);
-        void setEndTime(String _text);
+
         void setAllFieldsEditable(boolean _isEditable);
+
         void setActivityTime(String _text);
+
         void setDistance(String _text);
+
         void setStep(String _text);
+
         void setCalories(String _text);
+
         String getActivityTime();
+
         String getDistance();
+
         String getStep();
+
         String getCalories();
     }
 }

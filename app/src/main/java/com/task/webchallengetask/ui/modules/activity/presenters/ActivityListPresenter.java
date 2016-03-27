@@ -8,7 +8,10 @@ import com.task.webchallengetask.ui.modules.activity.views.ActivityDetailFragmen
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPresenter.ActivityListView> {
@@ -45,6 +48,7 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
                 getView().addActivities(actionParametersModels);
                 longTime = actionParametersModels.get(i).startTime;
                 actionParametersModels.clear();
+                if (i == _modelList.size() - 1) getView().addActivities(Collections.singletonList(_modelList.get(i)));
             }
         }
     }
