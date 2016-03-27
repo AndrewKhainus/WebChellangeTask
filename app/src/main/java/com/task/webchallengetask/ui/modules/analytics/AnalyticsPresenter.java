@@ -54,22 +54,22 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         switch (_dataType.first){
             case ACTIVITY_TIME:
                 mActivitiesProvider.getActualTime(start,end).subscribe((floats) -> {
-                    setDiagramData(floats, App.getAppContext().getString(R.string.c_time));
+                    setDiagramData(floats, App.getAppContext().getString(R.string.c_time), _dataType.first);
                 });
                 break;
             case STEP:
                 mActivitiesProvider.getSteps(start,end).subscribe((floats) -> {
-                    setDiagramData(floats, App.getAppContext().getString(R.string.c_step));
+                    setDiagramData(floats, App.getAppContext().getString(R.string.c_step), _dataType.first);
                 });
                 break;
             case DISTANCE:
                 mActivitiesProvider.getDistance(start,end).subscribe((floats) -> {
-                    setDiagramData(floats, App.getAppContext().getString(R.string.c_meters));
+                    setDiagramData(floats, App.getAppContext().getString(R.string.c_meters), _dataType.first);
                 });
                 break;
             case CALORIES:
                 mActivitiesProvider.getCalories(start,end).subscribe((floats) -> {
-                    setDiagramData(floats, App.getAppContext().getString(R.string.c_calories));
+                    setDiagramData(floats, App.getAppContext().getString(R.string.c_calories), _dataType.first);
                 });
                 break;
         }
@@ -81,13 +81,17 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         return bd.floatValue();
     }
 
-    public void setDiagramData(List<android.util.Pair<Long, Float>> floats, String _units){
+    public void setDiagramData(List<android.util.Pair<Long, Float>> floats, String _units, Constants.DATA_TYPES first){
         ArrayList<BarEntry> _entry = new ArrayList<>();
         BarData mDiagram = new BarData();
         String[] dates = new String[floats.size()];
         for (int i = 0; i < floats.size(); i++){
           dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
-            _entry.add(new BarEntry(round(floats.get(i).second, 1), i));
+            if (first == Constants.DATA_TYPES.ACTIVITY_TIME) {
+                _entry.add(new BarEntry(round(floats.get(i).second / 60, 1), i));
+            } else {
+                _entry.add(new BarEntry(round(floats.get(i).second, 1), i));
+            }
         }
         CombinedData data = new CombinedData(dates);
         BarDataSet set = new BarDataSet(_entry, _units);
