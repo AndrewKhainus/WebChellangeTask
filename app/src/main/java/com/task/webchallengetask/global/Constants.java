@@ -67,5 +67,12 @@ public final class Constants {
 //        All
     }
 
+    public static final String KIND_ACTIVITY_RUNNING = "Running";
+    public static final String KIND_ACTIVITY_WALKING = "Walking";
+    public static final String KIND_ACTIVITY_ICE_SKATING = "Ice Skating";
+    public static final String KIND_ACTIVITY_TENNIS = "Tennis";
+    public static final String KIND_ACTIVITY_SNOWBOARDING = "Snowboarding";
+    public static final String KIND_ACTIVITY_ROWING = "Rowing";
+    public static final String KIND_ACTIVITY_BICYCLING = "Bicycling";
 
 }

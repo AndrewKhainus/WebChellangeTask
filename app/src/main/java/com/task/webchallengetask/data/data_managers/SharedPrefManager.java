@@ -6,7 +6,14 @@ import android.preference.PreferenceManager;
 import android.support.annotation.CheckResult;
 
 import com.task.webchallengetask.App;
+import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.SharedPrefConst;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public final class SharedPrefManager {
 
@@ -24,7 +31,7 @@ public final class SharedPrefManager {
         return instance;
     }
 
-    private void saveString(String _key, String _value) {
+    public void saveString(String _key, String _value) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(_key, _value);
         editor.apply();
@@ -42,7 +49,14 @@ public final class SharedPrefManager {
         editor.apply();
     }
 
-    private String retrieveString(String _s) {
+    public void saveHashMap(String _key, HashMap<String, String> _value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        JSONObject jsonObject = new JSONObject(_value);
+        String jsonString = jsonObject.toString();
+        saveString(_key, jsonString);
+    }
+
+    public String retrieveString(String _s) {
         return sharedPreferences.getString(_s, "");
     }
 
@@ -54,7 +68,26 @@ public final class SharedPrefManager {
         return sharedPreferences.getInt(_s, 0);
     }
 
-    public void storeUsername(String _username){
+    public HashMap<String, String> retrieveMap(String _key) {
+        HashMap<String, String> outputMap = new HashMap<String, String>();
+
+        try {
+            String map = retrieveString(_key);
+            JSONObject jsonObject = new JSONObject(map);
+            Iterator<String> keysItr = jsonObject.keys();
+            while (keysItr.hasNext()) {
+                String key = keysItr.next();
+                String value = jsonObject.getString(key);
+                outputMap.put(key, value);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return outputMap;
+    }
+
+    public void storeUsername(String _username) {
         saveString(SharedPrefConst.SHARED_PREF_USERNAME, _username);
     }
 
@@ -65,6 +98,7 @@ public final class SharedPrefManager {
     public void storeHeight(int _height) {
         saveInt(SharedPrefConst.SHARED_PREF_HEIGHT, _height);
     }
+
     public void storeGender(String _gender) {
         saveString(SharedPrefConst.SHARED_PREF_GENDER, _gender);
     }
@@ -82,44 +116,44 @@ public final class SharedPrefManager {
     }
 
     @CheckResult
-    public String retrieveUsername(){
+    public String retrieveUsername() {
         return retrieveString(SharedPrefConst.SHARED_PREF_USERNAME);
     }
 
-    public void storeUrlPhoto(String _url){
+    public void storeUrlPhoto(String _url) {
         saveString(SharedPrefConst.SHARED_PREF_URL_PHOTO, _url);
     }
 
     @CheckResult
-    public String retrieveUrlPhoto(){
+    public String retrieveUrlPhoto() {
         return retrieveString(SharedPrefConst.SHARED_PREF_URL_PHOTO);
     }
 
-    public void storeActiveSocial(String _s){
+    public void storeActiveSocial(String _s) {
         saveString(SharedPrefConst.SHARED_PREF_ACTIVE_SOCIAL, _s);
     }
 
     @CheckResult
-    public int retrieveAge(){
+    public int retrieveAge() {
         return retrieveInt(SharedPrefConst.SHARED_PREF_AGE);
     }
 
-    public void storeAge(int _age){
+    public void storeAge(int _age) {
         saveInt(SharedPrefConst.SHARED_PREF_AGE, _age);
     }
 
 
     @CheckResult
-    public int retrieveTimeSynchronization(){
+    public int retrieveTimeSynchronization() {
         return retrieveInt(SharedPrefConst.SHARED_PREF_TIME_SYNCHRONIZATION);
     }
 
-    public void storeTimeSynchronization(int _key){
+    public void storeTimeSynchronization(int _key) {
         saveInt(SharedPrefConst.SHARED_PREF_TIME_SYNCHRONIZATION, _key);
     }
 
     @CheckResult
-    public String retrieveActiveSocial(){
+    public String retrieveActiveSocial() {
         return retrieveString(SharedPrefConst.SHARED_PREF_ACTIVE_SOCIAL);
     }
 
@@ -132,9 +166,22 @@ public final class SharedPrefManager {
         return sharedPreferences.contains(SharedPrefConst.SHARED_PREF_NOTIFICATION_STATE);
     }
 
+    public boolean contains(String _key) {
+        return sharedPreferences.contains(_key);
+    }
+
+
     @CheckResult
     public boolean retrieveNotificationState() {
         return retrieveBoolean(SharedPrefConst.SHARED_PREF_NOTIFICATION_STATE);
+    }
+
+    public void storeProgramResults(HashMap<String, String> _map) {
+        saveHashMap(SharedPrefConst.SHARED_PREF_RPOGRAM_RESULTS, _map);
+    }
+
+    public HashMap<String, String> retrieveProgramResults() {
+        return retrieveMap(SharedPrefConst.SHARED_PREF_RPOGRAM_RESULTS);
     }
 
 }
