@@ -2,6 +2,7 @@ package com.task.webchallengetask.global.programs;
 
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
+import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.programs.difficults.DifficultActiveBeginner;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Created by klim on 23.03.16.
  */
-public class ProgramFactory {
+public class ProgramManager {
 
     private static Program createLongDistance() {
         String description = App.getAppContext().getString(R.string.distance_description);
@@ -47,9 +48,19 @@ public class ProgramFactory {
 
     public static List<Program> getPrograms() {
         List<Program> programs = new ArrayList<>();
-        programs.add(ProgramFactory.createActiveLifeDistance());
-        programs.add(ProgramFactory.createLongDistance());
+        programs.add(ProgramManager.createActiveLifeDistance());
+        programs.add(ProgramManager.createLongDistance());
         return programs;
     }
+
+    public static Constants.PROGRAM_TYPES defineProgramType(ProgramTable _table) {
+        for (Program program : ProgramManager.getPrograms()) {
+            if (program.getName().equals(_table.getName())) {
+                return program.getType();
+            }
+        }
+        return null;
+    }
+
 
 }

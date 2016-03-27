@@ -1,6 +1,6 @@
 package com.task.webchallengetask.ui.modules.login;
 
-import android.app.Activity;
+/*import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -30,9 +30,12 @@ import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
 import com.task.webchallengetask.data.data_managers.SharedPrefManager;
 import com.task.webchallengetask.ui.modules.main.MainActivity;
 import com.task.webchallengetask.ui.base.BaseActivityPresenter;
-import com.task.webchallengetask.ui.base.BaseActivityView;
+import com.task.webchallengetask.ui.base.BaseActivityView;*/
 
 import rx.Observable;
+
+public class LoginPresenter {
+    /*
 
 
 public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginView> implements
@@ -210,6 +213,6 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
 
         void setCallbackManager(CallbackManager _callbackManager);
     }
-
+*/
 }
 

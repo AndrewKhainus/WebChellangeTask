@@ -10,13 +10,12 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
-import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.PredictionDataProvider;
 import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.programs.Program;
-import com.task.webchallengetask.global.programs.ProgramFactory;
+import com.task.webchallengetask.global.programs.ProgramManager;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
 import com.task.webchallengetask.global.programs.difficults.DifficultCustom;
 import com.task.webchallengetask.global.utils.Logger;
@@ -36,36 +35,32 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
     private ProgramDataProvider mProgramDataProvider = ProgramDataProvider.getInstance();
     private PredictionDataProvider mPredictionDataProvider = PredictionDataProvider.getInstance();
-    private ActivityDataProvider mActivityDataProvider = ActivityDataProvider.getInstance();
     private ProgramTable mProgramTable;
-    private Program mProgram;
+    private Constants.PROGRAM_TYPES mProgramType;
     private List<Pair<Long, Float>> mDataList = new ArrayList<>();
 
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        getView().setDifficultEnabled(false);
+        Date currentDay = new Date(TimeUtil.getCurrentDay());
+        Date weekAgo = TimeUtil.minusDayFromDate(currentDay, 7);
 
+        getView().setDifficultEnabled(false);
         getView().setEndDate(TimeUtil.timeToString(TimeUtil.getCurrentDay()));
-        Date weekAgo = TimeUtil.minusDayFromDate(new Date(), 7);
         getView().setStartDate(TimeUtil.timeToString(weekAgo.getTime()));
 
         mProgramDataProvider.getProgram(getView().getFragmentArguments().getInt(Constants.PROGRAM_ID_KEY))
-                .subscribe(programTable -> {
+                .doOnNext(programTable -> {
                     mProgramTable = programTable;
-                    mProgram = defineProgram(mProgramTable);
+                    mProgramType = ProgramManager.defineProgramType(mProgramTable);
+                }).flatMap(programTable1 -> mProgramDataProvider.loadData(mProgramType, weekAgo, currentDay))
+                .subscribe(pairs -> {
+                    mDataList.clear();
+                    mDataList.addAll(pairs);
                     fillProgram(mProgramTable);
+                    fillDiagram(pairs);
                 }, Logger::e);
 
-    }
-
-    private Program defineProgram(ProgramTable _table) {
-        for (Program program : ProgramFactory.getPrograms()) {
-            if (program.getName().equals(_table.getName())) {
-                return program;
-            }
-        }
-        return null;
     }
 
     public void onSaveClicked() {
@@ -79,11 +74,26 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
 
     public void onStartDateClicked() {
-        getView().openStartDateCalendar(_date -> getView().setStartDate(TimeUtil.dateToString(_date)));
+        getView().openStartDateCalendar(_date -> {
+            getView().setStartDate(TimeUtil.dateToString(_date));
+            Date endDate = TimeUtil.stringToDate(getView().getEndDate());
+            mProgramDataProvider.loadData(mProgramType, _date, endDate)
+                    .subscribe(this::fillDiagram, Logger::e);
+
+        });
     }
 
     public void onEndDateClicked() {
-        getView().openEndDateCalendar(_date -> getView().setEndDate(TimeUtil.dateToString(_date)));
+        getView().openEndDateCalendar(_date -> {
+            getView().setEndDate(TimeUtil.dateToString(_date));
+            Date startDate = TimeUtil.stringToDate(getView().getStartDate());
+            mProgramDataProvider.loadData(mProgramType, startDate, _date)
+                    .subscribe(this::fillDiagram, Logger::e);
+        });
+    }
+
+    public void onTargetChanged() {
+        compareResultWithTarget();
     }
 
     private void fillProgram(ProgramTable _programTable) {
@@ -97,40 +107,40 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         } else {
             getView().setTargetEnabled(false);
         }
+        setResults(mDataList.get(mDataList.size()-1).second);
+        compareResultWithTarget();
+    }
 
-
-        final Date startDate = TimeUtil.parseDate(getView().getStartDate());
-        final Date endDate = TimeUtil.parseDate(getView().getEndDate());
-
-        switch (mProgram.getType()) {
+    private void fillDiagram(List<Pair<Long, Float>> _data) {
+        switch (mProgramType) {
             case ACTIVE_LIFE:
-                mActivityDataProvider.getActualTime(startDate, endDate)
-                        .subscribe(floats -> {
-                            mDataList.clear();
-                            mDataList.addAll(floats);
-                            if (!floats.isEmpty())
-                                getView().setActualResults(String.valueOf(floats.get(floats.size() - 1).second));
-                            setDiagramData(floats, App.getAppContext().getString(R.string.c_time));
-                        });
+                setDiagramData(_data, App.getAppContext().getString(R.string.c_meters));
                 break;
             case LONG_DISTANCE:
-                mActivityDataProvider.getDistance(startDate, endDate)
-                        .subscribe(floats -> {
-                            mDataList.clear();
-                            mDataList.addAll(floats);
-                            if (!floats.isEmpty())
-                                getView().setActualResults(String.valueOf(floats.get(floats.size() - 1).second));
-                            setDiagramData(floats, App.getAppContext().getString(R.string.c_meters));
-                        });
+                setDiagramData(_data, App.getAppContext().getString(R.string.c_time));
                 break;
         }
     }
 
-    public void setDiagramData(List<android.util.Pair<Long, Float>> floats, String _units){
+    private void setResults(float todayResult) {
+        getView().setActualResults(String.valueOf(todayResult));
+    }
+
+    private void compareResultWithTarget() {
+        float target = 0;
+        float actualResults = 0;
+        if (!getView().getTarget().isEmpty())
+            target = Float.valueOf(getView().getTarget());
+        if (!getView().getActualResults().isEmpty())
+            actualResults = Float.valueOf(getView().getActualResults());
+        getView().setActualResultCompleted(actualResults >= target);
+    }
+
+    public void setDiagramData(List<android.util.Pair<Long, Float>> floats, String _units) {
         ArrayList<BarEntry> _entry = new ArrayList<>();
         BarData mDiagram = new BarData();
         String[] dates = new String[floats.size()];
-        for (int i = 0; i < floats.size(); i++){
+        for (int i = 0; i < floats.size(); i++) {
             dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
             _entry.add(new BarEntry(floats.get(i).second, i));
         }
@@ -146,7 +156,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     }
 
     private List<Difficult> getDifficultList(String _name) {
-        List<Program> programs = ProgramFactory.getPrograms();
+        List<Program> programs = ProgramManager.getPrograms();
         for (Program program : programs) {
             if (program.getName().equals(_name)) {
                 return program.getDifficult();
@@ -176,21 +186,21 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
 
     public void onAnalyze() {
-        int complited = 0;
-        int uncomplited = 0;
+        int completed = 0;
+        int uncompleted = 0;
 
         for (Pair<Long, Float> value : mDataList) {
             float v = value.second;
             if (v == 0) continue;
             if (v >= Float.valueOf(getView().getTarget())) {
-                complited++;
+                completed++;
             } else
-                uncomplited++;
+                uncompleted++;
 
         }
 
         getView().showLoadingDialog();
-        addSubscription(mPredictionDataProvider.analyzeWeeklyTrendResults(complited, uncomplited)
+        addSubscription(mPredictionDataProvider.analyzeWeeklyTrendResults(completed, uncompleted)
                 .subscribe(s -> {
                             String message = "";
                             if (s.equals("Increase")) {
@@ -239,6 +249,10 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         void setUnit(String _text);
 
         void setActualResults(String _text);
+
+        String getActualResults();
+
+        void setActualResultCompleted(boolean _isCompleted);
 
         void setTargetEnabled(boolean _isEnabled);
 

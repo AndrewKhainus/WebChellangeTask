@@ -19,8 +19,14 @@ public final class TimeUtil {
 
     public static long getCurrentDay() {
         Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
         return c.getTimeInMillis();
     }
+
+
 
     public static String timeToString(long _time) {
         return dateFormat.format(new Date(_time));
@@ -37,7 +43,7 @@ public final class TimeUtil {
         return "";
     }
 
-    public static Date parseDate(String _date) {
+    public static Date stringToDate(String _date) {
         try {
             return dateFormat.parse(_date);
         } catch (ParseException e) {
@@ -93,8 +99,7 @@ public final class TimeUtil {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DATE, _days);
-        date.setTime(c.getTime().getTime());
-        return date;
+        return new Date(c.getTime().getTime());
     }
 
 
@@ -102,13 +107,22 @@ public final class TimeUtil {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DATE, -_days);
-        date.setTime(c.getTime().getTime());
-        return date;
+        return new Date(c.getTime().getTime());
     }
 
     public static Calendar addSecondToCalendar(Calendar calendar) {
         calendar.add(Calendar.SECOND, 1);
         return calendar;
+    }
+
+    public static int compareDay(long _firstTime, long _secondTime) {
+        Calendar firstCal = Calendar.getInstance();
+        Calendar secondCal = Calendar.getInstance();
+        firstCal.setTimeInMillis(_firstTime);
+        secondCal.setTimeInMillis(_secondTime);
+        clearTime(firstCal);
+        clearTime(secondCal);
+        return firstCal.compareTo(secondCal);
     }
 
     public static boolean isSameDay(long _firstTime, long _secondTime) {
@@ -127,5 +141,12 @@ public final class TimeUtil {
         long timeSecond = calendar.getTimeInMillis() / 1000L;
 
         return timeFirst == timeSecond;
+    }
+
+    private static void clearTime(Calendar _calendar) {
+        _calendar.set(Calendar.HOUR_OF_DAY, 0);
+        _calendar.set(Calendar.MINUTE, 0);
+        _calendar.set(Calendar.SECOND, 0);
+        _calendar.set(Calendar.MILLISECOND, 0);
     }
 }

@@ -1,7 +1,6 @@
 package com.task.webchallengetask.ui.modules.activity.views;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.Constants;
-import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.modules.activity.presenters.ActivityDetailPresenter;
@@ -110,7 +108,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     public void openStartDateCalendar(CalendarView.Callback _callBack) {
         CalendarView calendarView = new CalendarView(getFragmentManager(), "");
         calendarView.setCallback(_callBack);
-        calendarView.show(TimeUtil.parseDate(tvStartTime.getText().toString()));
+        calendarView.show(TimeUtil.stringToDate(tvStartTime.getText().toString()));
     }
 
     @Override
