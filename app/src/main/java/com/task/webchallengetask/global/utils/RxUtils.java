@@ -52,8 +52,6 @@ public final class RxUtils {
             dateList.add(currentDate);
             currentDate = TimeUtil.addDayToDate(currentDate, 1);
         } while (currentDate.before(_endDate) || currentDate.equals(_endDate));
-
-
         return Observable.from(dateList);
     }
 

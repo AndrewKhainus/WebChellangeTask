@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
-    android:padding="16dp">
+    android:layout_margin="16dp">
 
     <TextView
         android:id="@+id/tvTitle_FP"
@@ -38,7 +38,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Start date:" />
+                android:text="@string/start_date" />
 
             <TextView
                 android:id="@+id/tvStartDate_FP"
@@ -58,7 +58,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="End date:" />
+                android:text="@string/end_date" />
 
             <TextView
                 style="@style/MainTheme.Description.Normal"
@@ -80,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Difficult:" />
+            android:text="@string/difficult" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spDifficult_FP"
@@ -100,7 +100,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Current target:" />
+            android:text="@string/current_target" />
 
         <EditText
             android:id="@+id/etTarget_FP"
@@ -130,7 +130,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Current result:" />
+            android:text="@string/current_result" />
 
         <TextView
             android:id="@+id/tvActualResult_FP"
@@ -149,7 +149,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/raised_button"
-        android:text="Analyze your achievements"
+        android:text="@string/analyze_your_achievements"
         />
 
 </LinearLayout>

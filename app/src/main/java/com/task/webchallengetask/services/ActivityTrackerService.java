@@ -137,6 +137,7 @@ public class ActivityTrackerService extends Service {
         actionParametersModel.step = step;
         actionParametersModel.startTime = startTime;
         actionParametersModel.endTime = endTime;
+        actionParametersModel.activityActualTime = TimeUtil.getTimeInSeconds(mTimerTime.getTimeInMillis());
         actionParametersModel.date = TimeUtil.getCurrentDay();
         actionParametersModel.save();
     }
@@ -172,6 +173,10 @@ public class ActivityTrackerService extends Service {
                 for (Field field : _dataPoint.getDataType().getFields()) {
                     Value val = _dataPoint.getValue(field);
                     step += val.asInt();
+                    actionParametersModel.step = step;
+                    actionParametersModel.activityActualTime = TimeUtil.getTimeInSeconds(mTimerTime.getTimeInMillis());
+                    actionParametersModel.update();
+
                     Logger.d("Detected DataPoint field: " + field.getName());
                     Logger.d("Detected DataPoint value: " + val);
                     sendBroadcast(IntentHelper.sendStepIntent(step));
@@ -185,8 +190,10 @@ public class ActivityTrackerService extends Service {
             if (!isPause) {
                 for (Field field : _dataPoint.getDataType().getFields()) {
                     Value val = _dataPoint.getValue(field);
-
                     dist += val.asFloat() / 1000; // meters
+                    actionParametersModel.distance = dist;
+                    actionParametersModel.activityActualTime = TimeUtil.getTimeInSeconds(mTimerTime.getTimeInMillis());
+                    actionParametersModel.update();
                     Logger.d("Detected DataPoint field: " + field.getName());
                     Logger.d("Detected DataPoint value: " + val);
 
@@ -204,8 +211,10 @@ public class ActivityTrackerService extends Service {
             if (isPause) {
                 for (Field field : _dataPoint.getDataType().getFields()) {
                     Value val = _dataPoint.getValue(field);
-
                     speed += val.asFloat();
+                    actionParametersModel.speed = speed;
+                    actionParametersModel.activityActualTime = TimeUtil.getTimeInSeconds(mTimerTime.getTimeInMillis());
+                    actionParametersModel.update();
                     Logger.d("Detected DataPoint field: " + field.getName());
                     Logger.d("Detected DataPoint value: " + val);
                     sendBroadcast(IntentHelper.sendSpeedIntent(speed));

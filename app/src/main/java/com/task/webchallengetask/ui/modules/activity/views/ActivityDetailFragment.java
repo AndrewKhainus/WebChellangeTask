@@ -25,6 +25,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     private MenuItem menuSave;
     private TextView tvTitle;
     private TextView tvDate;
+    private TextView tvUnit;
     private EditText etActivityTime;
     private EditText etStep;
     private EditText etDistance;
@@ -62,6 +63,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
         etDistance = (EditText) rootView.findViewById(R.id.etDistance_FAD);
         etStep = (EditText) rootView.findViewById(R.id.etStep_FAD);
         etCalories = (EditText) rootView.findViewById(R.id.etCalories_FAD);
+        tvUnit = (TextView) rootView.findViewById(R.id.etActivityTimeUnit_FAD);
     }
 
     @Override
@@ -132,23 +134,28 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     }
 
     @Override
-    public void setActivityTime(String _text) {
-        etActivityTime.setText(_text);
+    public void setActivityTime(float _text) {
+        etActivityTime.setText(String.format("%.1f", _text));
     }
 
     @Override
-    public void setDistance(String _text) {
-        etDistance.setText(_text);
+    public void setActivityTimeUint(String _text) {
+        tvUnit.setText(_text);
     }
 
     @Override
-    public void setStep(String _text) {
-        etStep.setText(_text);
+    public void setDistance(float _text) {
+        etDistance.setText(String.format("%.1f", _text));
     }
 
     @Override
-    public void setCalories(String _text) {
-        etCalories.setText(_text);
+    public void setStep(float _text) {
+        etStep.setText(String.format("%.0f", _text));
+    }
+
+    @Override
+    public void setCalories(float _text) {
+        etCalories.setText(String.format("%.0f", _text));
     }
 
     @Override

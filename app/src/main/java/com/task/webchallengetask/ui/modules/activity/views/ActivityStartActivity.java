@@ -1,17 +1,18 @@
 package com.task.webchallengetask.ui.modules.activity.views;
 
+import android.app.NotificationManager;
 import android.content.IntentSender;
-import android.support.annotation.NonNull;
+import android.graphics.BitmapFactory;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.ui.base.BaseActivity;
@@ -36,9 +37,8 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
     private ViewGroup vgStepsContainer;
     private TextView tvCalories;
     private ViewGroup vgCaloriesContainer;
-    private TextView btnStartPause;
-    private TextView btnStop;
-    private Button button;
+    private ImageView btnStartPause;
+    private ImageView btnStop;
 
 
     @Override
@@ -64,9 +64,8 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
         vgStepsContainer = (ViewGroup) findViewById(R.id.stepsContainer_ASA);
         tvCalories = (TextView) findViewById(R.id.tvCalories_ASA);
         vgCaloriesContainer = (ViewGroup) findViewById(R.id.caloriesContainer_ASA);
-        btnStartPause = (TextView) findViewById(R.id.btnStartPause_ASA);
-        btnStop = (TextView) findViewById(R.id.btnStop_ASA);
-        button  = (Button) _rootView.findViewById(R.id.btnTest);
+        btnStartPause = (ImageView) findViewById(R.id.btnStartPause_ASA);
+        btnStop = (ImageView) findViewById(R.id.btnStop_ASA);
     }
 
     @Override
@@ -90,7 +89,6 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
 
         RxUtils.click(btnStartPause, o -> getPresenter().onBtnStartPauseClicked());
         RxUtils.click(btnStop, o -> getPresenter().onBtnStopClicked());
-        RxUtils.click(button, t -> getPresenter().testClick());
     }
 
     @Override
@@ -135,8 +133,8 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
     }
 
     @Override
-    public void toggleStartPause(String _text) {
-        btnStartPause.setText(_text);
+    public void toggleStartPause(int _icon) {
+        btnStartPause.setImageResource(_icon);
     }
 
     @Override
@@ -182,6 +180,19 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
     @Override
     public void setCaloriesVisible(boolean _isVisible) {
         vgCaloriesContainer.setVisibility(_isVisible ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void showCompleteProgramNotification(String _programName, String _target) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+//                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .setContentTitle("Congratulation!")
+                .setContentText("Your have finished today program: " + _programName)
+                .setSubText("Target:" + _target);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(1, builder.build());
     }
 
 }

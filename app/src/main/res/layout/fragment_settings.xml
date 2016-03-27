@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_marginTop="10dp"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvTitleProfile_FS"
@@ -11,24 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp"
-        android:text="Profile information"/>
+        android:text="@string/profile_information" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp"
-
-        >
+        android:gravity="center_vertical">
 
         <TextView
             style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gender"/>
+            android:text="@string/gender" />
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spGender_FS"
@@ -36,16 +30,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textAlignment="center"/>
+            android:textAlignment="center" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp">
+        android:gravity="center_vertical">
 
         <TextView
             style="@style/MainTheme.SubTitle.Normal"
@@ -53,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Age"/>
+            android:text="@string/age" />
 
         <EditText
             android:id="@+id/etAge_FS"
@@ -61,11 +53,11 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:hint="0"
-            android:inputType="number"/>
+            android:inputType="number" />
 
         <Space
             android:layout_width="30dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>
@@ -73,11 +65,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp"
-
-        >
+        android:gravity="center_vertical">
 
         <TextView
             style="@style/MainTheme.SubTitle.Normal"
@@ -85,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Height"/>
+            android:text="@string/height" />
 
         <EditText
             android:id="@+id/etHeight_FS"
@@ -93,14 +81,13 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:hint="0"
-            android:inputType="number"
-            />
+            android:inputType="number" />
 
         <TextView
             style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:text="cm"/>
+            android:text="@string/cm" />
 
 
     </LinearLayout>
@@ -109,11 +96,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp"
-
-        >
+        android:gravity="center_vertical">
 
         <TextView
             style="@style/MainTheme.SubTitle.Normal"
@@ -121,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Weight"/>
+            android:text="@string/weight" />
 
         <EditText
             android:id="@+id/etWeight_FS"
@@ -129,15 +112,14 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:hint="0"
-            android:inputType="number"
-            />
+            android:inputType="number" />
 
         <TextView
 
             style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:text="kg"/>
+            android:text="@string/kg" />
 
 
     </LinearLayout>
@@ -148,18 +130,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp"
-        android:text="Time synchronization"/>
+        android:text="@string/time_synchronization" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp"
-
-        >
+        android:gravity="center_vertical">
 
         <TextView
             style="@style/MainTheme.SubTitle.Normal"
@@ -167,7 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Synchronization with Google Fit"/>
+            android:text="@string/synchronization_with_google_fit" />
 
         <EditText
             android:id="@+id/etTimeSynchronization_FS"
@@ -175,15 +151,14 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:hint="0"
-            android:inputType="number"
-            />
+            android:inputType="number" />
 
         <TextView
 
             style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:text="hour"/>
+            android:text="@string/hour" />
     </LinearLayout>
 
 </LinearLayout>

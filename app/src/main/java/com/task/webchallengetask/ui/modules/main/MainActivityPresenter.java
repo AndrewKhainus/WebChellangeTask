@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 //import com.facebook.login.LoginManager;
@@ -153,7 +154,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult _connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult _connectionResult) {
         mSignInIntent = _connectionResult.getResolution();
         resolveSignInError();
     }

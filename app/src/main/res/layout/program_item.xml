@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="24dp"
-    android:paddingTop="24dp">
+    android:layout_margin="16dp">
 
     <TextView
         android:id="@+id/tvTitle_PI"

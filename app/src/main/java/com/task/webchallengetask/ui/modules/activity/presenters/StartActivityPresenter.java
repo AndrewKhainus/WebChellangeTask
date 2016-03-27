@@ -10,7 +10,12 @@ import android.util.Log;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
+import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
+import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
+import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.global.Constants;
+import com.task.webchallengetask.global.programs.Program;
+import com.task.webchallengetask.global.programs.ProgramManager;
 import com.task.webchallengetask.global.utils.IntentHelper;
 import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
@@ -34,6 +39,10 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     private ActivityTrackerReceiver activityTrackerReceiver;
     private String currentActivity = "";
 
+    private List<ProgramTable> mPrograms;
+    private ProgramDataProvider mProgramDataProvider = ProgramDataProvider.getInstance();
+    private ActivityDataProvider mActivityDataProvider = ActivityDataProvider.getInstance();
+
     @Override
     public void onViewCreated() {
         super.onViewCreated();
@@ -43,6 +52,15 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         getView().setSpinnerData(activitiesList);
         mTimerReceiver = new TimerReceiver();
         activityTrackerReceiver = new ActivityTrackerReceiver();
+
+        if (mPrograms == null) {
+            mProgramDataProvider.getPrograms()
+                    .subscribe(programTables -> {
+                        if (!programTables.isEmpty()) {
+                            mPrograms = programTables;
+                        }
+                    });
+        }
     }
 
     @Override
@@ -88,7 +106,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                     getActivityTrackerServiceIntent(Constants.PAUSE_TIMER_ACTION, currentActivity));
         }
         getView().setSpinnerEnabled(false);
-        getView().toggleStartPause(!isPaused ? "PAUSE" : "RESUME");
+        getView().toggleStartPause(!isPaused ? R.drawable.ic_pause : R.drawable.ic_play);
     }
 
     public void onBtnStopClicked() {
@@ -99,7 +117,8 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
             App.getAppContext().startService(IntentHelper.
                     getActivityTrackerServiceIntent(Constants.STOP_TIMER_ACTION, currentActivity));
             getView().setSpinnerEnabled(true);
-            getView().toggleStartPause("START");
+            getView().toggleStartPause(R.drawable.ic_play);
+            checkNewData();
         }
     }
 
@@ -161,8 +180,27 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                     int step = intent.getIntExtra(Constants.SEND_STEP_KEY, 0);
                     getView().setSteps(step + "");
             }
+            checkNewData();
         }
     }
+
+    private void checkNewData() {
+        for (ProgramTable programTable : mPrograms) {
+            Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
+            Date today = new Date(TimeUtil.getCurrentDay());
+            Date nextDay = TimeUtil.addDayToDate(today, 1);
+
+            mProgramDataProvider.loadData(type, today, nextDay)
+                    .subscribe(pairs -> {
+                        if (pairs.get(0).second >= programTable.getTarget()) {
+                            String target = programTable.getTarget() + " " + programTable.getUnit();
+                            getView().showCompleteProgramNotification(programTable.getName(), target);
+                        }
+                    }, Logger::e);
+
+        }
+    }
+
 
     public interface StartActivityView extends BaseActivityView<StartActivityPresenter> {
         void setSpinnerData(List<String> _data);
@@ -179,7 +217,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
 
         void onStartPauseClicked();
 
-        void toggleStartPause(String _text);
+        void toggleStartPause(int _icon);
 
         void onStopClicked();
 
@@ -198,6 +236,9 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         void setStepsVisible(boolean _isVisible);
 
         void setCaloriesVisible(boolean _isVisible);
+
+        void showCompleteProgramNotification(String _programName, String _difficult);
+
     }
 
 }

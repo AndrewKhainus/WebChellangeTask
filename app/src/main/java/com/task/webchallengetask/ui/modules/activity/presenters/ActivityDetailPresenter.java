@@ -27,10 +27,12 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
                 .subscribe(_model -> {
                     getView().setAllFieldsEditable(false);
                     getView().setDate(TimeUtil.dateToString(new Date(_model.getDate())));
-                    getView().setActivityTime(String.valueOf(_model.getActivityActualTime()));
-                    getView().setDistance(String.valueOf(_model.getDistance()));
-                    getView().setStep(String.valueOf(_model.getStep()));
-                    getView().setCalories(String.valueOf(_model.getCalories()));
+                    float actualTime = _model.getActivityActualTime();
+                    getView().setActivityTime(actualTime / 60); // from seconds
+                    getView().setActivityTimeUint("min");
+                    getView().setDistance(_model.getDistance());
+                    getView().setStep(_model.getStep());
+                    getView().setCalories(_model.getCalories());
                 });
     }
 
@@ -48,7 +50,8 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
                 .subscribe(model -> {
                     model.date = TimeUtil.stringToDate(getView().getDate()).getTime();
                     model.distance = Float.parseFloat(getView().getDistance());
-                    model.activityActualTime = Float.parseFloat(getView().getActivityTime());
+                    float activityTime = Float.parseFloat(getView().getActivityTime());
+                    model.activityActualTime = activityTime * 60; // to seconds
                     model.step = Integer.parseInt(getView().getStep());
                     model.calories = Float.parseFloat(getView().getCalories());
                     model.save();
@@ -79,13 +82,15 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
 
         void setAllFieldsEditable(boolean _isEditable);
 
-        void setActivityTime(String _text);
+        void setActivityTime(float _text);
 
-        void setDistance(String _text);
+        void setActivityTimeUint(String _text);
 
-        void setStep(String _text);
+        void setDistance(float _text);
 
-        void setCalories(String _text);
+        void setStep(float _text);
+
+        void setCalories(float _text);
 
         String getActivityTime();
 

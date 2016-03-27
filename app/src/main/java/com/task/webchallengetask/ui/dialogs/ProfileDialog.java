@@ -63,7 +63,7 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
 
     @Override
     public void setGender(List<String> _data) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), R.layout.spinner_item, _data);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(), R.layout.spinner_item, _data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spGender.setAdapter(adapter);
     }
@@ -78,7 +78,7 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
         int value = 0;
         try {
             value = Integer.parseInt(etHeight.getText().toString());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignored) {
 
         }
 
@@ -90,7 +90,7 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
         int value = 0;
         try {
             value = Integer.parseInt(etWeight.getText().toString());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignored) {
 
         }
         return value;
@@ -101,7 +101,7 @@ public class ProfileDialog extends BaseDialog<ProfileDialogPresenter>
         int value = 0;
         try {
             value = Integer.parseInt(etAge.getText().toString());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException ignored) {
 
         }
 

@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.modules.activity.adapters;
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.global.utils.TimeUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -45,25 +47,22 @@ public class ActivityListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return vh;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HeaderHolder) {
-            ((HeaderHolder) holder).tvTitle.setText(TimeUtil.timeToString(mData.get(position).getDate()));
+            ((HeaderHolder) holder).tvTitle
+                    .setText(TimeUtil.dateToString(new Date(mData.get(position).getDate())));
         } else {
             ((ActivityItemHolder) holder).tvTitle.setText(mData.get(position).getName());
 
-            long duration = mData.get(position).getEndTime() - mData.get(position).getStartTime();
-            int seconds = (int) (duration / 1000) % 60;
-            int minutes = (int) ((duration / (1000 * 60)) % 60);
-            int hours = (int) ((duration / (1000 * 60 * 60)) % 24);
+            float duration = mData.get(position).getActivityActualTime();
 
-            minutes += hours * 60 + minutes;
-            if (minutes > 0) {
-                ((ActivityItemHolder) holder).tvSubTitle.setText(minutes + " min");
+            if (duration > 60) {
+                ((ActivityItemHolder) holder).tvSubTitle.setText((duration / 60) + " min");
             } else {
-                ((ActivityItemHolder) holder).tvSubTitle.setText(seconds + " sec");
+                ((ActivityItemHolder) holder).tvSubTitle.setText(duration + " sec");
             }
-
             ((ActivityItemHolder) holder).tvStartDate.setText(TimeUtil.timeToString(mData.get(position).getStartTime()));
             ((ActivityItemHolder) holder).tvEndDate.setText(TimeUtil.timeToString(mData.get(position).getEndTime()));
         }

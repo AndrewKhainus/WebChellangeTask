@@ -36,7 +36,7 @@
         <activity android:name=".ui.modules.check.CheckActivity">
         </activity>
 
-        <activity android:name=".ui.modules.login.LoginActivity"/>
+        <!--<activity android:name=".ui.modules.login.LoginActivity"/>-->
 
 <!--
         <activity

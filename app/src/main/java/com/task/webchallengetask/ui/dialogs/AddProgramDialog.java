@@ -155,8 +155,8 @@ public class AddProgramDialog extends BaseDialog<AddProgramDialogPresenter>
     }
 
     @Override
-    public void setTarget(String _text) {
-        etTarget.setText(_text);
+    public void setTarget(float _text) {
+        etTarget.setText(String.format("%.0f", _text));
     }
 
     @Override

@@ -24,9 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="00:00"
-            android:textSize="24sp"
-            />
+            android:text="@string/_00_00"
+            android:textSize="24sp" />
 
         <LinearLayout
             android:id="@+id/distanceContainer_ASA"
@@ -40,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:text="Distance:" />
+                android:text="@string/distance" />
 
             <TextView
                 android:id="@+id/tvDistance_ASA"
@@ -54,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
-                android:text="km" />
+                android:text="@string/km" />
 
         </LinearLayout>
 
@@ -72,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:text="Speed:" />
+                android:text="@string/speed" />
 
             <TextView
                 android:id="@+id/tvSpeed_ASA"
@@ -86,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
-                android:text="km/h" />
+                android:text="@string/km_h" />
 
 
         </LinearLayout>
@@ -104,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:text="Steps:" />
+                android:text="@string/steps" />
 
             <TextView
                 android:id="@+id/tvSteps_ASA"
@@ -128,7 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
-                android:text="Calories:" />
+                android:text="@string/calories" />
 
             <TextView
                 android:id="@+id/tvCalories_ASA"
@@ -146,35 +145,31 @@
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
-            <TextView
+            <ImageView
                 android:id="@+id/btnStartPause_ASA"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="START" />
+                android:src="@drawable/ic_play"
+                android:text="@string/start" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/btnStop_ASA"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="STOP"
-
-                />
+                android:src="@drawable/ic_stop"
+                android:text="@string/stop"/>
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btnTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="test"/>
 
     </LinearLayout>
 </LinearLayout>

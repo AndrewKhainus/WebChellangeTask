@@ -13,13 +13,19 @@ android {
         }
     }
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "com.task.webchallengetask"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+    }
+    dexOptions {
+        incremental true
+        javaMaxHeapSize "2048M"
+        jumboMode = true
     }
     buildTypes {
         release {
@@ -27,7 +33,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-//            multiDexEnabled false
+            minifyEnabled false
             signingConfig signingConfigs.config
         }
     }
@@ -62,7 +68,7 @@ configurations {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-//    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.apis:google-api-services-prediction:v1.6-rev54-1.21.0'
     compile 'com.google.apis:google-api-services-storage:v1-rev54-1.21.0'
     compile "com.google.android.gms:play-services-fitness:${play_services_version}"
