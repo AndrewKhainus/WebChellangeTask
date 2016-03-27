@@ -12,6 +12,13 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <TextView
+            android:text="@string/choice_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="15sp"/>
+
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spChooseActivity_ASA"
             android:layout_width="match_parent"

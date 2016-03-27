@@ -31,6 +31,7 @@ import com.task.webchallengetask.ui.custom.CalendarView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailPresenter.ProgramDetailView> {
@@ -242,6 +243,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
         getView().showLoadingDialog();
         addSubscription(mPredictionDataProvider.analyzeWeeklyTrendResults(completed, uncompleted)
+                .timeout(40, TimeUnit.SECONDS)
                 .subscribe(s -> {
                             String message = "";
                             if (s.equals("Increase")) {
@@ -259,6 +261,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
                             getView().hideLoadingDialog();
                         }, throwable -> {
                             Logger.e(throwable);
+                            getView().showErrorDialog("Error", throwable.getMessage(), null);
                             getView().hideLoadingDialog();
                         }
 

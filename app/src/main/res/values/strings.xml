@@ -108,4 +108,5 @@
     <string name="log_out">Log out</string>
     <string name="invalid_orientation">invalid orientation</string>
     <string name="notification">Notification</string>
+    <string name="choice_activity">Choose Activity:</string>
 </resources>
