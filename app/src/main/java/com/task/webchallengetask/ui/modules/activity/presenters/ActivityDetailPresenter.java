@@ -6,6 +6,7 @@ import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.global.Constants;
+import com.task.webchallengetask.global.SharedPrefConst;
 import com.task.webchallengetask.global.programs.ProgramManager;
 import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
@@ -14,6 +15,7 @@ import com.task.webchallengetask.ui.base.BaseFragmentView;
 import com.task.webchallengetask.ui.custom.CalendarView;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -51,6 +53,7 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
                     getView().setDistance(_model.getDistance());
                     getView().setStep(_model.getStep());
                     getView().setCalories(_model.getCalories());
+                    getView().setSpeed(_model.getSpeed());
                 });
     }
 
@@ -86,18 +89,30 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
 
     private void checkNewData() {
         if (SharedPrefManager.getInstance().retrieveNotificationState()) {
+
             for (ProgramTable programTable : mPrograms) {
-                Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
+                String previousResult = "";
+                Date previousResultDate = null;
+                if (SharedPrefManager.getInstance().contains(programTable.getName())) {
+                    previousResult = SharedPrefManager.getInstance().retrieveString(programTable.getName());
+                    previousResultDate = TimeUtil.stringToDate(previousResult);
+                }
                 Date today = new Date(TimeUtil.getCurrentDay());
                 Date nextDay = TimeUtil.addEndOfDay(today);
 
-                mProgramDataProvider.loadData(type, today, nextDay)
-                        .subscribe(pairs -> {
-                            if (pairs.get(0).second >= programTable.getTarget()) {
-                                String target = programTable.getTarget() + " " + programTable.getUnit();
-                                getView().showCompleteProgramNotification(programTable.getName(), target);
-                            }
-                        }, Logger::e);
+                if (previousResultDate == null || TimeUtil.compareDay(previousResultDate.getTime(), today.getTime()) != 0) {
+                    Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
+
+                    mProgramDataProvider.loadData(type, today, nextDay)
+                            .subscribe(pairs -> {
+                                if (pairs.get(0).second >= programTable.getTarget()) {
+                                    String target = programTable.getTarget() + " " + programTable.getUnit();
+                                    getView().showCompleteProgramNotification(programTable.getName(), target);
+                                    String date = TimeUtil.dateToString(new Date(TimeUtil.getCurrentDay()));
+                                    SharedPrefManager.getInstance().saveString(programTable.getName(), date);
+                                }
+                            }, Logger::e);
+                }
             }
         }
     }

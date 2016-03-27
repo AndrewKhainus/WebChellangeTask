@@ -31,7 +31,7 @@ public class ProgramManager {
         difficults.add(new DifficultRunnerProfessional());
         difficults.add(new DifficultRunnerCustom());
 
-        return new Program("Long distance", description, difficults, Constants.PROGRAM_TYPES.LONG_DISTANCE);
+        return new Program("Long distance runner", description, difficults, Constants.PROGRAM_TYPES.LONG_DISTANCE);
     }
 
     private static Program createActiveLifeDistance() {
@@ -43,7 +43,7 @@ public class ProgramManager {
         difficults.add(new DifficultActiveProfessional());
         difficults.add(new DifficultActiveCustom());
 
-        return new Program("Active life", description, difficults, Constants.PROGRAM_TYPES.ACTIVE_LIFE);
+        return new Program("Active lifestyle", description, difficults, Constants.PROGRAM_TYPES.ACTIVE_LIFE);
     }
 
     public static List<Program> getPrograms() {

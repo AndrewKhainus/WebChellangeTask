@@ -14,5 +14,6 @@ public final class SharedPrefConst {
     public final static String SHARED_PREF_WEIGHT = "SharedPreferenceWeight";
     public final static String SHARED_PREF_NOTIFICATION_STATE = "SharedPreferenceNotificationState";
     public final static String SHARED_PREF_HEIGHT = "SharedPreferenceHeight";
+    public final static String SHARED_PREF_RPOGRAM_RESULTS = "SharedPreferenceProgramResults";
 
 }
