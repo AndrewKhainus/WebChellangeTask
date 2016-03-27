@@ -3,6 +3,7 @@ package com.task.webchallengetask.data.data_managers;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.data.Bucket;
@@ -11,9 +12,12 @@ import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.request.DataReadRequest;
+import com.google.android.gms.fitness.request.DataTypeCreateRequest;
+import com.google.android.gms.fitness.result.DataTypeResult;
 import com.google.android.gms.plus.Plus;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.global.utils.Logger;
+import com.task.webchallengetask.services.ActivityTrackerService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -218,7 +222,13 @@ public final class GoogleApiUtils {
     }
 
     private DataReadRequest requestHistory(long _start, long _end) {
+//        DataTypeResult pendingResult = Fitness.ConfigApi.readDataType(googleApiClient,
+//                "com.task.webchallengetask.calories").await();
+
+
         return new DataReadRequest.Builder()
+                .read(Fitness.ConfigApi.readDataType(googleApiClient,
+                        "com.task.webchallengetask.calories").await().getDataType())
                 .aggregate(DataType.TYPE_STEP_COUNT_DELTA, DataType.AGGREGATE_STEP_COUNT_DELTA)
                 .aggregate(DataType.TYPE_DISTANCE_DELTA, DataType.AGGREGATE_DISTANCE_DELTA)
                 .aggregate(DataType.TYPE_SPEED, DataType.AGGREGATE_SPEED_SUMMARY)

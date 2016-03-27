@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
     private ViewGroup vgCaloriesContainer;
     private TextView btnStartPause;
     private TextView btnStop;
+    private Button button;
 
 
     @Override
@@ -64,6 +66,7 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
         vgCaloriesContainer = (ViewGroup) findViewById(R.id.caloriesContainer_ASA);
         btnStartPause = (TextView) findViewById(R.id.btnStartPause_ASA);
         btnStop = (TextView) findViewById(R.id.btnStop_ASA);
+        button  = (Button) _rootView.findViewById(R.id.btnTest);
     }
 
     @Override
@@ -87,6 +90,7 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
 
         RxUtils.click(btnStartPause, o -> getPresenter().onBtnStartPauseClicked());
         RxUtils.click(btnStop, o -> getPresenter().onBtnStopClicked());
+        RxUtils.click(button, t -> getPresenter().testClick());
     }
 
     @Override
@@ -110,6 +114,14 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
     public void startSenderIntent(IntentSender _intentSender, int _const) throws IntentSender.SendIntentException {
         this.startIntentSenderForResult(_intentSender,
                 _const, null, 0, 0, 0);
+    }
+
+    @Override
+    public void clearAllField() {
+        tvDistance.setText("0");
+        tvSpeed.setText("0");
+        tvSteps.setText("0");
+        tvCalories.setText("0");
     }
 
     @Override

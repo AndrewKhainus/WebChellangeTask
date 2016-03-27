@@ -125,24 +125,6 @@ public final class TimeUtil {
         return firstCal.compareTo(secondCal);
     }
 
-    public static boolean isSameDay(long _firstTime, long _secondTime) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(new Date(_firstTime));
-        calendar.set(Calendar.AM_PM, Calendar.AM);
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        long timeFirst = calendar.getTimeInMillis() / 1000L;
-        calendar.setTime(new Date(_secondTime));
-        calendar.set(Calendar.AM_PM, Calendar.AM);
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        long timeSecond = calendar.getTimeInMillis() / 1000L;
-
-        return timeFirst == timeSecond;
-    }
-
     private static void clearTime(Calendar _calendar) {
         _calendar.set(Calendar.HOUR_OF_DAY, 0);
         _calendar.set(Calendar.MINUTE, 0);

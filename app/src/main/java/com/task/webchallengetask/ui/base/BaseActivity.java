@@ -58,6 +58,12 @@ public abstract class BaseActivity<P extends BaseActivityPresenter> extends AppC
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mPresenter.onPause();
+    }
+
+    @Override
     protected void onDestroy() {
         mPresenter.onDestroyView();
         mPresenter.unbindView();

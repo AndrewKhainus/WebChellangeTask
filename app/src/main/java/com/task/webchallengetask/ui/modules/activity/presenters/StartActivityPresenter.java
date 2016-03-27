@@ -82,6 +82,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         if (!isPaused) {
             App.getAppContext().startService(IntentHelper.
                     getActivityTrackerServiceIntent(Constants.START_TIMER_ACTION, currentActivity));
+            getView().clearAllField();
         } else {
             App.getAppContext().startService(IntentHelper.
                     getActivityTrackerServiceIntent(Constants.PAUSE_TIMER_ACTION, currentActivity));
@@ -114,7 +115,14 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
 
     @Override
     public void onBackPressed() {
-        if (!isStarted) super.onBackPressed();
+        if (!isStarted) {
+            super.onBackPressed();
+            getView().finishActivity();
+        }
+    }
+
+    public void testClick() {
+        GoogleApiUtils.getInstance().getHistory().subscribe(t -> t.toString());
     }
 
     private class TimerReceiver extends BroadcastReceiver {
@@ -164,6 +172,8 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         void setTimer(String _text);
 
         void startSenderIntent(IntentSender _intentSender, int _const) throws IntentSender.SendIntentException;
+
+        void clearAllField();
 
         int getSpinnerSelection();
 
