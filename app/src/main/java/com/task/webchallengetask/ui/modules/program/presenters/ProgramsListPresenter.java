@@ -11,9 +11,7 @@ import com.task.webchallengetask.ui.modules.program.ProgramDetailFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by klim on 23.03.16.
- */
+
 public class ProgramsListPresenter extends BaseFragmentPresenter<ProgramsListPresenter.ProgramListView> {
 
     private List<ProgramTable> programs = new ArrayList<>();

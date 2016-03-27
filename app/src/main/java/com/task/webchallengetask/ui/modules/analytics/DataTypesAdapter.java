@@ -9,9 +9,7 @@ import com.task.webchallengetask.global.programs.difficults.Difficult;
 
 import java.util.List;
 
-/**
- * Created by klim on 23.03.16.
- */
+
 public class DataTypesAdapter extends ArrayAdapter<String> {
 
     private List<Pair<Constants.DATA_TYPES, String>> data;

@@ -4,19 +4,14 @@ import android.util.Pair;
 
 import com.task.webchallengetask.data.database.DatabaseController;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
-import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.global.utils.TimeUtil;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import rx.Observable;
 
-/**
- * Created by klim on 26.03.16.
- */
 public class ActivityDataProvider extends BaseDataProvider {
 
     private static volatile ActivityDataProvider instance;

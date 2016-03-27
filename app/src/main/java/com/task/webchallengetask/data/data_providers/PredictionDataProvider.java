@@ -10,9 +10,6 @@ import java.util.List;
 
 import rx.Observable;
 
-/**
- * Created by klim on 25.03.16.
- */
 public class PredictionDataProvider extends BaseDataProvider {
 
     private static volatile PredictionDataProvider instance;

@@ -18,8 +18,6 @@ public class App extends Application {
         FacebookSdk.sdkInitialize(this);
 
         FlowManager.init(this);
-//        LeakCanary.install(this);
-
     }
 
     @Override

@@ -8,9 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 
-/**
- * Created by Sergbek on 17.11.2015.
- */
+
 public final class TimeUtil {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.US);

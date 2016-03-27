@@ -35,9 +35,7 @@ import com.task.webchallengetask.ui.modules.program.presenters.ProgramDetailPres
 
 import java.util.List;
 
-/**
- * Created by klim on 24.03.16.
- */
+
 public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> implements
         ProgramDetailPresenter.ProgramDetailView {
 

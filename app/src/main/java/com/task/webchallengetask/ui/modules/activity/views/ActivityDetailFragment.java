@@ -20,9 +20,7 @@ import com.task.webchallengetask.ui.custom.CalendarView;
 import com.task.webchallengetask.ui.modules.activity.presenters.ActivityDetailPresenter;
 import com.task.webchallengetask.ui.base.BaseFragment;
 
-/**
- * Created by klim on 25.03.16.
- */
+
 public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter>
         implements ActivityDetailPresenter.ActivityDetailView {
 

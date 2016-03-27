@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.observables.ConnectableObservable;
 import rx.schedulers.Schedulers;
 
 public final class PredictionManager {

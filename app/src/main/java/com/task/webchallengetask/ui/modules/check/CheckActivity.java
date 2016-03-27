@@ -4,9 +4,7 @@ import android.view.View;
 
 import com.task.webchallengetask.ui.base.BaseActivity;
 
-/**
- * Created by Sergbek on 22.03.2016.
- */
+
 public class CheckActivity extends BaseActivity<CheckPresenter> implements CheckPresenter.CheckView {
 
     @Override
