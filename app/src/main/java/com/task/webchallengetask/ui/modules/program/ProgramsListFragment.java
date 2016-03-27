@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
 import com.task.webchallengetask.global.utils.RxUtils;
+import com.task.webchallengetask.ui.custom.DividerItemDecoration;
 import com.task.webchallengetask.ui.modules.program.adapters.ProgramListAdapter;
 import com.task.webchallengetask.ui.modules.program.presenters.ProgramsListPresenter;
 import com.task.webchallengetask.ui.base.BaseFragment;
@@ -44,7 +45,7 @@ public class ProgramsListFragment extends BaseFragment<ProgramsListPresenter>
 
     @Override
     public int getLayoutResource() {
-        return R.layout.fragment_programs_layout;
+        return R.layout.fragment_program_list;
     }
 
     @Override

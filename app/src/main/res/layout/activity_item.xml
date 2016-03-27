@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical"
-    android:paddingBottom="24dp"
-    android:paddingTop="24dp">
+    android:padding="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +24,8 @@
             android:id="@+id/tvStartTime_AI"
             style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="wrap_content"
-            android:text="13.02.2000"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="13.02.2000" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,8 +36,8 @@
             android:id="@+id/tvEndTime_AI"
             style="@style/MainTheme.SubTitle.Normal"
             android:layout_width="wrap_content"
-            android:text="13.02.2000"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="13.02.2000" />
 
 
     </LinearLayout>
@@ -60,7 +59,7 @@
             android:id="@+id/tvSubTitle_AI"
             style="@style/MainTheme.Description.Big"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </LinearLayout>

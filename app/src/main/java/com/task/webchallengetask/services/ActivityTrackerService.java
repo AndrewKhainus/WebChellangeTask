@@ -231,7 +231,7 @@ public class ActivityTrackerService extends Service {
                     actionParametersModel.update();
                     Logger.d("Detected DataPoint field: " + field.getName());
                     Logger.d("Detected DataPoint value: " + val);
-                    sendBroadcast(IntentHelper.sendSpeedIntent(speed));
+                    sendBroadcast(IntentHelper.sendSpeedIntent(getAverageSpeed()));
                 }
             }
         };

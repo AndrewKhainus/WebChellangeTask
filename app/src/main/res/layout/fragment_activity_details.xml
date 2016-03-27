@@ -9,7 +9,8 @@
         android:id="@+id/tvTitle_FAD"
         style="@style/MainTheme.Title.Big.Bold"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,6 +20,7 @@
 
         <TextView
             android:id="@+id/tvDate_FAD"
+            style="@style/MainTheme.Description.Big.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00/00/00" />
@@ -39,9 +41,11 @@
 
         <EditText
             android:id="@+id/etActivityTime_FAD"
+            style="@style/BlueEditAut"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:enabled="false"
             android:gravity="right"
             android:hint="0"
             android:inputType="number" />
@@ -69,9 +73,11 @@
 
         <EditText
             android:id="@+id/etDistance_FAD"
+            style="@style/BlueEditAut"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:enabled="false"
             android:gravity="right"
             android:hint="0"
             android:inputType="number" />
@@ -94,13 +100,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:text="@string/step" />
+            android:text="@string/steps" />
 
         <EditText
             android:id="@+id/etStep_FAD"
+            style="@style/BlueEditAut"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:enabled="false"
             android:gravity="right"
             android:hint="0"
             android:inputType="number" />
@@ -109,8 +117,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAllCaps="false"
-            android:text="@string/step"/>
+            android:text="@string/step"
+            android:textAllCaps="false" />
 
 
     </LinearLayout>
@@ -129,9 +137,11 @@
 
         <EditText
             android:id="@+id/etCalories_FAD"
+            style="@style/BlueEditAut"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:enabled="false"
             android:gravity="right"
             android:hint="0"
             android:inputType="number" />
@@ -141,6 +151,38 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/cal" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:weightSum="10">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="@string/speed" />
+
+        <EditText
+            android:id="@+id/etSpeed_FAD"
+            style="@style/BlueEditAut"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:enabled="false"
+            android:gravity="right"
+            android:textColor="@color/color_green_300"
+            android:hint="0"
+            android:inputType="number" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/km_h" />
 
     </LinearLayout>
 

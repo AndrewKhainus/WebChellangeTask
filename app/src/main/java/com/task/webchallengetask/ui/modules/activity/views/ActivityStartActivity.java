@@ -144,23 +144,23 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
     }
 
     @Override
-    public void setDistance(String _text) {
-        tvDistance.setText(_text);
+    public void setDistance(float _text) {
+        tvDistance.setText(String.format("%.1f", _text));
     }
 
     @Override
-    public void setSpeed(String _text) {
-        tvSpeed.setText(_text);
+    public void setSpeed(float _text) {
+        tvSpeed.setText(String.format("%.1f", _text));
     }
 
     @Override
-    public void setSteps(String _text) {
-        tvSteps.setText(_text);
+    public void setSteps(float _text) {
+        tvSteps.setText(String.format("%.0f", _text));
     }
 
     @Override
-    public void setCalories(String _text) {
-        tvCalories.setText(_text);
+    public void setCalories(float _text) {
+        tvCalories.setText(String.format("%.0f", _text));
     }
 
     @Override

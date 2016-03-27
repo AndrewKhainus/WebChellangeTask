@@ -35,6 +35,8 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     private EditText etStep;
     private EditText etDistance;
     private EditText etCalories;
+    private EditText etSpeed;
+
 
     public static ActivityDetailFragment newInstance(int _id) {
 
@@ -66,6 +68,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
         tvDate = (TextView) rootView.findViewById(R.id.tvDate_FAD);
         etActivityTime = (EditText) rootView.findViewById(R.id.etActivityTime_FAD);
         etDistance = (EditText) rootView.findViewById(R.id.etDistance_FAD);
+        etSpeed = (EditText) rootView.findViewById(R.id.etSpeed_FAD);
         etStep = (EditText) rootView.findViewById(R.id.etStep_FAD);
         etCalories = (EditText) rootView.findViewById(R.id.etCalories_FAD);
         tvUnit = (TextView) rootView.findViewById(R.id.etActivityTimeUnit_FAD);
@@ -134,6 +137,7 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
         etDistance.setEnabled(_isEditable);
         etStep.setEnabled(_isEditable);
         etCalories.setEnabled(_isEditable);
+        etSpeed.setEnabled(_isEditable);
         tvDate.setFocusable(_isEditable);
         tvDate.setEnabled(_isEditable);
     }
@@ -156,6 +160,11 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     @Override
     public void setStep(float _text) {
         etStep.setText(String.format("%.0f", _text));
+    }
+
+    @Override
+    public void setSpeed(float _text) {
+        etSpeed.setText(String.format("%.1f", _text));
     }
 
     @Override
@@ -186,6 +195,11 @@ public class ActivityDetailFragment extends BaseFragment<ActivityDetailPresenter
     @Override
     public String getDate() {
         return tvDate.getText().toString();
+    }
+
+    @Override
+    public String getSpeed() {
+        return etSpeed.getText().toString();
     }
 
     @Override

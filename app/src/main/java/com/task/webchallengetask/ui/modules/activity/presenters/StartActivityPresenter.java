@@ -10,6 +10,7 @@ import android.util.Log;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
+import com.task.webchallengetask.data.data_managers.SharedPrefManager;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.data.database.tables.ProgramTable;
@@ -46,7 +47,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
 
     private List<ProgramTable> mPrograms;
     private ProgramDataProvider mProgramDataProvider = ProgramDataProvider.getInstance();
-    private ActivityDataProvider mActivityDataProvider = ActivityDataProvider.getInstance();
 
     @Override
     public void onViewCreated() {
@@ -167,39 +167,41 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
             switch (action) {
                 case Constants.SEND_CALORIES_ACTION:
                     float calories = intent.getFloatExtra(Constants.SEND_CALORIES_KEY, 0f);
-                    getView().setCalories(calories + "");
+                    getView().setCalories(calories);
                     break;
                 case Constants.SEND_DISTANCE_ACTION:
                     float distance = intent.getFloatExtra(Constants.SEND_DISTANCE_KEY, 0f);
-                    getView().setDistance(distance + "");
+                    getView().setDistance(distance);
                     break;
                 case Constants.SEND_SPEED_ACTION:
                     float speed = intent.getFloatExtra(Constants.SEND_SPEED_KEY, 0f);
-                    getView().setSpeed(speed + "");
+                    getView().setSpeed(speed);
                     break;
                 case Constants.SEND_STEP_ACTION:
                     int step = intent.getIntExtra(Constants.SEND_STEP_KEY, 0);
-                    getView().setSteps(step + "");
+                    getView().setSteps(step);
             }
             checkNewData();
         }
     }
 
     private void checkNewData() {
-        for (ProgramTable programTable : mPrograms) {
-            Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
-            Date today = new Date(TimeUtil.getCurrentDay());
-            Date nextDay = TimeUtil.addEndOfDay(today);
+        if (SharedPrefManager.getInstance().retrieveNotificationState()) {
+            for (ProgramTable programTable : mPrograms) {
+                Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
+                Date today = new Date(TimeUtil.getCurrentDay());
+                Date nextDay = TimeUtil.addEndOfDay(today);
 
-            mProgramDataProvider.loadData(type, today, nextDay)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(pairs -> {
-                        if (pairs.get(0).second >= programTable.getTarget()) {
-                            String target = programTable.getTarget() + " " + programTable.getUnit();
-                            getView().showCompleteProgramNotification(programTable.getName(), target);
-                        }
-                    }, Logger::e);
+                mProgramDataProvider.loadData(type, today, nextDay)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(pairs -> {
+                            if (pairs.get(0).second >= programTable.getTarget()) {
+                                String target = programTable.getTarget() + " " + programTable.getUnit();
+                                getView().showCompleteProgramNotification(programTable.getName(), target);
+                            }
+                        }, Logger::e);
 
+            }
         }
     }
 
@@ -223,13 +225,13 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
 
         void onStopClicked();
 
-        void setDistance(String _Text);
+        void setDistance(float _Text);
 
-        void setSpeed(String _Text);
+        void setSpeed(float _Text);
 
-        void setSteps(String _Text);
+        void setSteps(float _Text);
 
-        void setCalories(String _Text);
+        void setCalories(float _Text);
 
         void setDistanceVisible(boolean _isVisible);
 

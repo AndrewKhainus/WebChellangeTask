@@ -1,5 +1,6 @@
 package com.task.webchallengetask.ui.modules.activity.presenters;
 
+import com.task.webchallengetask.data.data_managers.SharedPrefManager;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.data_providers.ProgramDataProvider;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
@@ -71,6 +72,7 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
                     model.activityActualTime = activityTime * 60; // to seconds
                     model.step = Integer.parseInt(getView().getStep());
                     model.calories = Float.parseFloat(getView().getCalories());
+                    model.speed = Float.parseFloat(getView().getSpeed());
                     model.save();
                     checkNewData();
                 }, Logger::e);
@@ -83,19 +85,20 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
     }
 
     private void checkNewData() {
-        for (ProgramTable programTable : mPrograms) {
-            Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
-            Date today = new Date(TimeUtil.getCurrentDay());
-            Date nextDay = TimeUtil.addEndOfDay(today);
+        if (SharedPrefManager.getInstance().retrieveNotificationState()) {
+            for (ProgramTable programTable : mPrograms) {
+                Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
+                Date today = new Date(TimeUtil.getCurrentDay());
+                Date nextDay = TimeUtil.addEndOfDay(today);
 
-            mProgramDataProvider.loadData(type, today, nextDay)
-                    .subscribe(pairs -> {
-                        if (pairs.get(0).second >= programTable.getTarget()) {
-                            String target = programTable.getTarget() + " " + programTable.getUnit();
-                            getView().showCompleteProgramNotification(programTable.getName(), target);
-                        }
-                    }, Logger::e);
-
+                mProgramDataProvider.loadData(type, today, nextDay)
+                        .subscribe(pairs -> {
+                            if (pairs.get(0).second >= programTable.getTarget()) {
+                                String target = programTable.getTarget() + " " + programTable.getUnit();
+                                getView().showCompleteProgramNotification(programTable.getName(), target);
+                            }
+                        }, Logger::e);
+            }
         }
     }
 
@@ -125,6 +128,8 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
 
         void setStep(float _text);
 
+        void setSpeed(float _text);
+
         void setCalories(float _text);
 
         String getActivityTime();
@@ -136,6 +141,8 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
         String getCalories();
 
         String getDate();
+
+        String getSpeed();
 
         void showCompleteProgramNotification(String _programName, String _difficult);
     }

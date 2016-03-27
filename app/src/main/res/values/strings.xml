@@ -77,7 +77,7 @@
     <string name="_00_00">00:00</string>
     <string name="distance">Distance:</string>
     <string name="km">km</string>
-    <string name="speed">Speed:</string>
+    <string name="speed">Average speed:</string>
     <string name="km_h">km/h</string>
     <string name="steps">Steps:</string>
     <string name="calories">Calories:</string>
@@ -90,7 +90,7 @@
     <string name="activity_time">Activity time:</string>
     <string name="min">min</string>
     <string name="meters">m</string>
-    <string name="step">Step:</string>
+    <string name="step">step</string>
     <string name="cal">cal</string>
     <string name="there_are_no_activities_at_this_moment">There are no activities at this moment</string>
     <string name="there_are_no_programs_at_this_moment">There are no programs at this moment</string>

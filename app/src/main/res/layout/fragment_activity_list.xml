@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp">
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:src="@drawable/ic_add"
+        android:layout_margin="16dp"
         app:backgroundTint="?attr/colorAccent"
         app:elevation="8dp"
         app:layout_anchorGravity="bottom|end"
