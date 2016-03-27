@@ -7,7 +7,6 @@ import android.support.v4.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -70,7 +69,7 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
         spDataType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                getPresenter().onDataTypeChoosed(((DataTypesAdapter)spDataType.getAdapter()).getSelected(position));
+                getPresenter().onDataTypeChosen(((DataTypesAdapter)spDataType.getAdapter()).getSelected(position));
             }
 
             @Override
