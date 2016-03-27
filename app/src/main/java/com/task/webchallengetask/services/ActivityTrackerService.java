@@ -39,8 +39,10 @@ import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.modules.activity.views.ActivityStartActivity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -75,6 +77,7 @@ public class ActivityTrackerService extends Service {
     private float speed;
     private float dist;
     private int weight = SharedPrefManager.getInstance().retrieveWeight();
+    private List<Float> speeds = new ArrayList<>();
 
     public ActivityTrackerService() {
         super();
@@ -134,7 +137,7 @@ public class ActivityTrackerService extends Service {
         actionParametersModel.name = currentActivity;
         actionParametersModel.calories = calculationCalories();
         actionParametersModel.distance = dist;
-        actionParametersModel.speed = speed;
+        actionParametersModel.speed = getAverageSpeed();
         actionParametersModel.step = step;
         actionParametersModel.startTime = startTime;
         actionParametersModel.endTime = endTime;
@@ -207,13 +210,23 @@ public class ActivityTrackerService extends Service {
         };
     }
 
+    private float getAverageSpeed() {
+        int size = speeds.size();
+        float sum = 0;
+        for (int i =0; i < size; i++) {
+            sum += speeds.get(i);
+        }
+        return sum / size;
+    }
+
     private void implSpeedListener() {
         mListenerSpeed = _dataPoint -> {
             if (isPause) {
                 for (Field field : _dataPoint.getDataType().getFields()) {
                     Value val = _dataPoint.getValue(field);
-                    speed += val.asFloat();
-                    actionParametersModel.speed = speed;
+                    speeds.add(val.asFloat());
+
+                    actionParametersModel.speed = getAverageSpeed();
                     actionParametersModel.activityActualTime = TimeUtil.getTimeInSeconds(mTimerTime.getTimeInMillis());
                     actionParametersModel.update();
                     Logger.d("Detected DataPoint field: " + field.getName());
