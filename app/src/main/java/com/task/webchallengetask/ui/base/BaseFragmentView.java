@@ -24,6 +24,8 @@ public interface BaseFragmentView<P extends BaseFragmentPresenter> extends BaseV
 
     void startActivity(Class _activityClass, Bundle _bundle);
     void startActivity(Class _activityClass, int... _flag);
+    void startActivityForResult(Class _activityClass, int _requestCode);
+
     void finishActivity();
     Bundle getFragmentArguments();
 

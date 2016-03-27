@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
@@ -21,6 +22,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListPresenter>
     private RecyclerView rvActivities;
     private FloatingActionButton fabCreateActivity;
     private ActivityListAdapter mAdapter;
+    private TextView tvTextHolder;
 
     public static ActivityListFragment newInstance() {
 
@@ -50,6 +52,7 @@ public class ActivityListFragment extends BaseFragment<ActivityListPresenter>
     public void findUI(View rootView) {
         fabCreateActivity = (FloatingActionButton) rootView.findViewById(R.id.fab);
         rvActivities = (RecyclerView) rootView.findViewById(R.id.rvActivityList_FAL);
+        tvTextHolder = (TextView) rootView.findViewById(R.id.tvHolderText_FAL);
     }
 
     @Override
@@ -63,11 +66,20 @@ public class ActivityListFragment extends BaseFragment<ActivityListPresenter>
         rvActivities.setLayoutManager(mLayoutManager);
         rvActivities.setAdapter(mAdapter);
         mAdapter.onItemClickListener(model -> getPresenter().onActivityClicked(model));
-
     }
 
     @Override
     public void addActivities(List<ActionParametersModel> _data) {
         mAdapter.addDataByDay(_data);
+    }
+
+    @Override
+    public void showHolder() {
+        tvTextHolder.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideHolder() {
+        tvTextHolder.setVisibility(View.GONE);
     }
 }

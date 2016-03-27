@@ -128,10 +128,19 @@ public final class TimeUtil {
     public static boolean isSameDay(long _firstTime, long _secondTime) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(new Date(_firstTime));
-        int firstDay = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        long timeFirst = calendar.getTimeInMillis() / 1000L;
         calendar.setTime(new Date(_secondTime));
-        int secondDay = calendar.get(Calendar.DAY_OF_MONTH);
-        return firstDay == secondDay;
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        long timeSecond = calendar.getTimeInMillis() / 1000L;
+
+        return timeFirst == timeSecond;
     }
 
     private static void clearTime(Calendar _calendar) {

@@ -36,7 +36,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
     public void onViewCreated() {
         super.onViewCreated();
 
-        if (IntentHelper.isServiceRunning(App.getAppContext(), ActivityTrackerService.class)){
+        if (IntentHelper.isServiceRunning(App.getAppContext(), ActivityTrackerService.class)) {
             getView().startActivity(ActivityStartActivity.class);
         }
 
@@ -52,7 +52,8 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
         getView().setAvatar(SharedPrefManager.getInstance().retrieveUrlPhoto());
 
         PredictionDataProvider.getInstance().connectAndTrain()
-                .subscribe(aBoolean -> {}, Logger::e);
+                .subscribe(aBoolean -> {
+                }, Logger::e);
     }
 
     private void resolveSignInError() {
@@ -66,6 +67,7 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
             }
         }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -126,8 +128,15 @@ public class MainActivityPresenter extends BaseActivityPresenter<MainActivityPre
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (!googleApiClient.isConnecting()) {
-            googleApiClient.connect();
+        switch (requestCode) {
+            case Constants.RC_SIGN_IN_GOOGLE_PLUS:
+                if (!googleApiClient.isConnecting()) {
+                    googleApiClient.connect();
+                }
+                break;
+            case Constants.RC_ACTIVITY_START_ACTIVITY:
+                getView().switchFragment(ActivityListFragment.newInstance(), false);
+                break;
         }
     }
 
