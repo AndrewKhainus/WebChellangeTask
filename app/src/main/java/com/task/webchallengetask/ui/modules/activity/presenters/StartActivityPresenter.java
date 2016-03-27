@@ -204,8 +204,15 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(pairs -> {
                                     if (pairs.get(0).second >= programTable.getTarget()) {
-                                        String target = programTable.getTarget() + " " + programTable.getUnit();
-                                        getView().showCompleteProgramNotification(programTable.getName(), target);
+                                        float target = 0;
+                                        if (type == Constants.PROGRAM_TYPES.ACTIVE_LIFE) {
+                                            target = programTable.getTarget() / 60;
+                                        } else {
+                                            target = programTable.getTarget();
+                                        }
+
+                                        String targetString = target + " " + programTable.getUnit();
+                                        getView().showCompleteProgramNotification(programTable.getName(), targetString);
                                     }
                                 }, Logger::e);
 
