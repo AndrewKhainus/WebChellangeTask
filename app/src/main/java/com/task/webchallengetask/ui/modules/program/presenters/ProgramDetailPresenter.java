@@ -186,8 +186,8 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         }
         CombinedData data = new CombinedData(dates);
 
-        BarDataSet set = new BarDataSet(_entry, "result");
-        LineDataSet setLine = new LineDataSet(_entry2, "target");
+        BarDataSet set = new BarDataSet(_entry, "result, " + _units);
+        LineDataSet setLine = new LineDataSet(_entry2, "target " + _units);
         setLine.setColor(Color.rgb(240, 238, 70));
         setLine.setLineWidth(2.5f);
         setLine.setCircleColor(Color.rgb(240, 238, 70));

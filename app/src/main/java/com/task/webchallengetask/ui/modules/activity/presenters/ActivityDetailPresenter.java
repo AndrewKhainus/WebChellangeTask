@@ -89,29 +89,30 @@ public class ActivityDetailPresenter extends BaseFragmentPresenter<ActivityDetai
 
     private void checkNewData() {
         if (SharedPrefManager.getInstance().retrieveNotificationState()) {
+            if (mPrograms != null) {
+                for (ProgramTable programTable : mPrograms) {
+                    String previousResult = "";
+                    Date previousResultDate = null;
+                    if (SharedPrefManager.getInstance().contains(programTable.getName())) {
+                        previousResult = SharedPrefManager.getInstance().retrieveString(programTable.getName());
+                        previousResultDate = TimeUtil.stringToDate(previousResult);
+                    }
+                    Date today = new Date(TimeUtil.getCurrentDay());
+                    Date nextDay = TimeUtil.addEndOfDay(today);
 
-            for (ProgramTable programTable : mPrograms) {
-                String previousResult = "";
-                Date previousResultDate = null;
-                if (SharedPrefManager.getInstance().contains(programTable.getName())) {
-                    previousResult = SharedPrefManager.getInstance().retrieveString(programTable.getName());
-                    previousResultDate = TimeUtil.stringToDate(previousResult);
-                }
-                Date today = new Date(TimeUtil.getCurrentDay());
-                Date nextDay = TimeUtil.addEndOfDay(today);
+                    if (previousResultDate == null || TimeUtil.compareDay(previousResultDate.getTime(), today.getTime()) != 0) {
+                        Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
 
-                if (previousResultDate == null || TimeUtil.compareDay(previousResultDate.getTime(), today.getTime()) != 0) {
-                    Constants.PROGRAM_TYPES type = ProgramManager.defineProgramType(programTable);
-
-                    mProgramDataProvider.loadData(type, today, nextDay)
-                            .subscribe(pairs -> {
-                                if (pairs.get(0).second >= programTable.getTarget()) {
-                                    String target = programTable.getTarget() + " " + programTable.getUnit();
-                                    getView().showCompleteProgramNotification(programTable.getName(), target);
-                                    String date = TimeUtil.dateToString(new Date(TimeUtil.getCurrentDay()));
-                                    SharedPrefManager.getInstance().saveString(programTable.getName(), date);
-                                }
-                            }, Logger::e);
+                        mProgramDataProvider.loadData(type, today, nextDay)
+                                .subscribe(pairs -> {
+                                    if (pairs.get(0).second >= programTable.getTarget()) {
+                                        String target = programTable.getTarget() + " " + programTable.getUnit();
+                                        getView().showCompleteProgramNotification(programTable.getName(), target);
+                                        String date = TimeUtil.dateToString(new Date(TimeUtil.getCurrentDay()));
+                                        SharedPrefManager.getInstance().saveString(programTable.getName(), date);
+                                    }
+                                }, Logger::e);
+                    }
                 }
             }
         }
