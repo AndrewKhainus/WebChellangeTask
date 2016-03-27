@@ -28,6 +28,9 @@ import java.util.Date;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by andri on 22.03.2016.
@@ -48,7 +51,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        getView().showCompleteProgramNotification("asdfasdf", "Asdfasdf");
+
         activitiesList = Arrays.asList(App.getAppContext().getResources()
                 .getStringArray(R.array.activities_list));
         getView().setSpinnerData(activitiesList);
@@ -102,6 +105,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         if (!isPaused) {
             App.getAppContext().startService(IntentHelper.
                     getActivityTrackerServiceIntent(Constants.START_TIMER_ACTION, currentActivity));
+            getView().clearAllField();
         } else {
             App.getAppContext().startService(IntentHelper.
                     getActivityTrackerServiceIntent(Constants.PAUSE_TIMER_ACTION, currentActivity));
@@ -135,7 +139,10 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
 
     @Override
     public void onBackPressed() {
-        if (!isStarted) super.onBackPressed();
+        if (!isStarted) {
+            super.onBackPressed();
+            getView().finishActivity();
+        }
     }
 
     private class TimerReceiver extends BroadcastReceiver {
@@ -205,6 +212,8 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         void setTimer(String _text);
 
         void startSenderIntent(IntentSender _intentSender, int _const) throws IntentSender.SendIntentException;
+
+        void clearAllField();
 
         int getSpinnerSelection();
 

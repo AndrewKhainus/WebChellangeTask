@@ -116,6 +116,14 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
     }
 
     @Override
+    public void clearAllField() {
+        tvDistance.setText("0");
+        tvSpeed.setText("0");
+        tvSteps.setText("0");
+        tvCalories.setText("0");
+    }
+
+    @Override
     public int getSpinnerSelection() {
         return spChooseActivity.getSelectedItemPosition();
     }

@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class SettingsFragment extends BaseFragment<SettingsPresenter> implements
     private EditText etAge;
     private EditText etTimeSynchronization;
     private Spinner spGender;
+    private CheckBox cbNotification;
 
 
     public static SettingsFragment newInstance() {
@@ -57,6 +59,7 @@ public class SettingsFragment extends BaseFragment<SettingsPresenter> implements
         etWeight = (EditText) rootView.findViewById(R.id.etWeight_FS);
         etTimeSynchronization = (EditText) rootView.findViewById(R.id.etTimeSynchronization_FS);
         spGender = (Spinner) rootView.findViewById(R.id.spGender_FS);
+        cbNotification = (CheckBox) rootView.findViewById(R.id.cbNotification_FS);
     }
 
     @Override
@@ -195,4 +198,15 @@ public class SettingsFragment extends BaseFragment<SettingsPresenter> implements
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
+
+    @Override
+    public void setNotificationState(boolean b) {
+        cbNotification.setChecked(b);
+    }
+
+    @Override
+    public boolean getNotificationState() {
+        return cbNotification.isChecked();
+    }
+
 }

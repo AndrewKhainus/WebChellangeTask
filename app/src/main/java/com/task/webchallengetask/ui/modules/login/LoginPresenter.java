@@ -46,6 +46,13 @@ public class LoginPresenter extends BaseActivityPresenter<LoginPresenter.LoginVi
     @Override
     public void onViewCreated() {
         super.onViewCreated();
+        if (!SharedPrefManager.getInstance().isNotificationStateExist()) {
+            SharedPrefManager.getInstance().storeNotificationState(true);
+        }
+        if (SharedPrefManager.getInstance().retrieveTimeSynchronization() == 0){
+            SharedPrefManager.getInstance().storeTimeSynchronization(Constants.TIME_SYNC);
+        }
+
         if (BuildConfig.DEBUG) {
             FacebookSdk.setIsDebugEnabled(true);
             FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);

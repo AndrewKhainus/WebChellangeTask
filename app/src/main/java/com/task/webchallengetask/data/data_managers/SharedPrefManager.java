@@ -123,4 +123,18 @@ public final class SharedPrefManager {
         return retrieveString(SharedPrefConst.SHARED_PREF_ACTIVE_SOCIAL);
     }
 
+
+    public void storeNotificationState(boolean _value) {
+        saveBoolean(SharedPrefConst.SHARED_PREF_NOTIFICATION_STATE, _value);
+    }
+
+    public boolean isNotificationStateExist() {
+        return sharedPreferences.contains(SharedPrefConst.SHARED_PREF_NOTIFICATION_STATE);
+    }
+
+    @CheckResult
+    public boolean retrieveNotificationState() {
+        return retrieveBoolean(SharedPrefConst.SHARED_PREF_NOTIFICATION_STATE);
+    }
+
 }

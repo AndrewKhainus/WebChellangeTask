@@ -72,8 +72,8 @@ public abstract class BaseFragment<P extends BaseFragmentPresenter> extends Frag
 
     @Override
     public void onPause() {
-        getPresenter().onPause();
         super.onPause();
+        getPresenter().onPause();
     }
 
     @Override

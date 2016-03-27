@@ -127,7 +127,6 @@ public final class TimeUtil {
         return new Date(c.getTime().getTime());
     }
 
-
     public static Date minusDayFromDate(Date date, int _days) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
