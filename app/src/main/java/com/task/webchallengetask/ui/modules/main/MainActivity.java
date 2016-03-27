@@ -54,14 +54,14 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        ivNavAvatar = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.ivAvatar_ND);
-        tvNavTitle = (TextView) mNavigationView.getHeaderView(0).findViewById(R.id.tvTitle_ND);
+        ivNavAvatar = (ImageView) (mNavigationView != null ? mNavigationView.getHeaderView(0).findViewById(R.id.ivAvatar_ND) : null);
+        tvNavTitle = (TextView) (mNavigationView != null ? mNavigationView.getHeaderView(0).findViewById(R.id.tvTitle_ND) : null);
     }
 
     @Override
     public void setupUI() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getDelegate().setSupportActionBar(mToolbar);
+        getDelegate().getSupportActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
@@ -71,7 +71,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             mDrawerToggle.setDrawerIndicatorEnabled(getSupportFragmentManager().getBackStackEntryCount() == 0);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(getSupportFragmentManager().getBackStackEntryCount() > 0);
+            getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(getSupportFragmentManager().getBackStackEntryCount() > 0);
             mDrawerToggle.syncState();
         });
 

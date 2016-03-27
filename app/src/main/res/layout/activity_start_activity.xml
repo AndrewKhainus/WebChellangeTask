@@ -25,8 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="00:00"
-            android:textSize="24sp"
-            />
+            android:textSize="24sp" />
 
         <LinearLayout
             android:id="@+id/distanceContainer_ASA"
@@ -146,35 +145,31 @@
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
-            <TextView
+            <ImageView
                 android:id="@+id/btnStartPause_ASA"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:src="@drawable/ic_play"
                 android:text="START" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/btnStop_ASA"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="STOP"
-
-                />
+                android:src="@drawable/ic_stop"
+                android:text="STOP"/>
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btnTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="test"/>
 
     </LinearLayout>
 </LinearLayout>

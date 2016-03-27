@@ -87,7 +87,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                     getActivityTrackerServiceIntent(Constants.PAUSE_TIMER_ACTION, currentActivity));
         }
         getView().setSpinnerEnabled(false);
-        getView().toggleStartPause(!isPaused ? "PAUSE" : "RESUME");
+        getView().toggleStartPause(!isPaused ? R.drawable.ic_pause : R.drawable.ic_play);
     }
 
     public void onBtnStopClicked() {
@@ -98,7 +98,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
             App.getAppContext().startService(IntentHelper.
                     getActivityTrackerServiceIntent(Constants.STOP_TIMER_ACTION, currentActivity));
             getView().setSpinnerEnabled(true);
-            getView().toggleStartPause("START");
+            getView().toggleStartPause(R.drawable.ic_play);
         }
     }
 
@@ -169,7 +169,7 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
 
         void onStartPauseClicked();
 
-        void toggleStartPause(String _text);
+        void toggleStartPause(int _icon);
 
         void onStopClicked();
 

@@ -1,16 +1,15 @@
 package com.task.webchallengetask.ui.modules.activity.views;
 
 import android.content.IntentSender;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.utils.RxUtils;
 import com.task.webchallengetask.ui.base.BaseActivity;
@@ -35,8 +34,8 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
     private ViewGroup vgStepsContainer;
     private TextView tvCalories;
     private ViewGroup vgCaloriesContainer;
-    private TextView btnStartPause;
-    private TextView btnStop;
+    private ImageView btnStartPause;
+    private ImageView btnStop;
 
 
     @Override
@@ -62,8 +61,8 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
         vgStepsContainer = (ViewGroup) findViewById(R.id.stepsContainer_ASA);
         tvCalories = (TextView) findViewById(R.id.tvCalories_ASA);
         vgCaloriesContainer = (ViewGroup) findViewById(R.id.caloriesContainer_ASA);
-        btnStartPause = (TextView) findViewById(R.id.btnStartPause_ASA);
-        btnStop = (TextView) findViewById(R.id.btnStop_ASA);
+        btnStartPause = (ImageView) findViewById(R.id.btnStartPause_ASA);
+        btnStop = (ImageView) findViewById(R.id.btnStop_ASA);
     }
 
     @Override
@@ -123,8 +122,8 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
     }
 
     @Override
-    public void toggleStartPause(String _text) {
-        btnStartPause.setText(_text);
+    public void toggleStartPause(int _icon) {
+        btnStartPause.setImageResource(_icon);
     }
 
     @Override
