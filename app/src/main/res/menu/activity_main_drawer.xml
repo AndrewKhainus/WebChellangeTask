@@ -5,6 +5,7 @@
         <item
             android:id="@+id/nav_activities"
             android:title="Activities" />
+
         <item
             android:id="@+id/nav_analytics"
             android:title="Analytics" />
@@ -13,7 +14,6 @@
             android:id="@+id/nav_programs"
             android:title="Programs" />
 
-
         <item
             android:id="@+id/nav_settings"
             android:title="Settings" />
@@ -21,7 +21,6 @@
         <item
             android:id="@+id/nav_logout"
             android:title="Log out" />
-
     </group>
 
 </menu>
