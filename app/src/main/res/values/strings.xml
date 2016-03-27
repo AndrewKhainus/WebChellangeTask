@@ -100,6 +100,7 @@
     <string name="activities">Activities</string>
     <string name="log_out">Log out</string>
     <string name="notification">Notification</string>
+    <string name="holder_program">There are no program at this moment</string>
 
 
 </resources>
