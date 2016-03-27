@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.util.Log;
 
+import com.google.android.gms.fitness.FitnessActivities;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_managers.GoogleApiUtils;
@@ -129,11 +130,11 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
 
     public void onSpinnerItemSelected(int _position) {
         currentActivity = activitiesList.get(_position);
-        if (_position == 1) {
-            getView().setStepsVisible(false);
-        }
-        if (_position == 0) {
+        if (_position == 0 || _position == 1 ) {
             getView().setStepsVisible(true);
+        }
+        else {
+            getView().setStepsVisible(false);
         }
     }
 

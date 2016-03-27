@@ -5,6 +5,7 @@ import android.content.Intent;
 import com.task.webchallengetask.data.data_providers.ActivityDataProvider;
 import com.task.webchallengetask.data.database.tables.ActionParametersModel;
 import com.task.webchallengetask.global.Constants;
+import com.task.webchallengetask.global.utils.Logger;
 import com.task.webchallengetask.global.utils.TimeUtil;
 import com.task.webchallengetask.ui.base.BaseFragmentPresenter;
 import com.task.webchallengetask.ui.base.BaseFragmentView;
@@ -28,7 +29,7 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
                     if (_boolean) getView().showHolder();
                     else getView().hideHolder();
                 })
-                .subscribe();
+                .subscribe(t1 -> {}, Logger::e);
 
     }
 
