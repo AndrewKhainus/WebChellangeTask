@@ -113,6 +113,13 @@
                 android:gravity="right"
                 android:text="0" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="@string/step" />
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -136,6 +143,13 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="@string/cal" />
+
 
         </LinearLayout>
 
