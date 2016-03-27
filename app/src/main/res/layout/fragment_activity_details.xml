@@ -47,6 +47,7 @@
             android:inputType="number" />
 
         <TextView
+            android:id="@+id/etActivityTimeUnit_FAD"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

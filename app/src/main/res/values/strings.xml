@@ -58,7 +58,7 @@
     <string name="activity_description">this is a description of thr program for people, who want to be active </string>
     <string name="c_meters">Meters</string>
     <string name="c_step">Steps</string>
-    <string name="c_time">Time</string>
+    <string name="c_time">Minutes</string>
     <string name="c_calories">Calories</string>
     <string name="difficult">Difficult:</string>
     <string name="profile_information">Profile information</string>

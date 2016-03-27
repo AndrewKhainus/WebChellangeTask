@@ -1,6 +1,9 @@
 package com.task.webchallengetask.ui.modules.activity.views;
 
+import android.app.NotificationManager;
 import android.content.IntentSender;
+import android.graphics.BitmapFactory;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -169,6 +172,19 @@ public class ActivityStartActivity extends BaseActivity<StartActivityPresenter>
     @Override
     public void setCaloriesVisible(boolean _isVisible) {
         vgCaloriesContainer.setVisibility(_isVisible ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void showCompleteProgramNotification(String _programName, String _target) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+//                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                .setContentTitle("Congratulation!")
+                .setContentText("Your have finished today program: " + _programName)
+                .setSubText("Target:" + _target);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(1, builder.build());
     }
 
 }

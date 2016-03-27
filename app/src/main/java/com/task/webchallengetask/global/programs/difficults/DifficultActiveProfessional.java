@@ -6,6 +6,6 @@ package com.task.webchallengetask.global.programs.difficults;
 public class DifficultActiveProfessional extends Difficult{
 
     public DifficultActiveProfessional() {
-        super("Professoinal", "3", "hour");
+        super("Professional", 180, "min");
     }
 }

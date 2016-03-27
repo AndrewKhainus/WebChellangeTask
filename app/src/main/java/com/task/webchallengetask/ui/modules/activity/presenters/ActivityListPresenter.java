@@ -16,12 +16,9 @@ import java.util.List;
 
 public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPresenter.ActivityListView> {
 
-    private List<ActionParametersModel> actionParametersModels;
-
     @Override
     public void onViewCreated() {
         super.onViewCreated();
-        actionParametersModels = new ArrayList<>();
 
         ActivityDataProvider.getInstance()
                 .getActivities()
@@ -38,13 +35,13 @@ public class ActivityListPresenter extends BaseFragmentPresenter<ActivityListPre
     private void fillList(List<ActionParametersModel> _modelList) {
         if (!_modelList.isEmpty()) {
 
-            long previousDay = _modelList.get(0).getStartTime();
+            long previousDay = _modelList.get(0).getDate();
             ActionParametersModel previousModel = _modelList.get(0);
             List<ActionParametersModel> currentList = new ArrayList<>();
             currentList.add(previousModel);
 
             for (int i = 1; i < _modelList.size(); i++) {
-                long currentDay = _modelList.get(i).getStartTime();
+                long currentDay = _modelList.get(i).getDate();
                 if (TimeUtil.compareDay(previousDay, currentDay) != 0) {
                     getView().addActivities(currentList);
                     currentList.clear();

@@ -43,8 +43,8 @@ public class AnalyticsPresenter extends BaseFragmentPresenter<AnalyticsPresenter
         Date currentDay = new Date(TimeUtil.getCurrentDay());
         Date weekAgo = TimeUtil.minusDayFromDate(currentDay, 7);
 
-        getView().setEndDate(TimeUtil.timeToString(TimeUtil.getCurrentDay()));
-        getView().setStartDate(TimeUtil.timeToString(weekAgo.getTime()));
+        getView().setEndDate(TimeUtil.dateToString(new Date(TimeUtil.getCurrentDay())));
+        getView().setStartDate(TimeUtil.dateToString(weekAgo));
    }
 
     public void getDiagram(Pair<Constants.DATA_TYPES, String> _dataType){

@@ -61,10 +61,10 @@ public class AddProgramDialogPresenter extends BaseDialogPresenter<AddProgramDia
             ProgramTable programTable = new ProgramTable();
             programTable.name = program.getName();
             programTable.difficult = difficult.getName();
-            programTable.target = Integer.parseInt(getView().getTarget());
-//            programTable.actualResult = "0";
+
+            int targetInMinute = Integer.parseInt(getView().getTarget());
+            programTable.target = targetInMinute * 60;
             programTable.unit = getView().getUnit();
-//            programTable.date = TimeUtil.getCurrentDay();
             programTable.save();
             getView().dismissDialog();
 
@@ -96,7 +96,7 @@ public class AddProgramDialogPresenter extends BaseDialogPresenter<AddProgramDia
         void setUnit(String _text);
         String getUnit();
         void setDescription(String _text);
-        void setTarget(String _text);
+        void setTarget(float _text);
         void setTargetError(String _text);
         String getTarget();
         void setTargetEditable(boolean isEditable);

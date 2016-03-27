@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter>
         if (TextUtils.isEmpty(SharedPrefManager.getInstance().retrieveGender())) {
             showProfileDialog();
         }
+
     }
 
     private void showProfileDialog() {

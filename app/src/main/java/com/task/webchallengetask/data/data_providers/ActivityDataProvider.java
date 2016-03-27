@@ -86,52 +86,52 @@ public class ActivityDataProvider extends BaseDataProvider {
     }
 
     private Observable<Pair<Long, Float>> getDaySteps(Date _date) {
-        Date nextDay = TimeUtil.addDayToDate(_date, 1);
+        Date nextDay = TimeUtil.addEndOfDay(_date, 1);
         return Observable
                 .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
                 .map(models -> {
-                    float totalCalories = 0;
+                    float totalSteps = 0;
                     for (ActionParametersModel model : models) {
-                        totalCalories += model.getStep();
+                        totalSteps += model.getStep();
                     }
-                    return new Pair<>(_date.getTime(), totalCalories);
+                    return new Pair<>(_date.getTime(), totalSteps);
                 });
 
 
     }
 
     private Observable<Pair<Long, Float>> getDayActivityTime(Date _date) {
-        Date nextDay = TimeUtil.addDayToDate(_date, 1);
+        Date nextDay = TimeUtil.addEndOfDay(_date, 1);
         return Observable
                 .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
                 .map(models -> {
-                    float totalCalories = 0;
+                    float totalTime = 0;
                     for (ActionParametersModel model : models) {
-                        totalCalories += model.getActivityActualTime();
+                        totalTime += model.getActivityActualTime();
                     }
-                    return new Pair<>(_date.getTime(), totalCalories);
+                    return new Pair<>(_date.getTime(), totalTime);
                 });
 
 
     }
 
     private Observable<Pair<Long, Float>> getDaySpeed(Date _date) {
-        Date nextDay = TimeUtil.addDayToDate(_date, 1);
+        Date nextDay = TimeUtil.addEndOfDay(_date, 1);
         return Observable
                 .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
                 .map(models -> {
-                    float totalCalories = 0;
+                    float totalSpeed = 0;
                     for (ActionParametersModel model : models) {
-                        totalCalories += model.getSpeed();
+                        totalSpeed += model.getSpeed();
                     }
-                    return new Pair<>(_date.getTime(), totalCalories);
+                    return new Pair<>(_date.getTime(), totalSpeed);
                 });
 
 
     }
 
     private Observable<Pair<Long, Float>> getDayCalories(Date _date) {
-        Date nextDay = TimeUtil.addDayToDate(_date, 1);
+        Date nextDay = TimeUtil.addEndOfDay(_date, 1);
         return Observable
                 .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
                 .map(models -> {
@@ -146,7 +146,7 @@ public class ActivityDataProvider extends BaseDataProvider {
     }
 
     private Observable<Pair<Long, Float>> getDayDistance(Date _date) {
-        Date nextDay = TimeUtil.addDayToDate(_date, 1);
+        Date nextDay = TimeUtil.addEndOfDay(_date, 1);
         return Observable
                 .just(mDbController.getActionParametersModel(_date.getTime(), nextDay.getTime()))
                 .map(models -> {

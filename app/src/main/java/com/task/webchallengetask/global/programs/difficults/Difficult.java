@@ -5,10 +5,10 @@ package com.task.webchallengetask.global.programs.difficults;
  */
 public class Difficult {
     String name;
-    String target;
+    float target;
     String unit;
 
-    public Difficult(String name, String target, String unit) {
+    public Difficult(String name, float target, String unit) {
         this.name = name;
         this.target = target;
         this.unit = unit;
@@ -22,11 +22,11 @@ public class Difficult {
         this.name = name;
     }
 
-    public String getTarget() {
+    public float getTarget() {
         return target;
     }
 
-    public void setTarget(String target) {
+    public void setTarget(float target) {
         this.target = target;
     }
 

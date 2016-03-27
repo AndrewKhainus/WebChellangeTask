@@ -8,6 +8,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.CombinedData;
+import com.github.mikephil.charting.data.LineData;
 import com.task.webchallengetask.App;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.data.data_providers.PredictionDataProvider;
@@ -46,8 +47,8 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         Date weekAgo = TimeUtil.minusDayFromDate(currentDay, 7);
 
         getView().setDifficultEnabled(false);
-        getView().setEndDate(TimeUtil.timeToString(TimeUtil.getCurrentDay()));
-        getView().setStartDate(TimeUtil.timeToString(weekAgo.getTime()));
+        getView().setEndDate(TimeUtil.dateToString(new Date(TimeUtil.getCurrentDay())));
+        getView().setStartDate(TimeUtil.dateToString(new Date(weekAgo.getTime())));
 
         mProgramDataProvider.getProgram(getView().getFragmentArguments().getInt(Constants.PROGRAM_ID_KEY))
                 .doOnNext(programTable -> {
@@ -64,7 +65,13 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
     }
 
     public void onSaveClicked() {
-        mProgramTable.target = Integer.parseInt(getView().getTarget());
+        if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE) {
+            int target = Integer.parseInt(getView().getTarget());
+            mProgramTable.target = target * 60;
+        } else {
+            mProgramTable.target = Integer.parseInt(getView().getTarget());
+        }
+
         mProgramTable.difficult = getView().getDifficult().getName();
         mProgramTable.update();
         getView().setSaveVisible(false);
@@ -100,30 +107,41 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         getView().setTitle(_programTable.getName());
         getView().setDifficultList(getDifficultList(_programTable.getName()));
         getView().setDifficult(getDifficultPosition(_programTable.getName(), _programTable.getDifficult()));
-        getView().setTarget(String.valueOf(_programTable.getTarget()));
+
+        if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE) {
+            int targetInMinute = _programTable.getTarget() / 60;
+            getView().setTarget(targetInMinute);
+            setResults(mDataList.get(mDataList.size() - 1).second / 60);
+
+        } else {
+            getView().setTarget(_programTable.getTarget());
+            setResults(mDataList.get(mDataList.size() - 1).second);
+        }
+
+        compareResultWithTarget();
         getView().setUnit(_programTable.getUnit());
         if (getDifficult(_programTable.getName(), _programTable.getDifficult()) instanceof DifficultCustom) {
             getView().setTargetEnabled(true);
         } else {
             getView().setTargetEnabled(false);
         }
-        setResults(mDataList.get(mDataList.size()-1).second);
-        compareResultWithTarget();
+
     }
 
     private void fillDiagram(List<Pair<Long, Float>> _data) {
         switch (mProgramType) {
             case ACTIVE_LIFE:
-                setDiagramData(_data, App.getAppContext().getString(R.string.c_meters));
+                setDiagramData(_data, App.getAppContext().getString(R.string.c_time));
                 break;
             case LONG_DISTANCE:
-                setDiagramData(_data, App.getAppContext().getString(R.string.c_time));
+                setDiagramData(_data, App.getAppContext().getString(R.string.c_meters));
                 break;
         }
     }
 
     private void setResults(float todayResult) {
-        getView().setActualResults(String.valueOf(todayResult));
+
+        getView().setActualResults(todayResult);
     }
 
     private void compareResultWithTarget() {
@@ -142,9 +160,14 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         String[] dates = new String[floats.size()];
         for (int i = 0; i < floats.size(); i++) {
             dates[i] = TimeUtil.timeToStringDDMM(floats.get(i).first);
-            _entry.add(new BarEntry(floats.get(i).second, i));
+
+            if (mProgramType == Constants.PROGRAM_TYPES.ACTIVE_LIFE) {
+                _entry.add(new BarEntry(floats.get(i).second / 60, i));
+            } else
+                _entry.add(new BarEntry(floats.get(i).second, i));
         }
         CombinedData data = new CombinedData(dates);
+        LineData targetData = new LineData(dates);
         BarDataSet set = new BarDataSet(_entry, _units);
         set.setColor(Color.rgb(60, 220, 78));
         set.setValueTextColor(Color.rgb(60, 220, 78));
@@ -152,7 +175,7 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
         mDiagram.addDataSet(set);
 
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        getView().setDiagram(mDiagram, data);
+        getView().setDiagram(mDiagram, data, targetData);
     }
 
     private List<Difficult> getDifficultList(String _name) {
@@ -238,17 +261,17 @@ public class ProgramDetailPresenter extends BaseFragmentPresenter<ProgramDetailP
 
         void setTitle(String _text);
 
-        void setDiagram(BarData _data, CombinedData data);
+        void setDiagram(BarData _data, CombinedData data, LineData _targetData);
 
         void setDifficultList(List<Difficult> _data);
 
         void setDifficult(int _position);
 
-        void setTarget(String _text);
+        void setTarget(float _text);
 
         void setUnit(String _text);
 
-        void setActualResults(String _text);
+        void setActualResults(float _text);
 
         String getActualResults();
 

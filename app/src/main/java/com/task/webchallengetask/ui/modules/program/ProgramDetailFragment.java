@@ -20,6 +20,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.CombinedData;
+import com.github.mikephil.charting.data.LineData;
 import com.task.webchallengetask.R;
 import com.task.webchallengetask.global.Constants;
 import com.task.webchallengetask.global.programs.difficults.Difficult;
@@ -155,7 +156,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     }
 
     @Override
-    public void setDiagram(BarData _value, CombinedData _date) {
+    public void setDiagram(BarData _value, CombinedData _date, LineData _targetData) {
         mChart.setDescription("");
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDrawGridBackground(false);
@@ -177,6 +178,7 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         _date.setData(_value);
         mChart.setData(_date);
+//        mChart.setData(_targetData);
         mChart.invalidate();
     }
 
@@ -194,8 +196,8 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     }
 
     @Override
-    public void setTarget(String _text) {
-        etTarget.setText(_text);
+    public void setTarget(float _text) {
+        etTarget.setText(String.format("%.0f", _text));
     }
 
     @Override
@@ -205,8 +207,8 @@ public class ProgramDetailFragment extends BaseFragment<ProgramDetailPresenter> 
     }
 
     @Override
-    public void setActualResults(String _text) {
-        tvActualResult.setText(_text);
+    public void setActualResults(float _text) {
+        tvActualResult.setText(String.format("%.0f", _text));
     }
 
     @Override
