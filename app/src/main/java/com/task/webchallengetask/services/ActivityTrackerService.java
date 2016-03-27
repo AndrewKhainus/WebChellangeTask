@@ -69,6 +69,7 @@ public class ActivityTrackerService extends Service {
     private HashMap<OnDataPointListener, DataSource> listenerDataTypeHashMap;
 
     private long startTime;
+    private ActionParametersModel actionParametersModel;
     private long endTime;
     private int step;
     private float speed;
@@ -129,7 +130,7 @@ public class ActivityTrackerService extends Service {
     }
 
     private void saveData() {
-        ActionParametersModel actionParametersModel = new ActionParametersModel();
+        actionParametersModel = new ActionParametersModel();
         actionParametersModel.name = currentActivity;
         actionParametersModel.calories = calculationCalories();
         actionParametersModel.distance = dist;

@@ -27,6 +27,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by andri on 22.03.2016.
  */
@@ -140,10 +143,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         }
     }
 
-    public void testClick() {
-        GoogleApiUtils.getInstance().getHistory().subscribe(t -> t.toString());
-    }
-
     private class TimerReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -238,7 +237,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
         void setCaloriesVisible(boolean _isVisible);
 
         void showCompleteProgramNotification(String _programName, String _difficult);
-
     }
 
 }

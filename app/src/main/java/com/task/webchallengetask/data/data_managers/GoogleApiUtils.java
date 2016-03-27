@@ -222,10 +222,6 @@ public final class GoogleApiUtils {
     }
 
     private DataReadRequest requestHistory(long _start, long _end) {
-//        DataTypeResult pendingResult = Fitness.ConfigApi.readDataType(googleApiClient,
-//                "com.task.webchallengetask.calories").await();
-
-
         return new DataReadRequest.Builder()
                 .read(Fitness.ConfigApi.readDataType(googleApiClient,
                         "com.task.webchallengetask.calories").await().getDataType())
