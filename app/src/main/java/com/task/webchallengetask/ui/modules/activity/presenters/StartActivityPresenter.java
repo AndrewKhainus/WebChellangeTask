@@ -117,7 +117,6 @@ public class StartActivityPresenter extends BaseActivityPresenter<StartActivityP
                     getActivityTrackerServiceIntent(Constants.STOP_TIMER_ACTION, currentActivity));
             getView().setSpinnerEnabled(true);
             getView().toggleStartPause(R.drawable.ic_play);
-            getView().toggleStartPause("START");
             checkNewData();
         }
     }
