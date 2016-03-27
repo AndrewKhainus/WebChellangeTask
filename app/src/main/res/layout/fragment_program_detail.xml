@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
-    android:padding="16dp">
+    android:layout_margin="16dp">
 
     <TextView
         android:id="@+id/tvTitle_FP"

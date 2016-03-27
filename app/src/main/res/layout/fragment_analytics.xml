@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="16dp"
     android:orientation="vertical">
 
     <android.support.v7.widget.AppCompatSpinner
@@ -24,15 +25,29 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingLeft="10dp"
                 android:paddingRight="4dp"
-                android:text="From:" />
+                android:text="@string/from" />
 
-            <TextView
-                android:id="@+id/tvStartDate_FA"
+            <LinearLayout
+                android:id="@+id/llStartDate_FA"
+                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="4dp" />
+                android:layout_height="wrap_content">
 
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:src="@drawable/ic_calendar" />
+
+                <TextView
+                    android:id="@+id/tvStartDate_FA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="4dp" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -46,18 +61,34 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:paddingLeft="10dp"
                 android:paddingRight="4dp"
-                android:text="To:" />
+                android:text="@string/to" />
 
-            <TextView
-                android:id="@+id/tvEndDate_FA"
+            <LinearLayout
+                android:id="@+id/llEndDate_FA"
+                android:gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="4dp" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:src="@drawable/ic_calendar" />
+
+                <TextView
+                    android:id="@+id/tvEndDate_FA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="4dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <com.github.mikephil.charting.charts.CombinedChart
         android:id="@+id/chart_FA"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>

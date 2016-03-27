@@ -7,6 +7,7 @@ import android.support.v4.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -30,6 +31,8 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
     private Spinner spDataType;
     private TextView tvStartDate;
     private TextView tvEndDate;
+    private LinearLayout llStartDate;
+    private LinearLayout llEndDate;
     private CombinedChart mChart;
 
     public static AnalyticsFragment newInstance() {
@@ -59,6 +62,8 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
     @Override
     public final  void findUI(View rootView) {
         spDataType = (Spinner) rootView.findViewById(R.id.spDataType_FA);
+        llStartDate = (LinearLayout) rootView.findViewById(R.id.llStartDate_FA);
+        llEndDate = (LinearLayout) rootView.findViewById(R.id.llEndDate_FA);
         tvStartDate = (TextView) rootView.findViewById(R.id.tvStartDate_FA);
         tvEndDate = (TextView) rootView.findViewById(R.id.tvEndDate_FA);
         mChart = (CombinedChart) rootView.findViewById(R.id.chart_FA);
@@ -77,8 +82,8 @@ public class AnalyticsFragment extends BaseFragment<AnalyticsPresenter>
 
             }
         });
-        RxUtils.click(tvStartDate, o -> getPresenter().onStartDateClicked());
-        RxUtils.click(tvEndDate, o -> getPresenter().onEndDateClicked());
+        RxUtils.click(llStartDate, o -> getPresenter().onStartDateClicked());
+        RxUtils.click(llEndDate, o -> getPresenter().onEndDateClicked());
     }
 
     @Override
