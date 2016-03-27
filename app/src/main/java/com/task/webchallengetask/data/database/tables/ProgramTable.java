@@ -21,7 +21,7 @@ public class ProgramTable extends BaseModel {
     public String difficult;
 
     @Column
-    public int target;
+    public float target;
 
     @Column
     public String unit;
@@ -34,7 +34,7 @@ public class ProgramTable extends BaseModel {
         return difficult;
     }
 
-    public int getTarget() {
+    public float getTarget() {
         return target;
     }
 
